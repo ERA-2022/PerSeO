@@ -1,3 +1,9 @@
+# Generados por el modulo
+src/
+results/
+models/
+data.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
