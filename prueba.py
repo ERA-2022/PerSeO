@@ -12,6 +12,11 @@ i = 5
 p = 3
 desc = "100%BW con BW ideal a 80MHz, denominador (o frecuencia de corte)en 40MHz trabajando en la banda de frecuencia de 40MHz hasta 120MHz"
 
+def fit (i, j):
+    print("Prueba función fitness")
+    print(f"valor i: {i} | valor de j: {j}")
+    res = i*j
+    print(f"valor: {res}")
 # -> Futuro modulo de optimización
 commands.init_system(exe,save,pname,dname,vname,u,ma,mi,nom,i,p,desc)
-Interfaz.main_menu()
+Interfaz.main_menu(fit)

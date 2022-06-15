@@ -6,7 +6,7 @@ from PSO.commands import clear_screen, wait_to_read, read_data
 # 2. EXCEPCIÓN FORZADA (DIVISIÓN EN 0)
 # 3. LECTURA DEL ARCHIVO DE CONFIGURACIÓN DESDE EL ARCHIVO PARAMETROS
 # 4. USO DE LA FUNCIÓN LEER DATOS DEL ARCHIVO FITNESS CON INDICE 1000, 1000
-def launch_tester():
+def launch_tester(fitness:function):
     while True:
         clear_screen()
         print("\n-----\TEST MODE\n")
@@ -39,7 +39,11 @@ def launch_tester():
                     print(f"    {key2} --> {value2}")
             wait_to_read("")
         elif test == '4':
-            print("Fintess")
+            clear_screen()
+            val1 = int(input("Digite el valor del primer párametro: "))
+            val2 = int(input("Digite el valor del segundo párametro: "))
+            fitness(val1, val2)
+            wait_to_read("")
 
         elif test == '5':
             break

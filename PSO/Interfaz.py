@@ -63,7 +63,7 @@ def set_up_menu():
         else:
             wait_to_read("Algo salió mal")
 
-def main_menu():
+def main_menu(fitness:function):
     salir = False
     while not salir:
         op = ops_main_menu()
@@ -72,7 +72,7 @@ def main_menu():
         elif op == 2:
             set_up_menu()
         elif op == 3:
-            Tester.launch_tester()
+            Tester.launch_tester(fitness)
         elif op == 4:
             print("\nGracias por usar nuestro software!")
             salir = True
