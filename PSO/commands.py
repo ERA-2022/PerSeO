@@ -4,21 +4,22 @@ import json
 
 def read_data():
     try:
-        with open(f"{os.getcwd().replace('\\','/')}/data.json", "r") as file:
+        path = os.getcwd().replace('\\','/')+'/src'
+        with open(f"{path}/data.json", "r") as file:
             data = json.load(file)
             file.close()
-
         return data
     except:
         input("Error al tratar de leer el archivo de configuración\nPresione enter para continuar...")
 
 def update_data(category = "", key = "",value =""):
     try:
-        with open(f"{os.getcwd().replace('\\','/')}/data.json", "r") as file:
+        path = os.getcwd().replace('\\','/')+'/src'
+        with open(f"{path}/data.json", "r") as file:
             data = json.load(file)
             file.close()
 
-        with open(f"{os.getcwd().replace('\\','/')}/data.json", "w") as file:
+        with open(f"{path}/data.json", "w") as file:
             data[category][key] = value
             json.dump(data,file,indent=2)
             file.close()
@@ -26,37 +27,41 @@ def update_data(category = "", key = "",value =""):
     except:
         input("Error al tratar de leer o escribir en el archivo de configuración\nPresione enter para continuar...")
 
-def back_up_data():
+def create_data_file(ansys_exe:str, ansys_save_def:str, project_name:str, design_name:str, variable_name:str, units:str, max:list, min:list, nomilas:list, iterations:int, particles:int, description:str):
     data_structure = {
         "paths":
         {
             "main": os.getcwd().replace('\\','/')+'/',
-            "results": "results/",
-            "ansys_exe": "C:/Program Files/AnsysEM/Ansys Student/v212/Win64/ansysedtsv.exe",
-            "ansys_save_def": "C:/Users/ESTACION/Documents/Ansoft/"
+            "results": os.getcwd().replace('\\','/')+'/'+"results/",
+            "models": os.getcwd().replace('\\','/')+'/'+"models/",
+            "src": os.getcwd().replace('\\','/')+'/'+"src/",
+            "ansys_exe": ansys_exe,
+            "ansys_save_def": ansys_save_def
         },
         "values":
         {
-            "project_name": "backup",
-            "design_name": "backup",
-            "variable_name": "variables",
-            "units": "mm",
-            "max": [0],
-            "min": [0],
-            "def": [0],
-            "iterations": 0,
-            "particles": 0,
-            "merit_fun_info": "backup data"
+            "project_name": project_name,
+            "design_name": design_name,
+            "variable_name": variable_name,
+            "units": units,
+            "max": max,
+            "min": min,
+            "def": nomilas,
+            "n_var":len(nomilas),
+            "iterations": iterations,
+            "particles": particles,
+            "description": description
         }
     }
+    
     try:
-        with open(f"{os.getcwd().replace('\\','/')}/data.json", "w") as file:
+        with open(f"{data_structure['paths']['src']}data.json", "w") as file:
             json.dump(data_structure,file,indent=2)
             file.close()
-        print("Archivo de configuración precargado!!, por favor verifique las rutas y valores en el menú->configuración->configuración de rutas ó valores")
+        print("Archivo de configuración creado ó actualizado con éxito!!")
     except:
         input("\nAlgo salió mal, por favor pongase en contacto con el desarrollador\nPresione enter para continuar")
-
+    
 def clear_screen():
     os.system("cls")
 
@@ -84,18 +89,16 @@ def Y_N_question(msj:str):
     
     return op.upper()
 
-def init_system():
+def init_system(ansys_exe:str, ansys_save_def:str, project_name:str, design_name:str, variable_name:str, units:str, max:list, min:list, nomilas:list, iterations:int, particles:int, description:str):
     print("Iniciando sistema...")
+    main_path = os.getcwd().replace('\\','/')+'/'
+    
+    make_directory('models',main_path)
+    make_directory('results', main_path)
+    make_directory('src', main_path)
 
-    path = os.getcwd().replace('\\','/')+'/'
-    if path != read_data()["paths"]['main']:
-        update_data("paths","main",path)
-        print("Path actualizado!")
-    
-    make_directory('models',path)
-    make_directory('results', path)
-    make_directory('src', path)
-    
+    create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, description)
+        
     print("listo!")
     time.sleep(3)
     clear_screen()

@@ -17,7 +17,6 @@ Estructura:
     "ansys_save_def": "C:/Users/ESTACION/Documents/Ansoft/"
   },
   "values": {
-    "model": "Dipolo_blade.aedt",
     "project_name": "DIPOLE_BLADE_ANTENNA",
     "design_name": "DESIGN",
     "variable_name": "variables",
@@ -46,6 +45,7 @@ Estructura:
       20.0,
       750.0
     ],
+    "n_var":6,
     "iterations": 5,
     "particles": 3,
     "merit_fun_info": "100%BW con BW ideal a 80MHz, denominador (o frecuencia de corte)en 40MHz trabajando en la banda de frecuencia de 40MHz hasta 120MHz"

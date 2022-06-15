@@ -3,12 +3,16 @@
 Created on 30/07/2020
 
 @author: Daniel Montofré and Oscar Restrepo
+
+Modify on 15/06/2022
+
+by: Jaime Andres Angel Melgarejo
 """
 
-from ..temp.global_ import *
+from PSO.commands import read_data
 
 def agregaVariable(proj,nombre,valor):
-        oDesign = proj.SetActiveDesign(nombre_diseno)
+        oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
         oDesign.ChangeProperty(
     	[
     		"NAME:AllTabs",
@@ -31,7 +35,7 @@ def agregaVariable(proj,nombre,valor):
     	])
     
 def modificaVariable(proj,nombre,valor):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oDesign.ChangeProperty(
     	[
     		"NAME:AllTabs",
@@ -52,7 +56,7 @@ def modificaVariable(proj,nombre,valor):
     	])
     
 def agregaArreglo(proj,nombre,valor):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oDesign.ChangeProperty(
     	[
     		"NAME:AllTabs",
@@ -78,7 +82,7 @@ def agregaArreglo(proj,nombre,valor):
 # nombre y valor son strings
     
 def modificaArreglo(proj,nombre,valor):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oDesign.ChangeProperty(
     	[
     		"NAME:AllTabs",
@@ -102,7 +106,7 @@ def modificaArreglo(proj,nombre,valor):
     
 #Creating the S11 data
 def creaS11(proj,nombre,simID):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
     oModule.CreateReport("S11", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
     	[
@@ -116,11 +120,11 @@ def creaS11(proj,nombre,simID):
     		"Y Component:="		, ["dB(S(1,1))"]
     	], [])
 
-    oModule.ExportToFile("S11", direccion_archivos+"/output/"+str(simID)+"/files/"+r"datosS11"+str(nombre)+".csv")
+    oModule.ExportToFile("S11", read_data()['values']['results']+str(simID)+"/files/"+r"datosS11"+str(nombre)+".csv")
 
 #Creating the S21 data
 def creaS21(proj,nombre,simID):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
     oModule.CreateReport("S21", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
     	[
@@ -133,11 +137,11 @@ def creaS21(proj,nombre,simID):
     		"X Component:="		, "Freq",
     		"Y Component:="		, ["dB(S(2,1))"]
     	], [])
-    oModule.ExportToFile("S21",direccion_archivos+"/output/"+str(simID)+"/files/"+r"datosS21"+str(nombre)+".csv")
+    oModule.ExportToFile("S21",read_data()['values']['results']+str(simID)+"/files/"+r"datosS21"+str(nombre)+".csv")
 
 #Creating the S31 data
 def creaS31(proj,nombre,simID):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
     oModule.CreateReport("S31", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
     	[
@@ -150,11 +154,11 @@ def creaS31(proj,nombre,simID):
     		"X Component:="		, "Freq",
     		"Y Component:="		, ["dB(S(3,1))"]
     	], [])
-    oModule.ExportToFile("S31", direccion_archivos+"/output/"+str(simID)+"/files/"+r"datosS31"+str(nombre)+".csv")
+    oModule.ExportToFile("S31", read_data()['values']['results']+str(simID)+"/files/"+r"datosS31"+str(nombre)+".csv")
 
 #Creating the S41 data
 def creaS41(proj,nombre,simID):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
     oModule.CreateReport("S41", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
     	[
@@ -167,11 +171,11 @@ def creaS41(proj,nombre,simID):
     		"X Component:="		, "Freq",
     		"Y Component:="		, ["dB(S(4,1))"]
     	], [])
-    oModule.ExportToFile("S41", direccion_archivos+"/output/"+str(simID)+"/files/"+r"datosS41"+str(nombre)+".csv")
+    oModule.ExportToFile("S41", read_data()['values']['results']+str(simID)+"/files/"+r"datosS41"+str(nombre)+".csv")
 
 #UNDERNEATH THE COMMANDS TO GENERATE THE VSWR, GAIN, BW AND DATA TABLE PARAMETERS.
-def creaVSWR(proj,nombre):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+def creaVSWR(proj,nombre,simID):
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
 
     oModule.CreateReport("VSWR", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
@@ -187,11 +191,11 @@ def creaVSWR(proj,nombre):
 		    "X Component:="		, "Freq",
 		    "Y Component:="		, ["VSWR(1)"]
 	    ], [])
-    direccion = direccion_archivos+ "TEST/datosVSWR"+str(nombre)+".csv"
+    direccion = read_data()['values']['results']+str(simID)+"/files/"+r"datosVSWR"+str(nombre)+".csv"
     oModule.ExportToFile("VSWR",direccion)
 
-def creaGain(proj, angulo, nombre):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+def creaGain(proj, angulo, nombre,simID):
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
     oModule.CreateReport("Gain Phi "+ str(angulo), 
                          "Far Fields", "Rectangular Plot", "Setup1 : Sweep", 
@@ -210,19 +214,19 @@ def creaGain(proj, angulo, nombre):
     		"Y Component:="		, ["GainTotal"]
     	], [])   
    
-    direccion = direccion_archivos + "TEST/GainPhi"+str(angulo)+str(nombre)+".csv"
+    direccion = read_data()['values']['results']+str(simID)+"/files/"+r"datosGanancia"+str(nombre)+".csv"
     oModule.ExportToFile("Gain Phi "+ str(angulo), direccion)
 
-def creaBW(proj,nombre):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+def creaBW(proj,nombre,simID):
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
     oModule.AddTraceCharacteristics("S11", "XWidthAtYVal", ["-12"], ["Full"])
     oModule.AddTraceCharacteristics("S11", "XWidthAtYVal", ["-13"], ["Full"])
-    direccion = direccion_archivos+ "TEST/S11BW"+str(nombre)+".csv"
+    direccion = read_data()['values']['results']+str(simID)+"/files/"+r"datosBW"+str(nombre)+".csv"
     oModule.ExportTableToFile("S11", direccion, "Legend")
 
-def creaDataTable(proj,nombre):
-    oDesign = proj.SetActiveDesign(nombre_diseno)
+def creaDataTable(proj,nombre,simID):
+    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
     oModule.CreateReport("Variables Table 1", "Far Fields", "Data Table", "Setup1 : LastAdaptive", 
     	[
@@ -236,5 +240,5 @@ def creaDataTable(proj,nombre):
     	[
     		"Y Component:="		, ["variables"]
     	], [])
-    direccion = direccion_archivos + "TEST/datosTabla"+str(nombre)+".csv"
+    direccion = read_data()['values']['results']+str(simID)+"/files/"+r"datosTabla"+str(nombre)+".csv"
     oModule.ExportToFile("Variables Table 1", direccion)

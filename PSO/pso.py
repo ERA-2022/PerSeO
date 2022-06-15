@@ -8,13 +8,8 @@ Functions related to implementation of PSO algorithm.
 """
 
 from numpy.core.records import array
-import temp.global_ as global_
-import os
-
+from PSO.commands import read_data
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-
 from numpy.random import seed
 from numpy.random import randn
 
@@ -62,9 +57,9 @@ class Swarm:
         self.var_max = np.array(var_max)
         self.var_min = np.array(var_min)
         self.particles = []
-        self.velocidades = np.zeros([global_.n_particulas,global_.n_variables])
-        self.pbest = np.zeros(global_.n_particulas)
-        self.pg = np.zeros(global_.n_variables)
+        self.velocidades = np.zeros([read_data()['values']['particles'],read_data()['values']['n_var']])
+        self.pbest = np.zeros(read_data()['values']['particles'])
+        self.pg = np.zeros(read_data()['values']['n_var'])
 
     """Create particles swarm"""
     def create(self):
@@ -107,7 +102,7 @@ class Swarm:
         vel = phiv * vi + phi1 * rand1 * (pi.values_array - particle.values_array) + \
             phi2 * rand2 * (pg - particle.values_array)
 
-        for i in range(global_.n_variables):
+        for i in range(read_data()['values']['n_var']):
             
             if np.abs(vel[i]) > self.vmax[i]:
                 signo = np.sign(vel[i])
@@ -123,11 +118,11 @@ class Swarm:
         # x son particulas que vienen definidas desde la creacion del enjambre
         # Solo se van actualizando en el transcurso de las iteraciones
 
-        [item.fill_zeros_array(global_.n_variables) for item in self.x_particles]#llenar de ceros las particulas x
+        [item.fill_zeros_array(read_data()['values']['n_var']) for item in self.x_particles]#llenar de ceros las particulas x
 
-        vel = np.zeros([global_.n_particulas, global_.n_variables])#llenar de ceros la variable velocidad
+        vel = np.zeros([read_data()['values']['particles'], read_data()['values']['n_var']])#llenar de ceros la variable velocidad
         
-        for i in range(global_.n_particulas):
+        for i in range(read_data()['values']['particles']):
 
             print(i)
             print( self.x_particles[i].values_array )
@@ -139,7 +134,7 @@ class Swarm:
             
             self.x_particles[i].values_array = particulas[i].values_array + vel[i] ## xi(t-1)+vi(t)
             
-            for j in range(global_.n_variables):
+            for j in range(read_data()['values']['n_var']):
                 if (self.x_particles[i].values_array)[j] > self.var_max[j]:
                     (self.x_particles[i].values_array)[j] = self.var_max[j]
                 elif (self.x_particles[i].values_array)[j] < self.var_min[j]:
