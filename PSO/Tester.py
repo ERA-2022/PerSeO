@@ -6,7 +6,7 @@ from PSO.commands import clear_screen, wait_to_read, read_data
 # 2. EXCEPCIÓN FORZADA (DIVISIÓN EN 0)
 # 3. LECTURA DEL ARCHIVO DE CONFIGURACIÓN DESDE EL ARCHIVO PARAMETROS
 # 4. USO DE LA FUNCIÓN LEER DATOS DEL ARCHIVO FITNESS CON INDICE 1000, 1000
-def launch_tester(fitness:function):
+def launch_tester(fitness):
     while True:
         clear_screen()
         print("\n-----\TEST MODE\n")

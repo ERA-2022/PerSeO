@@ -1,4 +1,5 @@
 from PSO import commands, Interfaz
+
 exe = "C:/Program Files/AnsysEM/Ansys Student/v212/Win64/ansysedtsv.exe"
 save = "C:/Users/ESTACION/Documents/Ansoft/"
 pname = "DIPOLE_BLADE_ANTENNA"
@@ -17,6 +18,8 @@ def fit (i, j):
     print(f"valor i: {i} | valor de j: {j}")
     res = i*j
     print(f"valor: {res}")
+
+
 # -> Futuro modulo de optimización
 commands.init_system(exe,save,pname,dname,vname,u,ma,mi,nom,i,p,desc)
 Interfaz.main_menu(fit)

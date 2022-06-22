@@ -63,12 +63,19 @@ def set_up_menu():
         else:
             wait_to_read("Algo salió mal")
 
-def main_menu(fitness:function):
+def main_menu(fitness):
     salir = False
     while not salir:
         op = ops_main_menu()
         if op == 1:
-            print("DIGITÓ OPCIÓN 1")
+            update_data("info","ID",setSimID())
+            update_data("paths","files",f"{read_data()['paths']['results']}{read_data()['info']['ID']}/files/")
+            update_data("paths","figures", f"{read_data()['paths']['results']}{read_data()['info']['ID']}/figures/")
+            make_directory(read_data()['info']['ID'], read_data()['paths']['results'])
+            make_directory("",read_data()['paths']['files'])
+            make_directory("",read_data()['paths']['figures'])
+            #make_directory("files", f"{read_data()['paths']['results']}{read_data()['info']['ID']}/")
+            #make_directory("figures", f"{read_data()['paths']['results']}{read_data()['info']['ID']}/")
         elif op == 2:
             set_up_menu()
         elif op == 3:

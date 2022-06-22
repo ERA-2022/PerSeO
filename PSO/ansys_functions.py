@@ -9,7 +9,7 @@ Modify on 15/06/2022
 by: Jaime Andres Angel Melgarejo
 """
 
-from PSO.commands import read_data
+from .commands import read_data
 
 def agregaVariable(proj,nombre,valor):
         oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
@@ -172,6 +172,43 @@ def creaS41(proj,nombre,simID):
     		"Y Component:="		, ["dB(S(4,1))"]
     	], [])
     oModule.ExportToFile("S41", read_data()['values']['results']+str(simID)+"/files/"+r"datosS41"+str(nombre)+".csv")
+
+def creaAmpImb(proj,nombre,simID):
+	
+	oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
+	oModule = oDesign.GetModule("ReportSetup")
+	oModule.CreateReport("Amplitud Imbalance", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
+	[
+		"Domain:="		, "Sweep"
+	], 
+	[
+		"Freq:="		, ["All"],
+		"a:="			, ["Nominal"],
+	], 
+	[
+		"X Component:="		, "Freq",
+		"Y Component:="		, ["AmpImbalance"]
+	], [])
+	
+	oModule.ExportToFile("Amplitud Imbalance", read_data()['values']['results']+str(simID)+"/files/"+r"amp_imb"+str(nombre)+".csv")
+
+def creaPhaseImb(proj,nombre,simID):
+	
+	oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
+	oModule = oDesign.GetModule("ReportSetup")
+	oModule.CreateReport("Phase Imbalance", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
+	[
+		"Domain:="		, "Sweep"
+	], 
+	[
+		"Freq:="		, ["All"],
+	], 
+	[
+		"X Component:="		, "Freq",
+		"Y Component:="		, ["PhaseImb"]
+	], [])
+
+	oModule.ExportToFile("Phase Imbalance", read_data()['values']['results']+str(simID)+"/files/"+r"pha_imb"+str(nombre)+".csv")
 
 #UNDERNEATH THE COMMANDS TO GENERATE THE VSWR, GAIN, BW AND DATA TABLE PARAMETERS.
 def creaVSWR(proj,nombre,simID):

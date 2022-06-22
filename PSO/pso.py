@@ -6,14 +6,20 @@ Functions related to implementation of PSO algorithm.
 
 
 """
-
 from numpy.core.records import array
 from PSO.commands import read_data
+#from PSO import fitness_func as fit
+#import os
+
 import numpy as np
+#import importlib
+#import matplotlib.pyplot as plt
+#from scipy import stats
+#from scipy import integrate
+#from sklearn.metrics import mean_squared_error
+
 from numpy.random import seed
 from numpy.random import randn
-
-from sklearn.metrics import mean_squared_error
 
 class Particle:
     """
@@ -23,8 +29,7 @@ class Particle:
     values_array = []
 
     def __init__(self, id ):
-        self.id_=id
-
+        self.id_=id  
 
     def random_array(self, array_size):
         self.values_array = np.array(np.random.random_sample(array_size))
@@ -35,9 +40,10 @@ class Particle:
     def reset_xParticles_id_counter(self):
         self.id_ = 0
 
-
 class Swarm:
     
+    phiv=0.9
+
     particles=[] # array with all particles part of the swar
     x_particles=[] # array with all particles part of the swar
     best_index=0 #best integer describing the index corresponding the best particle in 
@@ -47,6 +53,7 @@ class Swarm:
     gbest = 0  #global  best
     pbest =[]
     pg = []
+    variables_number=0
 
     def __init__(self, particles_number, variables_number, var_max, var_min):
         #swarm variables
@@ -54,6 +61,7 @@ class Swarm:
         self.variables_number = variables_number
 
         #Set variations
+        
         self.var_max = np.array(var_max)
         self.var_min = np.array(var_min)
         self.particles = []
@@ -68,7 +76,8 @@ class Swarm:
         self.x_particles = [Particle(i) for i in range(self.particles_number  )]
         print("particulas creadas:"+str(len(self.particles)))
 
-        self.vmax = (np.array(self.var_max) - np.array(self.var_min) )/2
+        interval_array=np.array(self.var_max) - np.array(self.var_min)
+        self.vmax = interval_array * 0.6
 
         for particle in self.particles:
             #Generate random array for each particle
@@ -76,76 +85,96 @@ class Swarm:
             #Scale the random values
             particle.values_array = particle.values_array*(self.var_max-self.var_min) + self.var_min
 
-    def velocidad(self,i, pi, pg, vi, particle):
-        """ 
-        Calcula la velocidad de la particula i, dada su pi, pg y su velocidad
-        y posicion anterior 
-
-        pi => una particula especifica
-        pbest=> su fitness value
-
-        pg => cualquier particula con la mejor solucion
-        gbest=> global bets
-
-        vi => velocidad anterior
-        """
-        
-        phi1 = 0.8 #valores que se pueden revisar
-        phi2 = 1.5 #esto va valores componen self-knowledge
-        phiv = 0.65 # inicial 0.5
-
-        rand1 = np.random.random() #valores entre 0 y 1
-        rand2 = np.random.random()
-
-        ###inercia +  atraccion a la mejor posicion de la particula i +  atraccion a la mejor posición global
-       
-        vel = phiv * vi + phi1 * rand1 * (pi.values_array - particle.values_array) + \
-            phi2 * rand2 * (pg - particle.values_array)
-
-        for i in range(read_data()['values']['n_var']):
-            
-            if np.abs(vel[i]) > self.vmax[i]:
-                signo = np.sign(vel[i])
-                vel[i] =  signo * self.vmax[i]
+            # if particle.values_array[2] < particle.values_array[1]:
                 
-        return vel
-    
-    
+            #     random = np.random.random_sample()
+            #     maximo = particle.values_array[1]-0.1
+            #     particle.values_array[2] = random*(maximo-self.var_min[2]) + self.var_min[2]
 
-    def nuevas_particulas(self,particulas, pi, pg, vel_anterior):
-        #Particulas => xi(t-1)
-        #pi => particulas iniciales
-        # x son particulas que vienen definidas desde la creacion del enjambre
-        # Solo se van actualizando en el transcurso de las iteraciones
+    def nuevas_particulas(self,particulas_ant, pi_best, pg, vel_anterior, iteration):
+    #     #Particulas => xi(t-1)
+    #     #pi => individual optimal position!?
+    #     # x son particulas que vienen definidas desde la creacion del enjambre
+    #     # Solo se van actualizando en el transcurso de las iteraciones
 
         [item.fill_zeros_array(read_data()['values']['n_var']) for item in self.x_particles]#llenar de ceros las particulas x
 
         vel = np.zeros([read_data()['values']['particles'], read_data()['values']['n_var']])#llenar de ceros la variable velocidad
         
+        #Cambio dinámico de la inercia
+        phi = 0.85 * self.phiv**(iteration-0.15) #0.8 y 1
+        phi1 = 2.0 #valores que se pueden revisar. Seguir el valor el mejor fit propio
+        phi2 = 2.1 #esto va valores componen self-knowledge.  seguir el mejor fit global
+        damping = 0.7 #este damping se utiliza cando las particulas tocan los limitesmáximos y mínimos.
+
         for i in range(read_data()['values']['particles']):
-
-            print(i)
-            print( self.x_particles[i].values_array )
-
-
-            vel[i] = self.velocidad(i , pi[i], pg, vel_anterior[i] , particulas[i])
-
-            print("vel " + str(i)+" "+str(vel[i]))
             
-            self.x_particles[i].values_array = particulas[i].values_array + vel[i] ## xi(t-1)+vi(t)
-            
-            for j in range(read_data()['values']['n_var']):
-                if (self.x_particles[i].values_array)[j] > self.var_max[j]:
-                    (self.x_particles[i].values_array)[j] = self.var_max[j]
-                elif (self.x_particles[i].values_array)[j] < self.var_min[j]:
-                    (self.x_particles[i].values_array)[j] = self.var_min[j]
+            rand = np.random.random() #valores entre 0 y 1
+            particula_anterior=particulas_ant[i]
+
+            for idx,dimension in enumerate(particula_anterior.values_array):
+                """ 
+                Calcula la velocidad de la particula i, dada su pi, pg y su velocidad
+                 y posicion anterior 
+
+                 pi => una particula especifica
+                pbest=> su fitness value
+
+                 pg => cualquier particula con la mejor solucion
+                 gbest=> global bets
+
+                 vi => velocidad anterior
+                """
+
+                """lo importante es la realción entre phi1 y phi2 , si es grande la velocidad de convergencia es alta
+                si la relacion es pequeña, la velocidad es baja"""
+
+                ###inercia +  atraccion a la mejor posicion de la particula i +  atraccion a la mejor posición global
+                ###
+
+                vel[i][idx] = phi * (vel_anterior[i][idx]) + phi1 * rand * ((pi_best[i].values_array)[idx] - dimension) + \
+                     phi2 * rand * (pg[idx] - dimension)
+
+                #Limiting velocity when too large
+                if np.abs(vel[i][idx]) > self.vmax[idx]:
+                    signo = np.sign(vel[i][idx])
+                    vel[i][idx] =  self.vmax[idx]*signo
                     
-            if(self.x_particles[i].values_array)[1] < (self.x_particles[i].values_array)[2]:
-                (self.x_particles[i].values_array)[2] =(self.x_particles[i].values_array)[1]-0.1
+                #Calculating new paticles
+                self.x_particles[i].values_array[idx] = (particulas_ant[i].values_array[idx] + vel[i][idx]).round(decimals=3, out=None) ## xi(t-1)+vi( 
+
+                """In this part we apply a bounce tecnique in the wall defined
+                by the limits of max and min values for dimensions"""       
+                if self.x_particles[i].values_array[idx] > self.var_max[idx]:
+                    
+                    vel[i][idx]= vel[i][idx]*damping
+
+                    self.x_particles[i].values_array[idx] = (self.var_max[idx]-np.abs(vel[i][idx])).round(decimals=3, out=None) ## xi(t-1)+vi(t)
+                    
+
+                elif self.x_particles[i].values_array[idx] < self.var_min[idx]:
+                   
+                    vel[i][idx]= vel[i][idx]*damping
+
+                    self.x_particles[i].values_array[idx] = (self.var_min[idx]+np.abs(vel[i][idx]) ).round(decimals=3, out=None) ## xi(t-1)+vi(t)
+                    
+                else:
+                    self.x_particles[i].values_array[idx] = (particulas_ant[i].values_array[idx] + vel[i][idx]).round(decimals=3, out=None) ## xi(t-1)+vi( 
+
+                #This sections is used to force a=B*2
+                #if idx==global_.A_dimension_index+1:
+                 #  self.x_particles[i].values_array[idx] = (self.x_particles[i].values_array[idx-1])*0.5
             
-        
-        
+            # PENDIENTE -> SOLO PARA HIBRIDOS
+            # if i>0:
+            #     relation = self.drilling_relation( self.x_particles[i].values_array, self.x_particles[i].values_array[global_.A_dimension_index])
+            #     print(relation)
+
         return self.x_particles,vel
+
+    def drilling_relation(self,dimension,height):
+        relation = (height/2)*1/dimension
+        return relation
 
     def get_particle_best_fit(self, pi):
         index_pg = np.argmin(self.pbest) #toma el indice del particle best entre todas las particulas

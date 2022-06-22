@@ -1,6 +1,9 @@
+from datetime import datetime
 import os
+from sys import platform
 import time
 import json
+import uuid
 
 def read_data():
     try:
@@ -33,6 +36,8 @@ def create_data_file(ansys_exe:str, ansys_save_def:str, project_name:str, design
         {
             "main": os.getcwd().replace('\\','/')+'/',
             "results": os.getcwd().replace('\\','/')+'/'+"results/",
+            "files": "",
+            "figures": "",
             "models": os.getcwd().replace('\\','/')+'/'+"models/",
             "src": os.getcwd().replace('\\','/')+'/'+"src/",
             "ansys_exe": ansys_exe,
@@ -51,6 +56,13 @@ def create_data_file(ansys_exe:str, ansys_save_def:str, project_name:str, design
             "iterations": iterations,
             "particles": particles,
             "description": description
+        },
+        "info":
+        {
+            "OS": platform,
+            "ID": "",
+            "start_time": 0,
+            "elapsed_time": 0
         }
     }
     
@@ -75,7 +87,7 @@ def wait_to_read(msj = "\nError!",clr=0):
 def make_directory(name:str, path:str):
     try:
         if not os.path.isdir(name):
-            os.mkdir(name)
+            os.mkdir(path+name)
             print(f"directorio '{name}' creado con éxito en la ruta '{path}'")
     except:
         print(f"Error al tratar de crear el directorio '{name}'")
@@ -88,6 +100,16 @@ def Y_N_question(msj:str):
             wait_to_read("Error, digite una opción valida", 1)
     
     return op.upper()
+
+def start_timing():
+    return datetime.now()
+
+def get_elapsed_time():
+    diff=datetime.now()- read_data()['info']['start_time']
+    return str(diff.total_seconds())
+
+def setSimID():
+    return str(uuid.uuid4())
 
 def init_system(ansys_exe:str, ansys_save_def:str, project_name:str, design_name:str, variable_name:str, units:str, max:list, min:list, nomilas:list, iterations:int, particles:int, description:str):
     print("Iniciando sistema...")
