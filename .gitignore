@@ -3,6 +3,7 @@ src/
 results/
 models/
 data.json
+simulacion.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

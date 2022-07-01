@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
-import subprocess
-import time
-from PSO.commands import clear_screen, wait_to_read, read_data
+
 # MENU DE PRUEBAS
 # 1. EJECUCIÓN DE UN SCRIPT DE DISEÑO
 # 2. EXCEPCIÓN FORZADA (DIVISIÓN EN 0)
 # 3. LECTURA DEL ARCHIVO DE CONFIGURACIÓN DESDE EL ARCHIVO PARAMETROS
 # 4. USO DE LA FUNCIÓN LEER DATOS DEL ARCHIVO FITNESS CON INDICE 1000, 1000
+
+import subprocess
+from .commands import clear_screen, wait_to_read, Y_N_question,read_data
+
 def launch_tester(fitness):
     while True:
         clear_screen()
@@ -25,8 +27,13 @@ def launch_tester(fitness):
             elif '.py' not in modelName:
                 modelName += ".py"
             print("Archivo -> "+modelName)
-            #subprocess.run([data['setup']['ansys_exe'],"-RunScript", modelName])
-            time.sleep(5)
+
+            if Y_N_question("¿El script digitado se encuentra en la carpeta por defecto (models)?") == "S":
+                modelName = "models/"+modelName
+                subprocess.run([read_data()['setup']['ansys_exe'],"-RunScript", modelName])
+            else:
+                path_file = input("Digite la ruta completa donde se encuentra el archivo: ")+"/"+modelName
+                subprocess.run([read_data()['setup']['ansys_exe'],"-RunScript", path_file])
 
         elif test == '2':    
             print(1/0)   
@@ -37,13 +44,12 @@ def launch_tester(fitness):
             for key, value in read_data().items():
                 print(key+":")
                 for key2, value2 in value.items():
-                    print("    "+key2+" --> "+value2)
+                    print("\t"+key2+" --> "+value2)
             wait_to_read("")
         elif test == '4':
             clear_screen()
-            val1 = int(input("Digite el valor del primer párametro: "))
-            val2 = int(input("Digite el valor del segundo párametro: "))
-            fitness(val1, val2)
+            val = int(input("Digite el valor del primer párametro: "))
+            fitness(val)
             wait_to_read("")
 
         elif test == '5':

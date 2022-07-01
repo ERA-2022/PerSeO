@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
+#import os
+#import sys
+#from scipy.sparse import data
 import logging
-import os
-from datetime import date
 import numpy as np
 import json
-import sys
+from datetime import date
 
-from scipy.sparse import data
-from PSO import commands
-import PSO_functions.simulate as simulate
-from PSO_core.commands import read_data
-import PSO_functions.pso as pso
 import PSO_core.messages as msg
-import PSO_functions.dataManagement as db
+from PSO_core import commands
+from PSO_core.commands import read_data
+
+from .pso import pso
+from .simulate import simulate
+from .dataManagement import db
 
 def main(fun):
     commands.update_data("info","ID",commands.setSimID())

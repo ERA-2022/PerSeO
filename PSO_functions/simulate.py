@@ -52,12 +52,8 @@ def create_sim_file(particle, i, j):
     f.close()
     
 ## Launches HFSS simulation file
-def run_simulation_hfss(args = ""):
-    if args == "":
-        subprocess.run([read_data()['paths']['ansys_exe'],'-runscriptandexit',read_data()['paths']['src']+"simulacion.py"])
-    else:
-        subprocess.run([read_data()['paths']['ansys_exe'],args,read_data()['paths']['src']+"simulacion.py"])
-
+def run_simulation_hfss(ansys_path= read_data()['paths']['ansys_exe'], args= '-runscriptandexit',file_path= read_data()['paths']['src']+"simulacion.py"):
+    subprocess.run([ansys_path, args, file_path])
     logging.info(msg.SIM_PARTICLE_FINISHED)
 
 ## read the simulation results
