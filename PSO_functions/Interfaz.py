@@ -1,5 +1,7 @@
-import PSO.Tester as Tester
-from PSO.commands import *
+# -*- coding: utf-8 -*-
+import PSO_core.Tester as Tester
+from PSO_core.commands import *
+from .optimizate import main
 
 def ops_main_menu():
     op = ""
@@ -40,11 +42,11 @@ def set_up_menu():
             info = read_data()
             print("\nValores actuales:")
             for key,value in info['paths'].items():
-                print(f"{key} -> {value}")
+                print(key+" -> "+value)
             print()
             for key,value in info['paths'].items():
-                if Y_N_question(f"¿Desea cambiar el valor de {key}?") == "S":
-                    new_val = str(input(f"Digite el nuevo valor de {key}: "))
+                if Y_N_question("¿Desea cambiar el valor de "+key+"?") == "S":
+                    new_val = str(input("Digite el nuevo valor de "+key+": "))
                     update_data("paths",key,new_val)
 
                     if read_data()['paths'][key] == new_val:
@@ -55,7 +57,7 @@ def set_up_menu():
             clear_screen()
             print("\nValores actuales:")
             for key,value in read_data()['paths'].items():
-                print(f"{key} -> {value}")
+                print(key+" -> "+value)
             wait_to_read("")
         elif op == 3:
             volver = True
@@ -68,14 +70,7 @@ def main_menu(fitness):
     while not salir:
         op = ops_main_menu()
         if op == 1:
-            update_data("info","ID",setSimID())
-            update_data("paths","files",f"{read_data()['paths']['results']}{read_data()['info']['ID']}/files/")
-            update_data("paths","figures", f"{read_data()['paths']['results']}{read_data()['info']['ID']}/figures/")
-            make_directory(read_data()['info']['ID'], read_data()['paths']['results'])
-            make_directory("",read_data()['paths']['files'])
-            make_directory("",read_data()['paths']['figures'])
-            #make_directory("files", f"{read_data()['paths']['results']}{read_data()['info']['ID']}/")
-            #make_directory("figures", f"{read_data()['paths']['results']}{read_data()['info']['ID']}/")
+            main()
         elif op == 2:
             set_up_menu()
         elif op == 3:

@@ -7,16 +7,17 @@ Functions related to implementation of PSO algorithm.
 
 """
 from numpy.core.records import array
-from PSO.commands import read_data
-#from PSO import fitness_func as fit
-#import os
+from PSO_core.commands import read_data
+from PSO import fitness_func as fit
+import os
 
 import numpy as np
-#import importlib
-#import matplotlib.pyplot as plt
-#from scipy import stats
-#from scipy import integrate
-#from sklearn.metrics import mean_squared_error
+
+import importlib
+import matplotlib.pyplot as plt
+from scipy import stats
+from scipy import integrate
+from sklearn.metrics import mean_squared_error
 
 from numpy.random import seed
 from numpy.random import randn

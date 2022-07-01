@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from datetime import datetime
 import os
 from sys import platform
@@ -8,7 +9,7 @@ import uuid
 def read_data():
     try:
         path = os.getcwd().replace('\\','/')+'/src'
-        with open(f"{path}/data.json", "r") as file:
+        with open(path+'/data.json', 'r') as file:
             data = json.load(file)
             file.close()
         return data
@@ -18,11 +19,11 @@ def read_data():
 def update_data(category = "", key = "",value =""):
     try:
         path = os.getcwd().replace('\\','/')+'/src'
-        with open(f"{path}/data.json", "r") as file:
+        with open(path+"/data.json", "r") as file:
             data = json.load(file)
             file.close()
 
-        with open(f"{path}/data.json", "w") as file:
+        with open(path+"/data.json", "w") as file:
             data[category][key] = value
             json.dump(data,file,indent=2)
             file.close()
@@ -30,7 +31,7 @@ def update_data(category = "", key = "",value =""):
     except:
         input("Error al tratar de leer o escribir en el archivo de configuración\nPresione enter para continuar...")
 
-def create_data_file(ansys_exe:str, ansys_save_def:str, project_name:str, design_name:str, variable_name:str, units:str, max:list, min:list, nomilas:list, iterations:int, particles:int, description:str):
+def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, description):
     data_structure = {
         "paths":
         {
@@ -67,7 +68,7 @@ def create_data_file(ansys_exe:str, ansys_save_def:str, project_name:str, design
     }
     
     try:
-        with open(f"{data_structure['paths']['src']}data.json", "w") as file:
+        with open(data_structure['paths']['src']+"data.json", "w") as file:
             json.dump(data_structure,file,indent=2)
             file.close()
         print("Archivo de configuración creado ó actualizado con éxito!!")
@@ -84,18 +85,18 @@ def wait_to_read(msj = "\nError!",clr=0):
     if clr == 0:
         clear_screen()    
 
-def make_directory(name:str, path:str):
+def make_directory(name, path):
     try:
         if not os.path.isdir(name):
             os.mkdir(path+name)
-            print(f"directorio '{name}' creado con éxito en la ruta '{path}'")
+            print("directorio "+name+" creado con éxito en la ruta "+path)
     except:
-        print(f"Error al tratar de crear el directorio '{name}'")
+        print("Error al tratar de crear el directorio "+name)
 
-def Y_N_question(msj:str):
+def Y_N_question(msj):
     op = ""
     while op.upper() != "S" and op.upper() != "N":
-        op = input(f"{msj} (s/n): ")
+        op = input(msj+" (s/n): ")
         if op.upper() != "S" and op.upper() != "N":
             wait_to_read("Error, digite una opción valida", 1)
     
@@ -111,7 +112,7 @@ def get_elapsed_time():
 def setSimID():
     return str(uuid.uuid4())
 
-def init_system(ansys_exe:str, ansys_save_def:str, project_name:str, design_name:str, variable_name:str, units:str, max:list, min:list, nomilas:list, iterations:int, particles:int, description:str):
+def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, description):
     print("Iniciando sistema...")
     main_path = os.getcwd().replace('\\','/')+'/'
     

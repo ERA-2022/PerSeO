@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 
 STARTED = "Start"
 FINISHED = "End\n\n\n"

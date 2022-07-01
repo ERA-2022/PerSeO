@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import subprocess
 import time
 from PSO.commands import clear_screen, wait_to_read, read_data
@@ -23,20 +24,20 @@ def launch_tester(fitness):
                 modelName = "dibuja.py"
             elif '.py' not in modelName:
                 modelName += ".py"
-            print(f"Archivo -> {modelName}")
+            print("Archivo -> "+modelName)
             #subprocess.run([data['setup']['ansys_exe'],"-RunScript", modelName])
             time.sleep(5)
 
         elif test == '2':    
-            print(f"{1/0}")   
+            print(1/0)   
 
         elif test == '3':
             clear_screen()
             print("valor de propiedades abierto desde parametros: ")
             for key, value in read_data().items():
-                print(f"{key}:")
+                print(key+":")
                 for key2, value2 in value.items():
-                    print(f"    {key2} --> {value2}")
+                    print("    "+key2+" --> "+value2)
             wait_to_read("")
         elif test == '4':
             clear_screen()

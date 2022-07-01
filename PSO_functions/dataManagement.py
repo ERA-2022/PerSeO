@@ -10,9 +10,9 @@
    1. Local or remote data storage
 """
 
-#import csv
-#import os
-from .commands import read_data
+import csv
+import os
+from PSO_core.commands import read_data
 import pandas as pd
 import os.path as path
 
@@ -25,8 +25,8 @@ class DBManager:
    
    def load_df(self):
 
-      if path.exists(f"{read_data()['paths']['results']}output.csv"):
-         self.df = pd.read_csv(f"{read_data()['paths']['results']}output.csv", header=0)
+      if path.exists(read_data()['paths']['results']+"output.csv"):
+         self.df = pd.read_csv(read_data()['paths']['results']+"output.csv", header=0)
       else:
             
          column_names = ["sim_id", "created_at", "sim_setup","sim_results", "pbest","gbest","best_particle_id","best_particle","iteration"]
@@ -53,4 +53,4 @@ class DBManager:
       
       df = pd.concat([self.df, output])
       
-      df.to_csv(f"{read_data()['paths']['results']}output.csv", index=False,sep=',')
+      df.to_csv(read_data()['paths']['results']+"output.csv", index=False,sep=',')

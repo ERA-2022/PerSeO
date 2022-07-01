@@ -9,7 +9,7 @@ Modify on 15/06/2022
 by: Jaime Andres Angel Melgarejo
 """
 
-from .commands import read_data
+from PSO_core.commands import read_data
 
 def agregaVariable(proj,nombre,valor):
         oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
