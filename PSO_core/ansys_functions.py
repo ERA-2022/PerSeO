@@ -120,7 +120,7 @@ def creaS11(proj,nombre,simID):
     		"Y Component:="		, ["dB(S(1,1))"]
     	], [])
 
-    oModule.ExportToFile("S11", read_data()['values']['results']+str(simID)+"/files/"+r"datosS11"+str(nombre)+".csv")
+    oModule.ExportToFile("S11", read_data()['paths']['results']+str(simID)+"/files/"+r"datosS11"+str(nombre)+".csv")
 
 #Creating the S21 data
 def creaS21(proj,nombre,simID):
@@ -137,7 +137,7 @@ def creaS21(proj,nombre,simID):
     		"X Component:="		, "Freq",
     		"Y Component:="		, ["dB(S(2,1))"]
     	], [])
-    oModule.ExportToFile("S21",read_data()['values']['results']+str(simID)+"/files/"+r"datosS21"+str(nombre)+".csv")
+    oModule.ExportToFile("S21",read_data()['paths']['results']+str(simID)+"/files/"+r"datosS21"+str(nombre)+".csv")
 
 #Creating the S31 data
 def creaS31(proj,nombre,simID):
@@ -154,7 +154,7 @@ def creaS31(proj,nombre,simID):
     		"X Component:="		, "Freq",
     		"Y Component:="		, ["dB(S(3,1))"]
     	], [])
-    oModule.ExportToFile("S31", read_data()['values']['results']+str(simID)+"/files/"+r"datosS31"+str(nombre)+".csv")
+    oModule.ExportToFile("S31", read_data()['paths']['results']+str(simID)+"/files/"+r"datosS31"+str(nombre)+".csv")
 
 #Creating the S41 data
 def creaS41(proj,nombre,simID):
@@ -171,7 +171,7 @@ def creaS41(proj,nombre,simID):
     		"X Component:="		, "Freq",
     		"Y Component:="		, ["dB(S(4,1))"]
     	], [])
-    oModule.ExportToFile("S41", read_data()['values']['results']+str(simID)+"/files/"+r"datosS41"+str(nombre)+".csv")
+    oModule.ExportToFile("S41", read_data()['paths']['results']+str(simID)+"/files/"+r"datosS41"+str(nombre)+".csv")
 
 def creaAmpImb(proj,nombre,simID):
 	
@@ -190,7 +190,7 @@ def creaAmpImb(proj,nombre,simID):
 		"Y Component:="		, ["AmpImbalance"]
 	], [])
 	
-	oModule.ExportToFile("Amplitud Imbalance", read_data()['values']['results']+str(simID)+"/files/"+r"amp_imb"+str(nombre)+".csv")
+	oModule.ExportToFile("Amplitud Imbalance", read_data()['paths']['results']+str(simID)+"/files/"+r"amp_imb"+str(nombre)+".csv")
 
 def creaPhaseImb(proj,nombre,simID):
 	
@@ -208,7 +208,7 @@ def creaPhaseImb(proj,nombre,simID):
 		"Y Component:="		, ["PhaseImb"]
 	], [])
 
-	oModule.ExportToFile("Phase Imbalance", read_data()['values']['results']+str(simID)+"/files/"+r"pha_imb"+str(nombre)+".csv")
+	oModule.ExportToFile("Phase Imbalance", read_data()['paths']['results']+str(simID)+"/files/"+r"pha_imb"+str(nombre)+".csv")
 
 #UNDERNEATH THE COMMANDS TO GENERATE THE VSWR, GAIN, BW AND DATA TABLE PARAMETERS.
 def creaVSWR(proj,nombre,simID):
@@ -228,7 +228,7 @@ def creaVSWR(proj,nombre,simID):
 		    "X Component:="		, "Freq",
 		    "Y Component:="		, ["VSWR(1)"]
 	    ], [])
-    direccion = read_data()['values']['results']+str(simID)+"/files/"+r"datosVSWR"+str(nombre)+".csv"
+    direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosVSWR"+str(nombre)+".csv"
     oModule.ExportToFile("VSWR",direccion)
 
 def creaGain(proj, angulo, nombre,simID):
@@ -251,7 +251,7 @@ def creaGain(proj, angulo, nombre,simID):
     		"Y Component:="		, ["GainTotal"]
     	], [])   
    
-    direccion = read_data()['values']['results']+str(simID)+"/files/"+r"datosGanancia"+str(nombre)+".csv"
+    direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosGanancia"+str(nombre)+".csv"
     oModule.ExportToFile("Gain Phi "+ str(angulo), direccion)
 
 def creaBW(proj,nombre,simID):
@@ -259,7 +259,7 @@ def creaBW(proj,nombre,simID):
     oModule = oDesign.GetModule("ReportSetup")
     oModule.AddTraceCharacteristics("S11", "XWidthAtYVal", ["-12"], ["Full"])
     oModule.AddTraceCharacteristics("S11", "XWidthAtYVal", ["-13"], ["Full"])
-    direccion = read_data()['values']['results']+str(simID)+"/files/"+r"datosBW"+str(nombre)+".csv"
+    direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosBW"+str(nombre)+".csv"
     oModule.ExportTableToFile("S11", direccion, "Legend")
 
 def creaDataTable(proj,nombre,simID):
@@ -277,5 +277,5 @@ def creaDataTable(proj,nombre,simID):
     	[
     		"Y Component:="		, ["variables"]
     	], [])
-    direccion = read_data()['values']['results']+str(simID)+"/files/"+r"datosTabla"+str(nombre)+".csv"
+    direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosTabla"+str(nombre)+".csv"
     oModule.ExportToFile("Variables Table 1", direccion)

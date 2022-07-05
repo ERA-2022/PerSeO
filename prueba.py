@@ -1,5 +1,5 @@
 from PSO_core import commands
-from PSO_functions import Interfaz, optimizate,simulate
+from PSO_functions import simulate
 import numpy as np
 
 exe = "C:/Program Files/AnsysEM/Ansys Student/v212/Win64/ansysedtsv.exe"
@@ -69,4 +69,4 @@ def fit (s11):
 
 # -> Futuro modulo de optimización
 commands.init_system(exe,save,pname,dname,vname,u,ma,mi,nom,i,p,desc)
-simulate.run_simulation_hfss(args="-runscript")
+simulate.run_simulation_hfss(args="-Runscript", file_path="src/simulacion.py")
