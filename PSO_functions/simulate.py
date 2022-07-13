@@ -33,7 +33,7 @@ def create_sim_file(particle, i, j):
 
     direccion_dibujo = '"'+read_data()["paths"]["ansys_save_def"]+read_data()["values"]["project_name"]+'.aedt"' 
     
-    f.write("import PSO.ansys_functions as fn\n")
+    f.write("import PSO_core.ansys_functions as fn\n")
 
     f.write("\n")
     f.write("import ScriptEnv\n")
@@ -178,6 +178,17 @@ def read_simulation_results(i,j):
 
     #os.chdir(read_data()['paths']['results'])
 
+    #matplotlib.use("Agg")
+    figure=plt.figure(figsize=(8,6))
+    plt.plot(s11[:,0],s11[:,1])
+    plt.ylabel(r'S11 (dB)',fontsize=18)
+    plt.xlabel('Frequency (MHz)',fontsize=18)
+    plt.tick_params(axis='both', which='major', labelsize=18)
+    plt.grid(True)
+    plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
+    plt.show
+    plt.savefig(direccion_graficas_s11)
+    plt.close(figure)
     return s11#,s21,s31,s41, amp_imb
 
 def get_simulation_params(self):

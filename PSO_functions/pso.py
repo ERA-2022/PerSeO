@@ -13,7 +13,7 @@ Functions related to implementation of PSO algorithm.
 #from scipy import integrate
 #from sklearn.metrics import mean_squared_error
 #from PSO import fitness_func as fit
-#from numpy.core.records import array
+from numpy.core.records import array
 from PSO_core.commands import read_data
 import numpy as np
 from numpy.random import seed

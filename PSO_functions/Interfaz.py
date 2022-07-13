@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import PSO_core.Tester as Tester
 from PSO_core.commands import *
-from .optimizate import main
+from PSO_functions.optimizate import main
 
 def ops_main_menu():
     op = ""
@@ -70,7 +70,7 @@ def main_menu(fitness):
     while not salir:
         op = ops_main_menu()
         if op == 1:
-            main()
+            main(fitness)
         elif op == 2:
             set_up_menu()
         elif op == 3:
