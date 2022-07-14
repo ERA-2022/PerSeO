@@ -23,6 +23,7 @@ def main(fun):
     commands.make_directory(read_data()['info']['ID'], read_data()['paths']['results'])
     commands.make_directory("",read_data()['paths']['files'])
     commands.make_directory("",read_data()['paths']['figures'])
+    commands.clear_screen()
     logging.basicConfig(filename= read_data()['paths']['src']+"control.log", force=True, encoding='utf-8', level=logging.INFO)
     logging.basicConfig(format='%(asctime)s %(message)s')
     logging.info(date.today())
@@ -92,14 +93,14 @@ def set_Swarm():
     logging.info(msg.PARTICLES_CREATED)
     return swarm
 
-def run_iterations(iteraciones, swarm, fun):
+def run_iterations(iteraciones, swarm:pso.Swarm, fun):
   
     pi_best = swarm.particles.copy()#array initial particles
     #db_manager = db.DBManager(read_data()['info']['ID'])
     
     for i in range(iteraciones):
         print(msg.NUM_ITERATIONS+str(iteraciones))
-        print("current it.:"+str(i))
+        print("current it:"+str(i))
 
         logging.info(msg.ITERATION + str(i))
         logging.info("Calculando nuevas particulas...")
@@ -167,14 +168,14 @@ def run_iterations(iteraciones, swarm, fun):
     
             # db_manager.save_data_to_plot(data_to_plot,i+1,particle.id_)
             
-            logging.info(msg.FITNESS_VALS+str(valores))
+            logging.info(msg.FITNESS_VALS+str(fit))
             logging.info(msg.ITERATION+str(i+1)+'\n')
 
             #Calculate fitness values for every particle in current iteration
             #if current particle is the best in current iteration
             #sort pbest
-            if valores[index] < swarm.pbest[index]:
-                swarm.pbest[index] = valores[index]
+            if fit < swarm.pbest[index]:
+                swarm.pbest[index] = fit
                 pi_best[index] = swarm.particles[index] #swarm particles is updated before with new particle
 
         ## After each iteration we end up with pbest, pi

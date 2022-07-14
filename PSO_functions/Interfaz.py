@@ -71,6 +71,7 @@ def main_menu(fitness):
         op = ops_main_menu()
         if op == 1:
             main(fitness)
+            wait_to_read("Fin de la ejecución")
         elif op == 2:
             set_up_menu()
         elif op == 3:
