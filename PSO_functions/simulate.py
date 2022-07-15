@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PSO_core.commands import read_data
+from PSO_core.commands import read_data, get_instructions_to_reports
 import logging
 import subprocess
 import os
@@ -14,8 +14,9 @@ import shutil
 # TO BE USED BY THE OPTIMIZER.
 
 def create_sim_file(particle, i, j):
-    
+    requiered_reports = read_data()['values']['reports']
     particle = particle.round(4)  
+    
     # if global_.A_dimension_index>6 and global_.A_dimension_index<12:
 
     #     L = 3.33
@@ -48,7 +49,10 @@ def create_sim_file(particle, i, j):
     f.write('oDesign = oProject.SetActiveDesign("' +read_data()['values']['design_name'] + '")\n')
     f.write("oDesign.AnalyzeAll()")
     f.write("\n")
-    f.write("fn.creaS11(oProject,'" + tag + "','"+ read_data()['info']['ID'] +"')\n")
+    for report, value in requiered_reports.items():
+        f.write(get_instructions_to_reports(tag, report, value))
+
+    # f.write("fn.creaS11(oProject,'" + tag + "','"+ read_data()['info']['ID'] +"')\n")
     f.close()
     
 ## Launches HFSS simulation file

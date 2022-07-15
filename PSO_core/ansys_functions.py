@@ -103,12 +103,10 @@ def modificaArreglo(proj,nombre,valor):
     	])
     
 #UNDERNEATH THE COMMANDS TO GENERATE THE S PARAMETERS ARE PRESENTED.
-    
-#Creating the S11 data
-def creaS11(proj,nombre,simID):
-    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
-    oModule = oDesign.GetModule("ReportSetup")
-    oModule.CreateReport("S11", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
+def creaSmn(proj,nombre,simID,m,n):
+	oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
+	oModule = oDesign.GetModule("ReportSetup")
+	oModule.CreateReport("S"+m+n, "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
     	[
     		"Domain:="		, "Sweep"
     	], 
@@ -117,61 +115,10 @@ def creaS11(proj,nombre,simID):
     	], 
     	[
     		"X Component:="		, "Freq",
-    		"Y Component:="		, ["dB(S(1,1))"]
+    		"Y Component:="		, ["dB(S("+m+","+n+"))"]
     	], [])
 
-    oModule.ExportToFile("S11", read_data()['paths']['results']+str(simID)+"/files/"+r"datosS11"+str(nombre)+".csv")
-
-#Creating the S21 data
-def creaS21(proj,nombre,simID):
-    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
-    oModule = oDesign.GetModule("ReportSetup")
-    oModule.CreateReport("S21", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
-    	[
-    		"Domain:="		, "Sweep"
-    	], 
-    	[
-    		"Freq:="		, ["All"],
-    	], 
-    	[
-    		"X Component:="		, "Freq",
-    		"Y Component:="		, ["dB(S(2,1))"]
-    	], [])
-    oModule.ExportToFile("S21",read_data()['paths']['results']+str(simID)+"/files/"+r"datosS21"+str(nombre)+".csv")
-
-#Creating the S31 data
-def creaS31(proj,nombre,simID):
-    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
-    oModule = oDesign.GetModule("ReportSetup")
-    oModule.CreateReport("S31", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
-    	[
-    		"Domain:="		, "Sweep"
-    	], 
-    	[
-    		"Freq:="		, ["All"],
-    	], 
-    	[
-    		"X Component:="		, "Freq",
-    		"Y Component:="		, ["dB(S(3,1))"]
-    	], [])
-    oModule.ExportToFile("S31", read_data()['paths']['results']+str(simID)+"/files/"+r"datosS31"+str(nombre)+".csv")
-
-#Creating the S41 data
-def creaS41(proj,nombre,simID):
-    oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
-    oModule = oDesign.GetModule("ReportSetup")
-    oModule.CreateReport("S41", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
-    	[
-    		"Domain:="		, "Sweep"
-    	], 
-    	[
-    		"Freq:="		, ["All"],
-    	], 
-    	[
-    		"X Component:="		, "Freq",
-    		"Y Component:="		, ["dB(S(4,1))"]
-    	], [])
-    oModule.ExportToFile("S41", read_data()['paths']['results']+str(simID)+"/files/"+r"datosS41"+str(nombre)+".csv")
+	oModule.ExportToFile("S"+m+n, read_data()['paths']['results']+str(simID)+"/files/"+r"datosS11"+str(nombre)+".csv")
 
 def creaAmpImb(proj,nombre,simID):
 	
@@ -231,7 +178,7 @@ def creaVSWR(proj,nombre,simID):
     direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosVSWR"+str(nombre)+".csv"
     oModule.ExportToFile("VSWR",direccion)
 
-def creaGain(proj, angulo, nombre,simID):
+def creaGain(proj,nombre,simID,angulo):
     oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
     oModule.CreateReport("Gain Phi "+ str(angulo), 

@@ -15,6 +15,12 @@ i = 3
 p = 3
 desc = "100%BW con BW ideal a 80MHz, denominador (o frecuencia de corte)en 40MHz trabajando en la banda de frecuencia de 40MHz hasta 120MHz"
 
+reportes = {
+    "smn":[(1,1)],
+    "gain":[0,90],
+    "vswr":""
+}
+
 def fit (s11):
     areas_f = []
     areas_d = []
@@ -58,7 +64,8 @@ def fit (s11):
     return coeficiente
 
 # -> Futuro modulo de optimización
-commands.init_system(exe,save,pname,dname,vname,u,ma,mi,nom,i,p,desc)
+#commands.init_system(exe,save,pname,dname,vname,u,ma,mi,nom,i,p, reportes,desc)
+simulate.create_sim_file([8333.33, 813.33, 1043.33, 36.66, 20, 2.5, 866.66],0,0)
 simulate.run_simulation_hfss(file_path="src/dibuja.py")
-#simulate.run_simulation_hfss(args="-Runscript")
-Interfaz.main_menu(fit)
+simulate.run_simulation_hfss(args="-Runscript")
+# Interfaz.main_menu(fit)

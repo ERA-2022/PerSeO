@@ -31,7 +31,7 @@ def update_data(category = "", key = "",value =""):
     except:
         input("Error al tratar de leer o escribir en el archivo de configuración\nPresione enter para continuar...")
 
-def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, description):
+def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, reports,description):
     data_structure = {
         "paths":
         {
@@ -56,6 +56,7 @@ def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, varia
             "n_var":len(nomilas),
             "iterations": iterations,
             "particles": particles,
+            "reports": reports,
             "description": description
         },
         "info":
@@ -109,10 +110,40 @@ def get_elapsed_time():
     diff=datetime.now()- read_data()['info']['start_time']
     return str(diff.total_seconds())
 
+def get_instructions_to_reports(tag, report, value):
+    instructions = ""
+    
+    if report.upper() == "SMN":
+        if len(value) > 0:
+            for mn_val in value:
+                instructions += "fn.creaSmn(oProject,'" + tag + "','"+ read_data()['info']['ID']+ "','"+ str(mn_val[0]) + "','"+ str(mn_val[1]) +"')\n"
+    
+    elif report.upper() == "GAIN":
+        if len(value) > 0:
+            for angle in value:
+                instructions += "fn.creaGain(oProject,'" + tag + "','"+ read_data()['info']['ID']+ "','"+ str(angle)+"')\n"
+    
+    elif report.upper() == "AMPIMB":
+        instructions = "fn.creaAmpImb(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
+
+    elif report.upper() == "PHASEIMB":
+        instructions = "fn.creaPhaseImb(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
+    
+    elif report.upper() == "VSWR":
+        instructions = "fn.creaVSWR(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
+
+    elif report.upper() == "BW":
+        instructions = "fn.creaBW(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
+    
+    elif report.upper() == "DATATABLE":
+        instructions = "fn.creaDataTable(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
+
+    return instructions
+
 def setSimID():
     return str(uuid.uuid4())
 
-def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, description):
+def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, reports,description):
     print("Iniciando sistema...")
     main_path = os.getcwd().replace('\\','/')+'/'
     
@@ -120,7 +151,7 @@ def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_n
     make_directory('results', main_path)
     make_directory('src', main_path)
 
-    create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, description)
+    create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, reports,description)
         
     print("listo!")
     time.sleep(3)
