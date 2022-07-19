@@ -11,21 +11,29 @@ u = "mm"
 ma = [12650, 1300, 1600, 65, 20, 2.5, 1700]
 mi = [8200, 750, 950, 30, 20, 2.5, 750]
 nom = [8333.33, 813.33, 1043.33, 36.66, 20, 2.5, 866.66]
-i = 3
-p = 3
+i = 1
+p = 2
 desc = "100%BW con BW ideal a 80MHz, denominador (o frecuencia de corte)en 40MHz trabajando en la banda de frecuencia de 40MHz hasta 120MHz"
 
 reportes = {
-    "smn":[(1,1)],
+    "SMN":[(1,1)],
     "gain":[0,90],
-    "vswr":""
+    "vswr":"",
+    "aditional_data":{
+        "fmin":40,
+        "points":81,
+        "units":"MHz"
+    }
 }
 
-def fit (s11):
+def fit (dataReports):
+    for key in dataReports:
+        print(str(key)+"--->"+str(len(dataReports[key])))
+
     areas_f = []
     areas_d = []
     new_area = True
-    for data in s11:
+    for data in dataReports['S11']:
         if data[1] < -9.8:
             if new_area:
                 new_area = False
@@ -64,8 +72,8 @@ def fit (s11):
     return coeficiente
 
 # -> Futuro modulo de optimización
-#commands.init_system(exe,save,pname,dname,vname,u,ma,mi,nom,i,p, reportes,desc)
-simulate.create_sim_file([8333.33, 813.33, 1043.33, 36.66, 20, 2.5, 866.66],0,0)
+commands.init_system(exe,save,pname,dname,vname,u,ma,mi,nom,i,p, reportes,desc)
+#simulate.create_sim_file([8333.33, 813.33, 1043.33, 36.66, 20, 2.5, 866.66],0,0)
 simulate.run_simulation_hfss(file_path="src/dibuja.py")
-simulate.run_simulation_hfss(args="-Runscript")
-# Interfaz.main_menu(fit)
+#simulate.run_simulation_hfss(args="-Runscript")
+Interfaz.main_menu(fit)

@@ -140,6 +140,34 @@ def get_instructions_to_reports(tag, report, value):
 
     return instructions
 
+def get_graphic_name(report, value, i, j):
+    graphic_name = ""
+
+    if report.upper() == "SMN":
+        graphic_name += "datosS"+str(value[0])+str(value[1])
+    
+    elif report.upper() == "GAIN":
+        graphic_name +="datosGananciaPhi"+str(value)
+    
+    elif report.upper() == "AMPIMB":
+        graphic_name += "amp_imb"
+
+    elif report.upper() == "PHASEIMB":
+        graphic_name += "pha_imb"
+    
+    elif report.upper() == "VSWR":
+        graphic_name += "datosVSWR"
+
+    elif report.upper() == "BW":
+        graphic_name += "datosBW"
+    
+    elif report.upper() == "DATATABLE":
+        graphic_name += "datosTabla"
+    
+    graphic_name += "_" + str(i)+"_"+str(j)
+    
+    return graphic_name
+
 def setSimID():
     return str(uuid.uuid4())
 

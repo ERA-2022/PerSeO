@@ -198,7 +198,7 @@ def creaGain(proj,nombre,simID,angulo):
     		"Y Component:="		, ["GainTotal"]
     	], [])   
    
-    direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosGanancia"+str(nombre)+".csv"
+    direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosGananciaPhi"+str(angulo)+str(nombre)+".csv"
     oModule.ExportToFile("Gain Phi "+ str(angulo), direccion)
 
 def creaBW(proj,nombre,simID):

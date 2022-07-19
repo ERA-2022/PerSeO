@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PSO_core.commands import read_data, get_instructions_to_reports
+from PSO_core.commands import get_graphic_name, read_data, get_instructions_to_reports
 import logging
 import subprocess
 import os
@@ -52,7 +52,6 @@ def create_sim_file(particle, i, j):
     for report, value in requiered_reports.items():
         f.write(get_instructions_to_reports(tag, report, value))
 
-    # f.write("fn.creaS11(oProject,'" + tag + "','"+ read_data()['info']['ID'] +"')\n")
     f.close()
     
 ## Launches HFSS simulation file
@@ -62,105 +61,94 @@ def run_simulation_hfss(ansys_path= read_data()['paths']['ansys_exe'], args= '-r
 
 ## read the simulation results
 def read_simulation_results(i,j):
-    
+    dataReports = {}
+    requiered_reports = read_data()['values']['reports']
+
     files_location = read_data()['paths']['files']
+    general_graphic_path = read_data()['paths']['figures']
 
-    #os.chdir(files_location)
-    direccion_graficas_s11= read_data()['paths']['figures']+"S11"+"_" + str(i)+"_"+str(j)
-    
-    try:
-        s11 = np.genfromtxt(files_location+"datosS11_"+str(i)+"_"+str(j)+
-                     ".csv", skip_header = 1, delimiter = ',')
-   
-    except:
-        filename="datosS11_"+str(i-1)+"_"+str(j)+".csv"
-        new_filename="datosS11_"+str(i)+"_"+str(j)+".csv"
-        copy_rename(filename,new_filename)
+    for report, value in requiered_reports.items():
+        if report.upper() == "SMN":
+            if len(value) > 0:
+                for mn_val in value:
+                    graphic_name = get_graphic_name(report,mn_val,i,j)
+                    try:
+                        dataReports["S"+str(mn_val[0])+str(mn_val[1])] = np.genfromtxt(files_location+graphic_name+".csv", skip_header = 1, delimiter = ',')
+                    except:
+                        fileName = get_graphic_name(report,mn_val,(i-1),j)
+                        newFileName = graphic_name
+                        copy_rename(fileName,newFileName)
+                        dataReports["S"+str(mn_val[0])+str(mn_val[1])] = np.genfromtxt(files_location+graphic_name+".csv", skip_header = 1, delimiter = ',')
+
+        elif report.upper() == "GAIN":
+            if len(value) > 0:
+                for angle in value:
+                    graphic_name = get_graphic_name(report,angle,i,j)
+                    try:
+                        dataReports[report.upper()+"PHI"+str(angle)] = np.genfromtxt(files_location+graphic_name+".csv", skip_header = 1, delimiter = ',')                    
+                    except:
+                        fileName = get_graphic_name(report,mn_val,(i-1),j)
+                        newFileName = graphic_name
+                        copy_rename(fileName,newFileName)
+                        dataReports[report.upper()+"PHI"+str(angle)] = np.genfromtxt(files_location+graphic_name+".csv", skip_header = 1, delimiter = ',')
         
-        s11 = np.genfromtxt(files_location+"datosS11_"+str(i)+"_"+str(j)+
-                     ".csv", skip_header = 1, delimiter = ',')
-    
-    # try:
+        else:
+            if report.upper() != "ADITIONAL_DATA":
+                graphic_name = get_graphic_name(report,value,i,j)
+                try:
+                    dataReports[report.upper()] = np.genfromtxt(files_location+graphic_name+".csv", skip_header = 1, delimiter = ',')                    
+                except:
+                    fileName = get_graphic_name(report,mn_val,(i-1),j)
+                    newFileName = graphic_name
+                    copy_rename(fileName,newFileName)
+                    dataReports[report.upper()] = np.genfromtxt(files_location+graphic_name+".csv", skip_header = 1, delimiter = ',')
 
-    
-    #     s21 = np.genfromtxt("datosS21_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
-    
-    #     direccion_graficas_s21= read_data()['paths']['results']+read_data()['info']['ID']+"/figures/S21"+"_" + str(i)+"_"+str(j)
-    # except:
-
-    #     filename="datosS21_"+str(i-1)+"_"+str(j)+".csv"
-    #     new_filename="datosS21_"+str(i)+"_"+str(j)+".csv"
-    #     copy_rename(filename,new_filename)
-
-    #     s21 = np.genfromtxt("datosS21_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
+    # matplotlib.use("Agg")
+    for graphic, data in dataReports.items():
+        specific_graphic_path = general_graphic_path + graphic +"_" + str(i)+"_"+str(j)
         
-    #     direccion_graficas_s21= read_data()['paths']['results']+read_data()['info']['ID']+"/figures/S21"+"_" + str(i)+"_"+str(j)
+        if "GAIN" in graphic:
+            x=np.arange(1,requiered_reports["aditional_data"]["points"],10)
+            y=np.arange(1,6,1)
+            colours=['b','g','b','k','y','r']
+            figure=plt.figure(figsize=(8,6)) 
+            for k in x:
+                plt.plot(data[:,0],data[:,k],label = str(k+(requiered_reports["aditional_data"]["fmin"]-1)) +requiered_reports["aditional_data"]["units"])
+                plt.legend(loc = 1,prop={'size': 12})
+                plt.ylabel(r'Gain (lineal)',fontsize=18)
+                plt.xlabel(r'$\theta$ (deg)',fontsize=18)
+                plt.title(r'optimized (Plane $\phi$='+graphic.replace("GAINPhi","")+")",fontsize=18)
+                plt.tick_params(axis='both', which='major', labelsize=18)
+                plt.grid(True)
+                plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
+            plt.savefig(specific_graphic_path)
+            plt.close(figure)
 
-    # try:
+        else:
+            x_name = "Frequency (" + requiered_reports['aditional_data']['units']+")"
+            y_name = ""
+            if "S" in graphic:
+                y_name = graphic + " (dB)"
 
-    
-    #     s31 = np.genfromtxt("datosS31_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
-    
-    #     direccion_graficas_s31= read_data()['paths']['results']+read_data()['info']['ID']+"/figures/S31"+"_" + str(i)+"_"+str(j)
-    
-    # except:
-        
-    #     filename="datosS31_"+str(i-1)+"_"+str(j)+".csv"
-    #     new_filename="datosS31_"+str(i)+"_"+str(j)+".csv"
-    #     copy_rename(filename,new_filename)
+            elif "V" in graphic:
+                y_name = graphic + " (1)"
+            
+            elif graphic == "AMPIMB":
+                y_name = "Amplitude Imbalance (dB)"
+            
+            if y_name != "":
+                figure=plt.figure(figsize=(8,6))
+                plt.plot(data[:,0],data[:,1])
+                plt.ylabel(y_name,fontsize=18)
+                plt.xlabel(x_name,fontsize=18)
+                plt.tick_params(axis='both', which='major', labelsize=18)
+                plt.grid(True)
+                plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
+                plt.savefig(specific_graphic_path)
+                plt.close(figure)
 
-    #     s31 = np.genfromtxt("datosS31_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
-    #     direccion_graficas_s31= read_data()['paths']['results']+read_data()['info']['ID']+"/figures/S31"+"_" + str(i)+"_"+str(j)
-
-    # try:
-       
-
-    #     s41 = np.genfromtxt("datosS41_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
-    # except:
-    #     filename="datosS41_"+str(i-1)+"_"+str(j)+".csv"
-    #     new_filename="datosS41_"+str(i)+"_"+str(j)+".csv"
-    #     copy_rename(filename,new_filename)
-
-    #     s41 = np.genfromtxt("datosS41_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
     # #derivative_data = np.genfromtxt("Derivative_"+str(i)+"_"+str(j)+".csv", skip_header = 1, delimiter = ',')
     # #Plot S11 and S21
-
-    # try:
-    #     amp_imb = np.genfromtxt("amp_imb_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
-    
-    #     direccion_graficas_amp= read_data()['paths']['results']+read_data()['info']['ID']+"\\figures\\amp_imb"+"_" + str(i)+"_"+str(j)
-   
-    # except:
-    #     filename="amp_imb_"+str(i-1)+"_"+str(j)+".csv"
-    #     new_filename="amp_imb_"+str(i)+"_"+str(j)+".csv"
-    #     copy_rename(filename,new_filename)
-        
-    #     amp_imb = np.genfromtxt("amp_imb_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
-    #     direccion_graficas_amp= read_data()['paths']['results']+read_data()['info']['ID']+"\\figures\\amp_imb"+"_" + str(i)+"_"+str(j)
-
-    # try:
-    #     pha_imb = np.genfromtxt("pha_imb_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
-    
-    #     direccion_graficas_pha= read_data()['paths']['results']+read_data()['info']['ID']+"\\figures\\pha_imb"+"_" + str(i)+"_"+str(j)
-   
-    # except:
-    #     filename="pha_imb_"+str(i-1)+"_"+str(j)+".csv"
-    #     new_filename="pha_imb_"+str(i)+"_"+str(j)+".csv"
-    #     copy_rename(filename,new_filename)
-        
-    #     pha_imb = np.genfromtxt("pha_imb_"+str(i)+"_"+str(j)+
-    #                  ".csv", skip_header = 1, delimiter = ',')
-    #     direccion_graficas_pha= read_data()['paths']['results']+read_data()['info']['ID']+"\\figures\\pha_imb"+"_" + str(i)+"_"+str(j)
-
 
     # dydx1_31 = np.gradient(s31[:,1],s31[:,0])
     # dydx2_31 = np.gradient(dydx1_31,s31[:,0])
@@ -179,21 +167,7 @@ def read_simulation_results(i,j):
     #create_plot_imb(amp_imb,'Frequency (GHz)',r'Amplitude Imbalance (dB)',direccion_graficas_amp,1)
     #create_plot_imb(pha_imb,'Frequency (GHz)',r'Phase Imbalance (Grad)',direccion_graficas_pha,90)
 
-
-    #os.chdir(read_data()['paths']['results'])
-
-    #matplotlib.use("Agg")
-    figure=plt.figure(figsize=(8,6))
-    plt.plot(s11[:,0],s11[:,1])
-    plt.ylabel(r'S11 (dB)',fontsize=18)
-    plt.xlabel('Frequency (MHz)',fontsize=18)
-    plt.tick_params(axis='both', which='major', labelsize=18)
-    plt.grid(True)
-    plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
-    plt.show
-    plt.savefig(direccion_graficas_s11)
-    plt.close(figure)
-    return s11#,s21,s31,s41, amp_imb
+    return dataReports
 
 def get_simulation_params(self):
     params = {
