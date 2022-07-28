@@ -180,7 +180,8 @@ def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_n
     make_directory('src', main_path)
 
     create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, reports,description)
-        
-    print("listo!")
-    time.sleep(3)
+
+    if ansys_exe != "":    
+        print("listo!")
+        time.sleep(3)
     clear_screen()
