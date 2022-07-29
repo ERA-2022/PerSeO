@@ -31,15 +31,15 @@ data_structure = {
             "n_var":len(nomilas),
             "iterations": iterations,
             "particles": particles,
-            "reports": reports,
-            "description": description
+            "reports": reports
         },
         "info":
         {
             "OS": platform,
             "ID": "",
             "start_time": 0,
-            "elapsed_time": 0
+            "elapsed_time": 0,
+            "description": description
         }
     }
 ~~~

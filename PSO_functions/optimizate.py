@@ -5,7 +5,7 @@
 import logging
 import numpy as np
 import json
-from datetime import date
+from datetime import datetime
 
 import PSO_core.messages as msg
 from PSO_core import commands
@@ -16,8 +16,9 @@ import PSO_functions.simulate as simulate
 import PSO_functions.dataManagement as db
 
 def main(fun):
+    start_time = datetime.today()
     commands.update_data("info","ID",commands.setSimID())
-    commands.update_data("info","start_time", str(date.today()))
+    commands.update_data("info","start_time", str(start_time))
     commands.update_data("paths","files",read_data()['paths']['results']+read_data()['info']['ID']+"/files/")
     commands.update_data("paths","figures", read_data()['paths']['results']+read_data()['info']['ID']+"/figures/")
     commands.make_directory(read_data()['info']['ID'], read_data()['paths']['results'])
@@ -26,10 +27,10 @@ def main(fun):
     commands.clear_screen()
     logging.basicConfig(filename= read_data()['paths']['src']+"control.log", force=True, encoding='utf-8', level=logging.INFO)
     logging.basicConfig(format='%(asctime)s %(message)s')
-    logging.info(date.today())
+    logging.info(start_time)
     logging.info(msg.SIM_ID+ str(read_data()['info']['ID']))
-    # db_manager = db.DBManager(read_data()['info']['ID'])
-    # db_manager.load_df()
+    db_manager = db.DBManager(read_data()['info']['ID'])
+    db_manager.load_df()
 
 
     logging.info(msg.STARTED)
@@ -49,9 +50,9 @@ def main(fun):
         swarm.pbest[particle.id_] = fit
         logging.info(msg.FITNESS_VALS+str(fit))
 
-    # elapsed = commands.get_elapsed_time()
+    elapsed = commands.get_elapsed_time(start_time)
     
-    # logging.info(msg.TIME_ELAPSED+str(elapsed))
+    logging.info(msg.TIME_ELAPSED+str(elapsed))
 
     best_index=swarm.get_particle_best_fit(swarm.particles)
 
@@ -60,30 +61,29 @@ def main(fun):
     logging.info(msg.PGVALUE + str(swarm.pg))
     logging.info(msg.BEST_PARTICLE_INDEX + str(best_index)+'\n')
 
-    # sim_results = {
-    #     "elapsed_time": str(elapsed),
-    #     "data_to_store": json.dumps(data_to_store)
+    sim_results = {
+        "elapsed_time": str(elapsed)
+    }
 
-    # }
+    data_to_store={
+        "sim_id":read_data()['info']['ID'],
+        "created_at":start_time,
+        "sim_setup":json.dumps(simulate.get_simulation_params()),
+        "sim_results":json.dumps(sim_results),
+        "pbest":json.dumps(swarm.pbest.tolist()),
+        "gbest":swarm.gbest,
+        "best_particle_id":best_index,
+        "best_particle": json.dumps(swarm.particles[best_index].values_array.tolist()),
+        "iteration":0,
+        "only_read":"N"
+    }
 
-    # data_to_store={
-    #     "sim_id":read_data()['info']['ID'],
-    #     "created_at":date.today(),
-    #     "sim_setup":json.dumps(simulate.get_simulation_params()),
-    #     "sim_results":json.dumps(sim_results),
-    #     "pbest":json.dumps(swarm.pbest.tolist()),
-    #     "gbest":swarm.gbest,
-    #     "best_particle_id":best_index,
-    #     "best_particle": json.dumps(swarm.particles[best_index].values_array.tolist()),
-    #     "iteration":0
-    # }
-
-    # db_manager.load_df()
-    # db_manager.fill_df(data_to_store)
+    db_manager.load_df()
+    db_manager.fill_df(data_to_store)
 
     ### Iterations
     logging.info(msg.START_ITERATIONS)
-    run_iterations(read_data()['values']['iterations'],swarm,fun)
+    run_iterations(read_data()['values']['iterations'],swarm,db_manager,fun)
     ### Finished process
     logging.info(msg.FINISHED)
 
@@ -93,7 +93,7 @@ def set_Swarm():
     logging.info(msg.PARTICLES_CREATED)
     return swarm
 
-def run_iterations(iteraciones, swarm:pso.Swarm, fun):
+def run_iterations(iteraciones, swarm:pso.Swarm, db_manager:db.DBManager,fun):
   
     pi_best = swarm.particles.copy()#array initial particles
     #db_manager = db.DBManager(read_data()['info']['ID'])
@@ -137,7 +137,7 @@ def run_iterations(iteraciones, swarm:pso.Swarm, fun):
 
         for index in range(len(swarm.particles)):
             particle = swarm.particles[index]
-            commands.start_timing()
+            start_time = commands.start_timing()
 
                  
             logging.info(msg.PARTICLE+ str(particle.id_)+':' + str(particle.values_array))
@@ -192,29 +192,29 @@ def run_iterations(iteraciones, swarm:pso.Swarm, fun):
         logging.info(msg.GBEST+ str(swarm.gbest))
         logging.info("pi_best  = "+ str(particle.values_array))
             
-        # elapsed=commands.get_elapsed_time()
+        elapsed=commands.get_elapsed_time(start_time)
 
-        # logging.info(msg.TIME_ELAPSED+elapsed)
+        logging.info(msg.TIME_ELAPSED+elapsed)
 
-        # sim_results = {
-        #     "elapsed_time": str(elapsed),
-        #     "data_to_store": json.dumps(data_to_store)
-        # }
+        sim_results = {
+            "elapsed_time": str(elapsed)
+        }
 
-        # data_to_store={
-        #     "sim_id":read_data()['info']['ID'],
-        #     "created_at":date.today(),
-        #     "sim_setup":json.dumps(simulate.get_simulation_params()),
-        #     "sim_results":json.dumps(sim_results),
-        #     "pbest":json.dumps(swarm.pbest.tolist()),
-        #     "gbest":swarm.gbest,
-        #     "best_particle_id":best_index,
-        #     "best_particle": json.dumps(swarm.particles[best_index].values_array.tolist()),
-        #     "iteration":i+1
-        # }
+        data_to_store={
+            "sim_id":read_data()['info']['ID'],
+            "created_at":start_time,
+            "sim_setup":json.dumps(simulate.get_simulation_params()),
+            "sim_results":json.dumps(sim_results),
+            "pbest":json.dumps(swarm.pbest.tolist()),
+            "gbest":swarm.gbest,
+            "best_particle_id":best_index,
+            "best_particle": json.dumps(swarm.particles[best_index].values_array.tolist()),
+            "iteration":i+1,
+            "only_read":"N"
+        }
         
-        # db_manager.load_df()
-        # db_manager.fill_df(data_to_store)
+        db_manager.load_df()
+        db_manager.fill_df(data_to_store)
 
     ###Cierre del ciclo
     print("Minimo global encontrado: "+str(swarm.gbest))

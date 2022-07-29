@@ -57,14 +57,14 @@ def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, varia
             "iterations": iterations,
             "particles": particles,
             "reports": reports,
-            "description": description
         },
         "info":
         {
             "OS": platform,
             "ID": "",
             "start_time": 0,
-            "elapsed_time": 0
+            "elapsed_time": 0,
+            "description": description
         }
     }
     
@@ -106,8 +106,10 @@ def Y_N_question(msj):
 def start_timing():
     return datetime.now()
 
-def get_elapsed_time():
-    diff=datetime.now()- read_data()['info']['start_time']
+def get_elapsed_time(start_time = ""):
+    if start_time == "":
+        start_time = read_data()['info']['start_time']
+    diff= datetime.now()- start_time
     return str(diff.total_seconds())
 
 def get_instructions_to_reports(tag, report, value):

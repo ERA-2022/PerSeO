@@ -171,16 +171,19 @@ def read_simulation_results(i,j):
 
     return dataReports
 
-def get_simulation_params(self):
+def get_simulation_params():
+    info = read_data()
+
     params = {
         "simulation_type": "Antenna",
-        "num_branches":str(0),
-        "n_variables":read_data()['values']['n_var'],
-        "iterations":read_data()['values']['iterations'],
-        "n_particles":read_data()['values']['particles'],
-        "nominal":read_data()['values']['def'],
-        "var_min":read_data()['values']['min'],
-        "var_max":read_data()['values']['max']
+        "num_branches":"N/A",
+        "iterations":info['values']['iterations'],
+        "n_particles":info['values']['particles'],
+        "n_variables":info['values']['n_var'],
+        "nominal":info['values']['def'],
+        "var_min":info['values']['min'],
+        "var_max":info['values']['max'],
+        "description":info['info']['description']
     }
     return params
 
