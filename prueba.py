@@ -67,11 +67,12 @@ def fit (dataReports):
             print(f"BW: {bw}Mhz")
             print(f"Freq: {freq}Mhz")
             coeficiente =  ((80-bw)/80)**2  
-            print(f"Valor función de merito: {coeficiente}")
-            print("---------------------------------------------------\n\n")
+            
         else:
             coeficiente = 20      
-
+    
+    print(f"Valor función de merito: {coeficiente}")
+    print("---------------------------------------------------\n\n")
     return coeficiente
 
 # -> Futuro modulo de optimización
