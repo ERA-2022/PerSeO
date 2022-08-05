@@ -173,10 +173,14 @@ def read_simulation_results(i,j):
 
 def get_simulation_params():
     info = read_data()
-
+    
+    if info['info']['category'].upper() == "ANTENNA":
+        num_branches = "N/A"
+    else:
+        num_branches = info['values']['branches']
+        
     params = {
-        "simulation_type": "Antenna",
-        "num_branches":"N/A",
+        "num_branches":num_branches,
         "iterations":info['values']['iterations'],
         "n_particles":info['values']['particles'],
         "n_variables":info['values']['n_var'],

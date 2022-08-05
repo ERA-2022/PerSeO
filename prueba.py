@@ -4,6 +4,8 @@ import numpy as np
 
 exe = "C:/Program Files/AnsysEM/Ansys Student/v212/Win64/ansysedtsv.exe"
 save = "C:/Users/ESTACION/Documents/Ansoft/"
+category = "Antenna"
+sub_category = "Dipole blade"
 pname = "DIPOLE_BLADE_ANTENNA"
 dname = "DESIGN"
 vname = "variables"
@@ -13,6 +15,7 @@ mi = [8200, 750, 950, 30, 20, 2.5, 750]
 nom = [8333.33, 813.33, 1043.33, 36.66, 20, 2.5, 866.66]
 i = 3
 p = 3
+b = 0
 desc = "100%BW con BW ideal a 80MHz, denominador (o frecuencia de corte)en 40MHz trabajando en la banda de frecuencia de 40MHz hasta 120MHz"
 
 reportes = {
@@ -72,8 +75,8 @@ def fit (dataReports):
     return coeficiente
 
 # -> Futuro modulo de optimización
-commands.init_system(exe,save,pname,dname,vname,u,ma,mi,nom,i,p, reportes,desc)
+commands.init_system(exe, save, pname, dname,vname, u, ma, mi, nom, i, p, b, reportes, category, sub_category, desc)
 #simulate.create_sim_file([8333.33, 813.33, 1043.33, 36.66, 20, 2.5, 866.66],0,0)
-simulate.run_simulation_hfss(file_path="src/dibuja.py")
+simulate.run_simulation_hfss(args="-Runscript",file_path="src/dibuja.py")
 #simulate.run_simulation_hfss(args="-Runscript")
 Interfaz.main_menu(fit)

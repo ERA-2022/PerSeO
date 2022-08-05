@@ -29,18 +29,22 @@ class DBManager:
          self.df = pd.read_csv(read_data()['paths']['results']+"output.csv", header=0)
       else:
             
-         column_names = ["sim_id", "created_at", "sim_setup","sim_results", "pbest","gbest","best_particle_id","best_particle","iteration","only_read"]
+         column_names = ["sim_id", "created_at", "elapced_time", "sim_type", "category", "sub_category", "sim_setup", "pbest","gbest","best_particle_id","best_particle","iteration"]
          
          self.df = pd.DataFrame(columns = column_names)
 
          self.df['sim_id'] = self.df['sim_id'].astype( 'object')
          self.df['created_at'] = self.df['created_at'].astype( 'datetime64')
+         self.df['elapced_time'] = self.df['elapced_time'].astype(str)
+         self.df['sim_type'] = self.df['sim_type'].astype(str)
+         self.df['category'] = self.df['category'].astype(str)
+         self.df['sub_category'] = self.df['sub_category'].astype(str)  
          self.df['sim_setup'] = self.df['sim_setup'].astype( 'object')
          self.df['pbest'] = self.df['pbest'].astype( 'float64')
          self.df['gbest'] = self.df['gbest'].astype( 'float64')
          self.df['best_particle_id'] = self.df['best_particle_id'].astype( 'int64')
          self.df['iteration'] = self.df['iteration'].astype( 'int64')
-         self.df['only_read'] = self.df['only_read'].astype(str)
+         
 
    def save_data_to_plot(self,data_to_plot,iteration,particle_id):
       

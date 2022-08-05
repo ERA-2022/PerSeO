@@ -6,7 +6,7 @@ from . import Tester
 
 try:
     if not path.isfile("src/data.json"):
-        commands.init_system("","","","","","",[],[],[],0,0,{},"")
+        commands.init_system("","","","","","",[],[],[],0,0,0,{},"","","")
 
 except:
     print("Error al tratar de ejecutar el primer arranque")

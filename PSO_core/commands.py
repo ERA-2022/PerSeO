@@ -31,7 +31,7 @@ def update_data(category = "", key = "",value =""):
     except:
         input("Error al tratar de leer o escribir en el archivo de configuración\nPresione enter para continuar...")
 
-def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, reports,description):
+def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, branches,reports,category, sub_category,description):
     data_structure = {
         "paths":
         {
@@ -56,15 +56,16 @@ def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, varia
             "n_var":len(nomilas),
             "iterations": iterations,
             "particles": particles,
+            "branches": branches,
             "reports": reports,
         },
         "info":
         {
             "OS": platform,
             "ID": "",
-            "start_time": 0,
-            "elapsed_time": 0,
-            "description": description
+            "category": category,
+            "sub_category": sub_category,
+            "description": description,
         }
     }
     
@@ -173,7 +174,7 @@ def get_graphic_name(report, value, i, j):
 def setSimID():
     return str(uuid.uuid4())
 
-def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, reports,description):
+def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, branches, reports, category, sub_category,description):
     print("Iniciando sistema...")
     main_path = os.getcwd().replace('\\','/')+'/'
     
@@ -181,7 +182,7 @@ def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_n
     make_directory('results', main_path)
     make_directory('src', main_path)
 
-    create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, reports,description)
+    create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, branches, reports, category, sub_category,description)
 
     if ansys_exe != "":    
         print("listo!")

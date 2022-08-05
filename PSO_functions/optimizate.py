@@ -18,7 +18,7 @@ import PSO_functions.dataManagement as db
 def main(fun):
     start_time = datetime.today()
     commands.update_data("info","ID",commands.setSimID())
-    commands.update_data("info","start_time", str(start_time))
+    #commands.update_data("info","start_time", str(start_time))
     commands.update_data("paths","files",read_data()['paths']['results']+read_data()['info']['ID']+"/files/")
     commands.update_data("paths","figures", read_data()['paths']['results']+read_data()['info']['ID']+"/figures/")
     commands.make_directory(read_data()['info']['ID'], read_data()['paths']['results'])
@@ -32,7 +32,6 @@ def main(fun):
     db_manager = db.DBManager(read_data()['info']['ID'])
     db_manager.load_df()
 
-
     logging.info(msg.STARTED)
     swarm = set_Swarm() #initialize swarm
 
@@ -45,8 +44,8 @@ def main(fun):
         logging.info(msg.SIM_FILE_OK)
         logging.info(msg.SIM_PARTICLE_START + str(particle.id_))
         simulate.run_simulation_hfss()
-        s11 = simulate.read_simulation_results(0,particle.id_)
-        fit = fun(s11)
+        sim_results = simulate.read_simulation_results(0,particle.id_)
+        fit = fun(sim_results)
         swarm.pbest[particle.id_] = fit
         logging.info(msg.FITNESS_VALS+str(fit))
 
@@ -61,21 +60,25 @@ def main(fun):
     logging.info(msg.PGVALUE + str(swarm.pg))
     logging.info(msg.BEST_PARTICLE_INDEX + str(best_index)+'\n')
 
-    sim_results = {
+    """ sim_results = {
         "elapsed_time": str(elapsed)
-    }
+    } """
+    info = read_data()['info']
 
     data_to_store={
-        "sim_id":read_data()['info']['ID'],
+        "sim_id":info['ID'],
         "created_at":start_time,
+        "elapced_time":elapsed,
+        "sim_type":"all process",
+        "category":info['category'],
+        "sub_category":info['sub_category'],
         "sim_setup":json.dumps(simulate.get_simulation_params()),
-        "sim_results":json.dumps(sim_results),
+        #"sim_results":json.dumps(sim_results),
         "pbest":json.dumps(swarm.pbest.tolist()),
         "gbest":swarm.gbest,
         "best_particle_id":best_index,
         "best_particle": json.dumps(swarm.particles[best_index].values_array.tolist()),
-        "iteration":0,
-        "only_read":"N"
+        "iteration":0
     }
 
     db_manager.load_df()
@@ -96,7 +99,6 @@ def set_Swarm():
 def run_iterations(iteraciones, swarm:pso.Swarm, db_manager:db.DBManager,fun):
   
     pi_best = swarm.particles.copy()#array initial particles
-    #db_manager = db.DBManager(read_data()['info']['ID'])
     
     for i in range(iteraciones):
         print(msg.NUM_ITERATIONS+str(iteraciones))
@@ -152,8 +154,8 @@ def run_iterations(iteraciones, swarm:pso.Swarm, db_manager:db.DBManager,fun):
             logging.info(msg.SIM_PARTICLE_START + str(particle.id_))
 
             simulate.run_simulation_hfss()
-            s11 = simulate.read_simulation_results(i+1,particle.id_)
-            fit = fun(s11)
+            sim_results = simulate.read_simulation_results(i+1,particle.id_)
+            fit = fun(sim_results)
             #get simulation results
             #s11,s21,s31,s41, amp_imbalance = simulate.read_simulation_results(i+1,particle.id_)
             
@@ -196,22 +198,38 @@ def run_iterations(iteraciones, swarm:pso.Swarm, db_manager:db.DBManager,fun):
 
         logging.info(msg.TIME_ELAPSED+elapsed)
 
-        sim_results = {
+        """ sim_results = {
             "elapsed_time": str(elapsed)
-        }
+        } """
+        info = read_data()['info']
 
         data_to_store={
-            "sim_id":read_data()['info']['ID'],
+            "sim_id":info['ID'],
             "created_at":start_time,
+            "elapced_time":elapsed,
+            "sim_type":"all process",
+            "category":info['category'],
+            "sub_category":info['sub_category'],
             "sim_setup":json.dumps(simulate.get_simulation_params()),
-            "sim_results":json.dumps(sim_results),
+            #"sim_results":json.dumps(sim_results),
             "pbest":json.dumps(swarm.pbest.tolist()),
             "gbest":swarm.gbest,
             "best_particle_id":best_index,
             "best_particle": json.dumps(swarm.particles[best_index].values_array.tolist()),
-            "iteration":i+1,
-            "only_read":"N"
+            "iteration":i+1
         }
+        # data_to_store={
+        #     "sim_id":read_data()['info']['ID'],
+        #     "created_at":start_time,
+        #     "sim_setup":json.dumps(simulate.get_simulation_params()),
+        #     "sim_results":json.dumps(sim_results),
+        #     "pbest":json.dumps(swarm.pbest.tolist()),
+        #     "gbest":swarm.gbest,
+        #     "best_particle_id":best_index,
+        #     "best_particle": json.dumps(swarm.particles[best_index].values_array.tolist()),
+        #     "iteration":i+1,
+        #     "only_read":"N"
+        # }
         
         db_manager.load_df()
         db_manager.fill_df(data_to_store)
