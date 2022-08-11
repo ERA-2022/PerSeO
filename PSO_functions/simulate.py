@@ -49,7 +49,13 @@ def create_sim_file(particle, i, j):
     f.write('oDesign = oProject.SetActiveDesign("' +read_data()['values']['design_name'] + '")\n')
     f.write("oDesign.AnalyzeAll()")
     f.write("\n")
+
+    unwritten_OV = True
     for report, value in requiered_reports.items():
+        if unwritten_OV and (report.upper() == "AMPIMB" or report.upper() == "PHASEIMB"):
+            unwritten_OV = False
+            f.write('oModule = oDesign.GetModule("OutputVariable")\n')
+
         f.write(get_instructions_to_reports(tag, report, value))
 
     f.close()

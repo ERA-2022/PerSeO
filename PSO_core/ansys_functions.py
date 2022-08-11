@@ -118,7 +118,7 @@ def creaSmn(proj,nombre,simID,m,n):
     		"Y Component:="		, ["dB(S("+m+","+n+"))"]
     	], [])
 
-	oModule.ExportToFile("S"+m+n, read_data()['paths']['results']+str(simID)+"/files/"+r"datosS11"+str(nombre)+".csv")
+	oModule.ExportToFile("S"+m+n, read_data()['paths']['results']+str(simID)+"/files/"+r"datosS"+str(m)+str(n)+str(nombre)+".csv")
 
 def creaAmpImb(proj,nombre,simID):
 	

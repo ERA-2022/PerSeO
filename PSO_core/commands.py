@@ -127,10 +127,12 @@ def get_instructions_to_reports(tag, report, value):
                 instructions += "fn.creaGain(oProject,'" + tag + "','"+ read_data()['info']['ID']+ "','"+ str(angle)+"')\n"
     
     elif report.upper() == "AMPIMB":
-        instructions = "fn.creaAmpImb(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
+        instructions = 'oModule.CreateOutputVariable("AmpImbalance", "'+str(value)+'", "Setup1 : Sweep", "Modal Solution Data", [])\n'
+        instructions += "fn.creaAmpImb(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
 
     elif report.upper() == "PHASEIMB":
-        instructions = "fn.creaPhaseImb(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
+        instructions = 'oModule.CreateOutputVariable("PhaseImb", "'+str(value)+'", "Setup1 : Sweep", "Modal Solution Data", [])\n'
+        instructions += "fn.creaPhaseImb(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
     
     elif report.upper() == "VSWR":
         instructions = "fn.creaVSWR(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
