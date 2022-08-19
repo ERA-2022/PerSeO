@@ -78,6 +78,7 @@ def fit (dataReports):
 # -> Futuro modulo de optimización
 commands.init_system(exe, save, pname, dname,vname, u, ma, mi, nom, i, p, b, reportes, category, sub_category, desc)
 #simulate.create_sim_file([8333.33, 813.33, 1043.33, 36.66, 20, 2.5, 866.66],0,0)
-simulate.run_simulation_hfss(args="-Runscript",file_path="src/dibuja.py")
-#simulate.run_simulation_hfss(args="-Runscript")
+#simulate.run_simulation_hfss(args="-Runscript",file_path="src/dibuja.py")
+#simulate.run_simulation_hfss()
+#print(simulate.init_model())
 Interfaz.main_menu(fit)

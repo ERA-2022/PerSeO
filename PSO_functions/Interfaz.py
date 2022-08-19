@@ -2,6 +2,7 @@
 import PSO_core.Tester as Tester
 from PSO_core.commands import *
 from PSO_functions.optimizate import main
+from PSO_functions.simulate import init_model
 
 def ops_main_menu():
     op = ""
@@ -70,8 +71,12 @@ def main_menu(fitness):
     while not salir:
         op = ops_main_menu()
         if op == 1:
-            main(fitness)
-            wait_to_read("Fin de la ejecución")
+            ready = not init_model()
+            if ready:
+                main(fitness)
+                wait_to_read("Fin de la ejecución")
+            else:
+                wait_to_read("El archivo del modelo no existe, verifique que su archivo .py este en la carpeta models o que el archivo .aedt exista en la carpeta .../Documents/Ansoft e intente ejecutar el código nuevamente")
         elif op == 2:
             set_up_menu()
         elif op == 3:

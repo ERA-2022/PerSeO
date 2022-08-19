@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from PSO_core.commands import get_graphic_name, read_data, get_instructions_to_reports
+from PSO_core.commands import get_graphic_name, read_data, get_instructions_to_reports, wait_to_read
 import logging
 import subprocess
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+import time
 # modulo que contiene strings de mensajes
 import PSO_core.messages as msg
 import shutil
@@ -61,11 +62,27 @@ def create_sim_file(particle, i, j):
     f.close()
     
 ## Launches HFSS simulation file
-def run_simulation_hfss(ansys_path= read_data()['paths']['ansys_exe'], args= '-runscriptandexit',file_path= read_data()['paths']['src']+"simulacion.py"):
-    # if ansys_path == "":
-    #     ansys_path = read_data()['paths']['ansys_exe']
-    subprocess.run([ansys_path, args, file_path])
-    logging.info(msg.SIM_PARTICLE_FINISHED)
+def run_simulation_hfss(ansys_path = "", args= '-runscriptandexit',file_path = ""):
+    if ansys_path == "":
+        ansys_path = read_data()['paths']['ansys_exe']
+    
+    if file_path == "":
+        read_data()['paths']['src']+"simulacion.py"
+
+    state = True
+    Econt = 0
+    while state and Econt < 22:
+        state = subprocess.run([ansys_path, args, file_path])
+        if state:
+            logging.info(msg.SIM_PARTICLE_FINISHED+", had an error")
+            print("Falló "+str(Econt+1)+" veces, intentando ejecutar de nuevo...")
+            if Econt < 21:
+                time.sleep(3+Econt)
+            Econt += 1
+        else:
+            logging.info(msg.SIM_PARTICLE_FINISHED+" ,no errors")
+    print("Intentos: "+str(Econt))
+    return bool(state.returncode)
 
 ## read the simulation results
 def read_simulation_results(i,j):
@@ -244,3 +261,18 @@ def copy_rename(old_file_name, new_file_name):
         print(new_file_name)
         os.chdir(files_location)
         shutil.copy(old_file_name,new_file_name)
+
+def init_model():
+    error = False
+    data = read_data()
+    
+    if not os.path.isfile(data['paths']['ansys_save_def']+data['values']['project_name']+".aedt"):
+        state = run_simulation_hfss(file_path = data['paths']['models']+data['values']['project_name']+".py")
+        if state or not os.path.isfile(data['paths']['ansys_save_def']+data['values']['project_name']+".aedt"):
+            error = True
+            wait_to_read("Error, no se encontró modelo, verifique que el script de su modelo se encuentra en la carpeta models o/y que su archivo .aedt se encuentre en la carpeta Ansoft")
+    
+    if not error:
+        print("El modelo existe, iniciando proceso de optimización")
+    
+    return error
