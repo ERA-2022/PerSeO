@@ -67,12 +67,12 @@ def run_simulation_hfss(ansys_path = "", args= '-runscriptandexit',file_path = "
         ansys_path = read_data()['paths']['ansys_exe']
     
     if file_path == "":
-        read_data()['paths']['src']+"simulacion.py"
+        file_path = read_data()['paths']['src']+"simulacion.py"
 
     state = True
     Econt = 0
     while state and Econt < 22:
-        state = subprocess.run([ansys_path, args, file_path])
+        state = bool(subprocess.run([ansys_path, args, file_path]).returncode)
         if state:
             logging.info(msg.SIM_PARTICLE_FINISHED+", had an error")
             print("Falló "+str(Econt+1)+" veces, intentando ejecutar de nuevo...")
@@ -81,8 +81,8 @@ def run_simulation_hfss(ansys_path = "", args= '-runscriptandexit',file_path = "
             Econt += 1
         else:
             logging.info(msg.SIM_PARTICLE_FINISHED+" ,no errors")
-    print("Intentos: "+str(Econt))
-    return bool(state.returncode)
+    #print("Intentos: "+str(Econt))
+    return state
 
 ## read the simulation results
 def read_simulation_results(i,j):
