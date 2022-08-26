@@ -120,6 +120,23 @@ def creaSmn(proj,nombre,simID,m,n):
 
 	oModule.ExportToFile("S"+m+n, read_data()['paths']['results']+str(simID)+"/files/"+r"datosS"+str(m)+str(n)+str(nombre)+".csv")
 
+def creaZmn(proj,nombre,simID,m,n):
+	oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
+	oModule = oDesign.GetModule("ReportSetup")
+	oModule.CreateReport("Z"+m+n, "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
+    	[
+    		"Domain:="		, "Sweep"
+    	], 
+    	[
+    		"Freq:="		, ["All"],
+    	], 
+    	[
+    		"X Component:="		, "Freq",
+    		"Y Component:="		, ["re(Z("+m+","+n+"))","im(Z("+m+","+n+"))"]
+    	], [])
+
+	oModule.ExportToFile("Z"+m+n, read_data()['paths']['results']+str(simID)+"/files/"+r"datosZ"+str(m)+str(n)+str(nombre)+".csv")
+
 def creaAmpImb(proj,nombre,simID):
 	
 	oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
@@ -158,11 +175,11 @@ def creaPhaseImb(proj,nombre,simID):
 	oModule.ExportToFile("Phase Imbalance", read_data()['paths']['results']+str(simID)+"/files/"+r"pha_imb"+str(nombre)+".csv")
 
 #UNDERNEATH THE COMMANDS TO GENERATE THE VSWR, GAIN, BW AND DATA TABLE PARAMETERS.
-def creaVSWR(proj,nombre,simID):
+def creaVSWR(proj,nombre,simID,port):
     oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])
     oModule = oDesign.GetModule("ReportSetup")
 
-    oModule.CreateReport("VSWR", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
+    oModule.CreateReport("VSWR("+port+")", "Modal Solution Data", "Rectangular Plot", "Setup1 : Sweep", 
 	    [  
     		"Domain:="		, "Sweep"
 	    ], 
@@ -173,10 +190,10 @@ def creaVSWR(proj,nombre,simID):
 	    ], 
 	    [
 		    "X Component:="		, "Freq",
-		    "Y Component:="		, ["VSWR(1)"]
+		    "Y Component:="		, ["VSWR("+port+")"]
 	    ], [])
-    direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosVSWR"+str(nombre)+".csv"
-    oModule.ExportToFile("VSWR",direccion)
+    direccion = read_data()['paths']['results']+str(simID)+"/files/"+r"datosVSWR("+str(port)+")"+str(nombre)+".csv"
+    oModule.ExportToFile("VSWR("+str(port)+")",direccion)
 
 def creaGain(proj,nombre,simID,angulo):
     oDesign = proj.SetActiveDesign(read_data()['values']['design_name'])

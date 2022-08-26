@@ -120,7 +120,12 @@ def get_instructions_to_reports(tag, report, value):
         if len(value) > 0:
             for mn_val in value:
                 instructions += "fn.creaSmn(oProject,'" + tag + "','"+ read_data()['info']['ID']+ "','"+ str(mn_val[0]) + "','"+ str(mn_val[1]) +"')\n"
-    
+
+    elif report.upper() == "ZMN":
+        if len(value) > 0:
+            for mn_val in value:
+                instructions += "fn.creaZmn(oProject,'" + tag + "','"+ read_data()['info']['ID']+ "','"+ str(mn_val[0]) + "','"+ str(mn_val[1]) +"')\n"
+
     elif report.upper() == "GAIN":
         if len(value) > 0:
             for angle in value:
@@ -135,7 +140,9 @@ def get_instructions_to_reports(tag, report, value):
         instructions += "fn.creaPhaseImb(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
     
     elif report.upper() == "VSWR":
-        instructions = "fn.creaVSWR(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
+        if len(value) > 0:
+            for port in value:
+                instructions += "fn.creaVSWR(oProject,'" + tag + "','"+ read_data()['info']['ID']+"','"+str(port)+"')\n"
 
     elif report.upper() == "BW":
         instructions = "fn.creaBW(oProject,'" + tag + "','"+ read_data()['info']['ID']+"')\n"
@@ -151,6 +158,9 @@ def get_graphic_name(report, value, i, j):
     if report.upper() == "SMN":
         graphic_name += "datosS"+str(value[0])+str(value[1])
     
+    elif report.upper() == "ZMN":
+        graphic_name += "datosZ"+str(value[0])+str(value[1])
+    
     elif report.upper() == "GAIN":
         graphic_name +="datosGananciaPhi"+str(value)
     
@@ -161,7 +171,7 @@ def get_graphic_name(report, value, i, j):
         graphic_name += "pha_imb"
     
     elif report.upper() == "VSWR":
-        graphic_name += "datosVSWR"
+        graphic_name += "datosVSWR("+str(value)+")"
 
     elif report.upper() == "BW":
         graphic_name += "datosBW"
