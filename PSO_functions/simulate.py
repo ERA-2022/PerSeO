@@ -16,23 +16,12 @@ import shutil
 
 def create_sim_file(particle, i, j):
     requiered_reports = read_data()['values']['reports']
-    particle = particle.round(4)  
-    
-    # if global_.A_dimension_index>6 and global_.A_dimension_index<12:
-
-    #     L = 3.33
-    # elif global_.A_dimension_index>12:
-    #     L = 3.33
-    # else:
-    #     L = 3.33
+    particle = particle.round(4)
 
     tag = "_"+str(i)+"_"+str(j)     #esta linea genera el string _i_j
     var = "[" + ", ".join([str(x) for x in particle]) + "]" #Generar string del array de datos de la particula
-    #var_L = str(L)
-    #os.chdir( os.path.normpath(read_data()['paths']['src']+""))
     
     f = open(read_data()['paths']['src']+"simulacion.py", "w")   #abre un archivo para escribir
-
     direccion_dibujo = '"'+read_data()["paths"]["ansys_save_def"]+read_data()["values"]["project_name"]+'.aedt"' 
     
     f.write("import PSO_core.ansys_functions as fn\n")
@@ -85,7 +74,7 @@ def run_simulation_hfss(ansys_path = "", args= '-runscriptandexit',file_path = "
     return state
 
 ## read the simulation results
-def read_simulation_results(i,j):
+def read_simulation_results(i,j,graph):
     dataReports = {}
     requiered_reports = read_data()['values']['reports']
 
@@ -153,61 +142,62 @@ def read_simulation_results(i,j):
                     dataReports[report.upper()] = np.genfromtxt(files_location+graphic_name+".csv", skip_header = 1, delimiter = ',')
 
     # matplotlib.use("Agg")
-    for graphic, data in dataReports.items():
-        specific_graphic_path = general_graphic_path + graphic +"_" + str(i)+"_"+str(j)
-        
-        if "GAIN" in graphic:
-            x=np.arange(1,requiered_reports["aditional_data"]["points"],10)
-            y=np.arange(1,6,1)
-            colours=['b','g','b','k','y','r']
-            figure=plt.figure(figsize=(8,6)) 
-            for k in x:
-                plt.plot(data[:,0],data[:,k],label = str(k+(requiered_reports["aditional_data"]["fmin"]-1)) +requiered_reports["aditional_data"]["units"])
-                plt.legend(loc = 1,prop={'size': 12})
-                plt.ylabel(r'Gain (lineal)',fontsize=18)
-                plt.xlabel(r'$\theta$ (deg)',fontsize=18)
-                plt.title(r'optimized (Plane $\phi$='+graphic.replace("GAINPhi","")+")",fontsize=18)
-                plt.tick_params(axis='both', which='major', labelsize=18)
-                plt.grid(True)
-                plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
-            plt.savefig(specific_graphic_path)
-            plt.close(figure)
-
-        elif "Z" in graphic:
-            figure=plt.figure(figsize=(8,6))
-            plt.plot(data[:,0],data[:,1], label = "Re")
-            plt.plot(data[:,0],data[:,2], label = "Im")
-            plt.ylabel("Y",fontsize=18)
-            plt.xlabel(x_name,fontsize=18)
-            plt.tick_params(axis='both', which='major', labelsize=18)
-            plt.grid(True)
-            plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
-            plt.legend(loc = 1,prop={'size': 12})
-            plt.title(graphic)
-            plt.savefig(specific_graphic_path)
-            plt.close(figure)
-        else:
-            x_name = "Frequency (" + requiered_reports['aditional_data']['units']+")"
-            y_name = ""
-            if "S" in graphic:
-                y_name = graphic + " (dB)"
-
-            elif "V" in graphic:
-                y_name = graphic
+    if graph:
+        for graphic, data in dataReports.items():
+            specific_graphic_path = general_graphic_path + graphic +"_" + str(i)+"_"+str(j)
             
-            elif graphic == "AMPIMB":
-                y_name = "Amplitude Imbalance (dB)"
-            
-            if y_name != "":
+            if "GAIN" in graphic:
+                x=np.arange(1,requiered_reports["aditional_data"]["points"],10)
+                y=np.arange(1,6,1)
+                colours=['b','g','b','k','y','r']
+                figure=plt.figure(figsize=(8,6)) 
+                for k in x:
+                    plt.plot(data[:,0],data[:,k],label = str(k+(requiered_reports["aditional_data"]["fmin"]-1)) +requiered_reports["aditional_data"]["units"])
+                    plt.legend(loc = 1,prop={'size': 12})
+                    plt.ylabel(r'Gain (lineal)',fontsize=18)
+                    plt.xlabel(r'$\theta$ (deg)',fontsize=18)
+                    plt.title(r'optimized (Plane $\phi$='+graphic.replace("GAINPhi","")+")",fontsize=18)
+                    plt.tick_params(axis='both', which='major', labelsize=18)
+                    plt.grid(True)
+                    plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
+                plt.savefig(specific_graphic_path)
+                plt.close(figure)
+
+            elif "Z" in graphic:
                 figure=plt.figure(figsize=(8,6))
-                plt.plot(data[:,0],data[:,1])
-                plt.ylabel(y_name,fontsize=18)
+                plt.plot(data[:,0],data[:,1], label = "Re")
+                plt.plot(data[:,0],data[:,2], label = "Im")
+                plt.ylabel("Y",fontsize=18)
                 plt.xlabel(x_name,fontsize=18)
                 plt.tick_params(axis='both', which='major', labelsize=18)
                 plt.grid(True)
                 plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
+                plt.legend(loc = 1,prop={'size': 12})
+                plt.title(graphic)
                 plt.savefig(specific_graphic_path)
                 plt.close(figure)
+            else:
+                x_name = "Frequency (" + requiered_reports['aditional_data']['units']+")"
+                y_name = ""
+                if "S" in graphic:
+                    y_name = graphic + " (dB)"
+
+                elif "VS" in graphic:
+                    y_name = graphic
+                
+                elif graphic == "AMPIMB":
+                    y_name = "Amplitude Imbalance (dB)"
+                
+                if y_name != "":
+                    figure=plt.figure(figsize=(8,6))
+                    plt.plot(data[:,0],data[:,1])
+                    plt.ylabel(y_name,fontsize=18)
+                    plt.xlabel(x_name,fontsize=18)
+                    plt.tick_params(axis='both', which='major', labelsize=18)
+                    plt.grid(True)
+                    plt.grid(color = '0.5', linestyle = '--', linewidth = 2)
+                    plt.savefig(specific_graphic_path)
+                    plt.close(figure)
 
     # #derivative_data = np.genfromtxt("Derivative_"+str(i)+"_"+str(j)+".csv", skip_header = 1, delimiter = ',')
     # #Plot S11 and S21

@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 import PSO_core.Tester as Tester
 from PSO_core.commands import *
-from PSO_functions.optimizate import main
+from PSO_functions.optimizate import main, only_fit
 from PSO_functions.simulate import init_model
 
 def ops_main_menu():
     op = ""
     clear_screen()
-    while(op != '1' and op != '2' and op != '3' and op != '4'):
+    while(op != '1' and op != '2' and op != '3' and op != '4' and op != '5' and op != '6'):
         print("\n-------->PSO APP<---------")
         print("-----\Menú")
-        print("1> Comenzar")
-        print("2> Configuración")
-        print("3> Test mode ")
-        print("4> Salir ")
+        print("1> Optimizate")
+        print("2> Fitness function test")
+        print("3> Graphics tools")
+        print("4> Run script")
+        print("5> Set up")
+        print("6> Salir ")
         op = input("Digite una opción del menú: ")
 
-        if op != '1' and op != '2' and op != '3' and op != '4':
+        if op != '1' and op != '2' and op != '3' and op != '4' and op != '5' and op != '6':
             wait_to_read("Error, digite una opción valida!")
     return int(op)
 
@@ -78,10 +80,15 @@ def main_menu(fitness):
             else:
                 wait_to_read("El archivo del modelo no existe, verifique que su archivo .py este en la carpeta models o que el archivo .aedt exista en la carpeta .../Documents/Ansoft e intente ejecutar el código nuevamente")
         elif op == 2:
-            set_up_menu()
+            only_fit(fitness)
+            wait_to_read("Fin de la ejecución")
         elif op == 3:
-            Tester.launch_tester(fitness)
+            wait_to_read("Pendiente por desarrollar")
         elif op == 4:
+            Tester.launch_tester(fitness)
+        elif op == 5:
+            set_up_menu()
+        elif op == 6:
             print("\nGracias por usar nuestro software!")
             salir = True
         else:
