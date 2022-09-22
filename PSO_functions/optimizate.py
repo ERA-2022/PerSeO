@@ -221,6 +221,9 @@ def prepare_simulation_file(particle, id):
     simulate.create_sim_file(particle,0,id +1)
 
 def only_fit(fun):
+    graph = False
+    if commands.Y_N_question("¿Desea graficar los resutados de los reportes solicitados?") == "S":
+        graph = True
     start_time = datetime.today()
     reports_exist = False
     while not reports_exist:
@@ -233,7 +236,7 @@ def only_fit(fun):
             reports_exist = True
 
     if reports_exist:
-        addOp = {"type":False, "graph":False}
+        addOp = {"type":False, "graph":graph}
         commands.update_data("info","ID", id_for_read)
         commands.update_data("paths","files",read_data()['paths']['results']+read_data()['info']['ID']+"/files/")
         commands.update_data("paths","figures", read_data()['paths']['results']+read_data()['info']['ID']+"/figures/")

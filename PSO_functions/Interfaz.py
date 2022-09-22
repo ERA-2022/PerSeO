@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import PSO_core.Tester as Tester
+import PSO_functions.graphicsManagement as graphics
 from PSO_core.commands import *
 from PSO_functions.optimizate import main, only_fit
 from PSO_functions.simulate import init_model
@@ -35,6 +36,44 @@ def ops_set_up_menu():
         if op != '1' and op != '2' and op != '3':
             wait_to_read("Error, digite una opción valida!")
     return int(op)
+
+def ops_graphics_tools():
+    op = ""
+    clear_screen()
+    while(op != '1' and op != '2' and op != '3' and op != '4' and op != '5'):
+        print("-----\Graphics tools")
+        print("1> Graficar un reporte")
+        print("2> Graficar una iteración completa")
+        print("3> Graficar una ejecución completa")
+        print("4> Graficar una comparación de reportes")
+        print("5> Salir ")
+        op = input("Digite una opción del menú: ")
+
+        if op != '1' and op != '2' and op != '3' and op != '4' and op != '5':
+            wait_to_read("Error, digite una opción valida!")
+    return int(op)
+
+def graphic_tools_menu():
+    volver = False
+    while not volver:
+        op = ops_graphics_tools()
+
+        if op == 1:
+            wait_to_read("Proximamente")
+        elif op == 2:
+            graphics.draw_all_iteration()
+            wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado")
+        elif op == 3:
+            graphics.draw_all_optimization()
+            wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado")
+        elif op == 4:
+            graphics.draw_a_comparison()
+            wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado")
+        elif op == 5:
+            volver = True
+            clear_screen()
+        else:
+            wait_to_read("Algo salió mal")
 
 def set_up_menu():
     volver = False
@@ -83,7 +122,7 @@ def main_menu(fitness):
             only_fit(fitness)
             wait_to_read("Fin de la ejecución")
         elif op == 3:
-            wait_to_read("Pendiente por desarrollar")
+            graphic_tools_menu()
         elif op == 4:
             Tester.launch_tester(fitness)
         elif op == 5:
@@ -93,4 +132,3 @@ def main_menu(fitness):
             salir = True
         else:
             wait_to_read("Algo salió mal")
-        
