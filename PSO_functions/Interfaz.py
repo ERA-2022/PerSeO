@@ -59,7 +59,8 @@ def graphic_tools_menu():
         op = ops_graphics_tools()
 
         if op == 1:
-            wait_to_read("Proximamente")
+            graphics.get_data_for_one_report()
+            wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta 'figures' en la carpeta con el ID digitado")
         elif op == 2:
             graphics.draw_all_iteration()
             wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado")
