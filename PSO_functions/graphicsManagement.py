@@ -30,7 +30,7 @@ def get_data_for_one_report():
                 file_name += ".csv"
 
             file_path += "files/" + file_name
-            print(file_path)
+            
             if not os.path.isfile(file_path):
                 msj = "Error, el archivo no existe!!\n¿Desea intentarlo de nuevo?"
                 if Y_N_question(msj) == "N":
@@ -46,9 +46,10 @@ def get_data_for_one_report():
         units = input("Digite las unidades (ej: Hz, MHz): ")
         if "GAINPHI" in complement[0]:
             points = len(data[0])-1
-        print(fig_path)
+        
         # print(f"report: {complement[0]} iteration: {complement[1]} particle: {complement[2]} points:{points}")
         draw_one_report(fig_path, complement[0], data, points, units)
+        wait_to_read("\nEl proceso ha terminado, verifique la grafica en la carpeta 'figures' en la carpeta con el ID digitado")
 
 def draw_one_report(path="", report_n = "", data = [], points = 0, units = ""):
     matplotlib.use("Agg")
@@ -126,52 +127,64 @@ def draw_one_report(path="", report_n = "", data = [], points = 0, units = ""):
             plt.close(figure)
 
 def draw_all_iteration():
-    reports_exist = False
-    while not reports_exist:
+    temp_path = os.getcwd().replace('\\','/')+'/results/'
+    valid = False
+    while not valid:
         id_for_read = input("Digite el ID de la simulación previamente ejecutada: ")
-        if not os.path.isdir(read_data()['paths']['results']+id_for_read):
+        if not os.path.isdir(temp_path + id_for_read):
             msj = "Error, ID no valido o existente!!\n¿Desea digitar otro ID?"
             if Y_N_question(msj) == "N":
                 break
         else:
-            reports_exist = True
+            valid = True
 
-    if reports_exist:
-        update_data("info","ID", id_for_read)
-        update_data("paths","files",read_data()['paths']['results']+id_for_read+"/files/")
-        update_data("paths","figures", read_data()['paths']['results']+id_for_read+"/figures/")
-
+    if valid:
+        temp_path += id_for_read + "/"
         iteration = -1
-        while iteration < 0 or iteration > read_data()["values"]["iterations"]:
-            try:
-                iteration = int(input("Digite el número de iteración: "))
+        some_file_found = False
+        while not some_file_found:
+            
+            while iteration < 0:
+                try:
+                    iteration = int(input("Digite el número de iteración: "))
 
-                if iteration < 0:
-                    wait_to_read("Valor no válido, el número debe ser un valor entero positivo")
-                elif iteration > read_data()["values"]["iterations"]:
-                    wait_to_read("Valor no válido, el número debe ser menor o igual a la cantidad de iteraciones declaradas en el archivo de configuración")
-                else:
-                    allFiles = os.listdir(read_data()['paths']['files'])
-                    specific_path =  read_data()['paths']['figures']
-                    units = input("Digite las unidades de la frecuencia (ej: KHz, MHz, GHz): ")
-                    for file in allFiles:
-                        if f"_{iteration}_" in file:
-                            complement = file.replace("datos","").replace(".csv","").replace("GananciaPhi","GAINPHI").replace("amp_imb","AMPIMB").replace("pha_imb","PHASEIMB").split(f"_{iteration}_")
-                            data = np.genfromtxt(read_data()['paths']['files']+file,skip_header = 1, delimiter = ',')
-                            temp_path = specific_path + complement[0] +"_"+ str(iteration) +"_"+ complement[1]
-                            points = len(data)
-                            if "GAINPHI" in complement[0]:
-                                points = len(data[0])-1
-                            # print(f"report: {complement[0]} points:{points}")
-                            draw_one_report(temp_path, complement[0], data, points, units)
-            except:
-                print("Algo salió mal, verifique que el dato ingresado es un número entero")
+                    if iteration < 0:
+                        wait_to_read("Valor no válido, el número debe ser un valor entero positivo")
+                    else:
+                        allFiles = os.listdir(temp_path + "files/")
+                        specific_path =  temp_path + "figures/"
+                        units = input("Digite las unidades de la frecuencia (ej: KHz, MHz, GHz): ")
+                        for file in allFiles:
+                            if f"_{iteration}_" in file:
+                                if not some_file_found:
+                                    some_file_found = True
+                                complement = file.replace("datos","").replace(".csv","").replace("GananciaPhi","GAINPHI").replace("amp_imb","AMPIMB").replace("pha_imb","PHASEIMB").split(f"_{iteration}_")
+                                data = np.genfromtxt(temp_path + "files/" + file, skip_header = 1, delimiter = ',')
+                                save_path = specific_path + complement[0] +"_"+ str(iteration) +"_"+ complement[1]
+                                points = len(data)
+                                if "GAINPHI" in complement[0]:
+                                    points = len(data[0])-1
+                                print(f"Graficando ---> {file}")
+                                draw_one_report(save_path, complement[0], data, points, units)
+                except:
+                    print("Algo salió mal, verifique que el dato ingresado es un número entero")
+            
+            if some_file_found:
+                wait_to_read("\nEl proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado")
+            else:
+                msj = f"\nNo se encontraron archivos de la iteración {iteration}, verifique que el número de iteración ingresado sea mayor o igual a 0 y menor o igual al presentado en los archivos\n¿Desea volver a ingresar el número de iteración?"
+                iteration = -1
+                if Y_N_question(msj) == "N":
+                    break
+
 
 def draw_all_optimization():
+    results_path = os.getcwd().replace('\\','/')+'/results/'
+
     reports_exist = False
     while not reports_exist:
         id_for_read = input("Digite el ID de la simulación previamente ejecutada: ")
-        if not os.path.isdir(read_data()['paths']['results']+id_for_read):
+        if not os.path.isdir(results_path + id_for_read):
             msj = "Error, ID no valido o existente!!\n¿Desea digitar otro ID?"
             if Y_N_question(msj) == "N":
                 break
@@ -179,27 +192,27 @@ def draw_all_optimization():
             reports_exist = True
     
     if reports_exist:
-        update_data("info","ID", id_for_read)
-        update_data("paths","files",read_data()['paths']['results']+id_for_read+"/files/")
-        update_data("paths","figures", read_data()['paths']['results']+id_for_read+"/figures/")
+        
+        results_path += id_for_read + "/"
 
-        allFiles = os.listdir(read_data()['paths']['files'])
-        specific_path =  read_data()['paths']['figures']
+        allFiles = os.listdir(results_path + "files/")
+        specific_path =  results_path + "figures/"
         units = input("Digite las unidades de la frecuencia (ej: KHz, MHz, GHz): ")
         cont = 0
         for file in allFiles:
             complement = file.replace("datos","").replace(".csv","").replace("GananciaPhi","GAINPHI").replace("amp_imb","AMPIMB").replace("pha_imb","PHASEIMB").split("_")
-            data = np.genfromtxt(read_data()['paths']['files']+file,skip_header = 1, delimiter = ',')
+            data = np.genfromtxt(results_path + "files/"+file, skip_header = 1, delimiter = ',')
             temp_path = specific_path + complement[0] +"_"+ str(complement[1]) +"_"+ complement[2]
             points = len(data)
             
             if "GAINPHI" in complement[0]:
                 points = len(data[0])-1
-            print(f"report: {complement[0]} points:{points} file:{file} data[0]:{data[0]}")
+            print(f"Graficando ---> {file}")
             cont+=1
             draw_one_report(temp_path, complement[0], data, points, units)
 
-        print(f"Archivos leidos:{cont}")
+        print(f"Archivos leidos y graficados:{cont}")
+        wait_to_read("\nEl proceso ha terminado, verifique las graficas en la carpeta 'figures' en la carpeta con el ID digitado")
 
 def draw_a_comparison():
     Valid = False   # Verificación del archivo 1
@@ -236,16 +249,22 @@ def draw_a_comparison():
     if Valid:   # Selección y verificación de la ruta de guardado
         Valid = False
         while not Valid:
-            print("Nota, si presiona enter sin agregar ninguna ruta, esta será guardada en ../results/comparison graphics/")
+            print("\nNota, si presiona enter sin agregar ninguna ruta, esta será guardada en ../results/comparison graphics/")
             savePath = input("Digite la ruta donde será guardada la grafica resultante: ")
-            
+
             if savePath == "":
                 savePath = os.getcwd().replace('\\','/')+'/'
+                
                 make_directory('results', savePath)
                 savePath += "results/"
-                make_directory(savePath+'comparison graphics', "/")
+                
+                make_directory(savePath+'comparison graphics/', "")
                 savePath += "comparison graphics/"
-
+                
+            else:
+                if savePath[-1] != "/" and savePath[-1] != "\\":
+                    savePath += "/"
+        
             if os.path.isdir(savePath):
                 Valid = True
             else:
@@ -274,4 +293,5 @@ def draw_a_comparison():
         plt.title(graphicTitle)
         plt.savefig(savePath+graphicTitle)
         plt.close(figure)
+        wait_to_read("\nEl proceso ha terminado, verifique la grafica en la carpeta 'figures' en la carpeta con el ID digitado")
     

@@ -4,6 +4,7 @@ import PSO_functions.graphicsManagement as graphics
 from PSO_core.commands import *
 from PSO_functions.optimizate import main, only_fit
 from PSO_functions.simulate import init_model
+import time
 
 def ops_main_menu():
     op = ""
@@ -60,16 +61,12 @@ def graphic_tools_menu():
 
         if op == 1:
             graphics.get_data_for_one_report()
-            wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta 'figures' en la carpeta con el ID digitado")
         elif op == 2:
             graphics.draw_all_iteration()
-            wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado")
         elif op == 3:
             graphics.draw_all_optimization()
-            wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado")
         elif op == 4:
             graphics.draw_a_comparison()
-            wait_to_read("El proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado")
         elif op == 5:
             volver = True
             clear_screen()
@@ -130,6 +127,8 @@ def main_menu(fitness):
             set_up_menu()
         elif op == 6:
             print("\nGracias por usar nuestro software!")
+            time.sleep(2)
+            clear_screen()
             salir = True
         else:
             wait_to_read("Algo salió mal")

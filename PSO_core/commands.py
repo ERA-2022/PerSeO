@@ -192,6 +192,7 @@ def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_n
     
     make_directory('models',main_path)
     make_directory('results', main_path)
+    make_directory(main_path+'results/comparison graphics/','')
     make_directory('src', main_path)
 
     create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, branches, reports, category, sub_category,description)
