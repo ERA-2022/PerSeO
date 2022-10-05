@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-
+"""
+	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+	Year: 2022
+"""
 from PSO_core.commands import get_graphic_name, read_data, get_instructions_to_reports, wait_to_read
 from .graphicsManagement import draw_one_report
 import logging

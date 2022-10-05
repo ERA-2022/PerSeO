@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+	Year: 2022
+"""
 import PSO_core.Tester as Tester
 import PSO_functions.graphicsManagement as graphics
 from PSO_core.commands import *
@@ -9,18 +13,18 @@ import time
 def ops_main_menu():
     op = ""
     clear_screen()
-    while(op != '1' and op != '2' and op != '3' and op != '4' and op != '5' and op != '6'):
+    while(op != '1' and op != '2' and op != '3' and op != '4'):# and op != '5' and op != '6'):
         print("\n-------->PSO APP<---------")
         print("-----\Menú")
         print("1> Optimizate")
         print("2> Fitness function test")
         print("3> Graphics tools")
-        print("4> Run script")
-        print("5> Set up")
-        print("6> Salir ")
+        # print("4> Run script")
+        # print("5> Set up")
+        print("4> Salir ")
         op = input("Digite una opción del menú: ")
 
-        if op != '1' and op != '2' and op != '3' and op != '4' and op != '5' and op != '6':
+        if op != '1' and op != '2' and op != '3' and op != '4':# and op != '5' and op != '6':
             wait_to_read("Error, digite una opción valida!")
     return int(op)
 
@@ -122,13 +126,17 @@ def main_menu(fitness):
         elif op == 3:
             graphic_tools_menu()
         elif op == 4:
-            Tester.launch_tester(fitness)
-        elif op == 5:
-            set_up_menu()
-        elif op == 6:
+            #Tester.launch_tester(fitness)
             print("\nGracias por usar nuestro software!")
             time.sleep(2)
             clear_screen()
             salir = True
+        # elif op == 5:
+        #     set_up_menu()
+        # elif op == 6:
+        #     print("\nGracias por usar nuestro software!")
+        #     time.sleep(2)
+        #     clear_screen()
+        #     salir = True
         else:
             wait_to_read("Algo salió mal")

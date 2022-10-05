@@ -1,13 +1,8 @@
 # -*- coding: utf-8 -*-
 
-"""dataManagement.py
-   Author: Jorge Cardenas
-
-   1. Simulation data logging in CSV Files
-   2. Simulation data Retrieval
-
-   Future developments:
-   1. Local or remote data storage
+"""
+	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+	Year: 2022
 """
 
 #import csv

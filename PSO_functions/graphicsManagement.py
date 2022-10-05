@@ -1,3 +1,7 @@
+"""
+	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+	Year: 2022
+"""
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt

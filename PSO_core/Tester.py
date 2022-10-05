@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
-
+"""
+	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+	Year: 2022
+"""
 # MENU DE PRUEBAS
 # 1. EJECUCIÓN DE UN SCRIPT DE DISEÑO
 # 2. EXCEPCIÓN FORZADA (DIVISIÓN EN 0)

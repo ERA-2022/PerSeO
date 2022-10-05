@@ -1,12 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on 30/07/2020
-
-@author: Daniel Montofré and Oscar Restrepo
-
-Modify on 15/06/2022
-
-by: Jaime Angel
+	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+	Year: 2022
 """
 
 from .commands import read_data

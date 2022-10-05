@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-pso.py
-Functions related to implementation of PSO algorithm.
-
-
+	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+	Year: 2022
 """
 #import os
 #import importlib

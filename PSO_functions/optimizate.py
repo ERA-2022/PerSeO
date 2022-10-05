@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+"""
+	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+	Year: 2022
+"""
 #import os
 #import sys
 #from scipy.sparse import data
@@ -221,14 +225,10 @@ def prepare_simulation_file(particle, id):
     simulate.create_sim_file(particle,0,id +1)
 
 def only_fit(fun):
-    graph = False
-    if commands.Y_N_question("¿Desea graficar los resutados de los reportes solicitados?") == "S":
-        graph = True
-    start_time = datetime.today()
     reports_exist = False
     while not reports_exist:
         id_for_read = input("Digite el ID de la simulación previamente ejecutada: ")
-        if not os.path.isdir(read_data()['paths']['results']+id_for_read):
+        if not os.path.isdir(read_data()['paths']['results']+id_for_read) or id_for_read == "":
             msj = "Error, ID no valido o existente!!\n¿Desea digitar otro ID?"
             if commands.Y_N_question(msj) == "N":
                 break
@@ -236,6 +236,10 @@ def only_fit(fun):
             reports_exist = True
 
     if reports_exist:
+        graph = False
+        if commands.Y_N_question("¿Desea graficar los resutados de los reportes solicitados?") == "S":
+            graph = True
+        start_time = datetime.today()
         addOp = {"type":False, "graph":graph}
         commands.update_data("info","ID", id_for_read)
         commands.update_data("paths","files",read_data()['paths']['results']+read_data()['info']['ID']+"/files/")
