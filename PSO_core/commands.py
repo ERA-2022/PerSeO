@@ -9,6 +9,7 @@ from sys import platform
 import time
 import json
 import uuid
+import PSO_core.messages as messages
 
 def read_data():
     try:
@@ -18,7 +19,7 @@ def read_data():
             file.close()
         return data
     except:
-        input("Error al tratar de leer el archivo de configuración\nPresione enter para continuar...")
+        input(messages.READ_FILE_ERR)
 
 def update_data(category = "", key = "",value =""):
     try:
@@ -33,7 +34,7 @@ def update_data(category = "", key = "",value =""):
             file.close()
         return data
     except:
-        input("Error al tratar de leer o escribir en el archivo de configuración\nPresione enter para continuar...")
+        input(messages.R_W_FILE_ERR)
 
 def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, branches,reports,category, sub_category,description):
     data_structure = {
@@ -77,15 +78,15 @@ def create_data_file(ansys_exe, ansys_save_def, project_name, design_name, varia
         with open(data_structure['paths']['src']+"data.json", "w") as file:
             json.dump(data_structure,file,indent=2)
             file.close()
-        print("Archivo de configuración creado ó actualizado con éxito!!")
+        print(messages.C_U_SETUP_FILE)
     except:
-        input("\nAlgo salió mal, por favor pongase en contacto con el desarrollador\nPresione enter para continuar")
+        input(messages.CREATE_SETUP_FILE_ERR)
     
 def clear_screen():
     os.system("cls")
 
 def wait_to_read(msj = "\nError!",clr=0):
-    msj += "\nPresione enter para continuar..."
+    msj += messages.INTRO_BTN_MSG
     input(msj)
     
     if clr == 0:
@@ -95,16 +96,16 @@ def make_directory(name, path):
     try:
         if not os.path.isdir(name):
             os.mkdir(path+name)
-            print("directorio "+name+" creado con éxito en la ruta "+path)
+            print(name + messages.CREATE_DIR + path)
     except:
-        print("Error al tratar de crear el directorio "+name)
+        print(messages.CREATE_DIR_ERR+name)
 
 def Y_N_question(msj):
     op = ""
-    while op.upper() != "S" and op.upper() != "N":
-        op = input(msj+" (s/n): ")
-        if op.upper() != "S" and op.upper() != "N":
-            wait_to_read("Error, digite una opción valida", 1)
+    while op.upper() != messages.YES and op.upper() != messages.NO:
+        op = input(msj+messages.Y_N)
+        if op.upper() != messages.YES and op.upper() != messages.NO:
+            wait_to_read(messages.INVALID_IN_ERR, 1)
     
     return op.upper()
 
@@ -191,7 +192,7 @@ def setSimID():
     return str(uuid.uuid4())
 
 def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, branches, reports, category, sub_category,description):
-    print("Iniciando sistema...")
+    print(messages.START_SYS)
     main_path = os.getcwd().replace('\\','/')+'/'
     
     make_directory('models',main_path)
@@ -202,6 +203,6 @@ def init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_n
     create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations, particles, branches, reports, category, sub_category,description)
 
     if ansys_exe != "":    
-        print("listo!")
+        print(messages.READY)
         time.sleep(3)
     clear_screen()

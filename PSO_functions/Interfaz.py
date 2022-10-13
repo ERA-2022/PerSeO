@@ -3,11 +3,11 @@
 	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 	Year: 2022
 """
-import PSO_core.Tester as Tester
 import PSO_functions.graphicsManagement as graphics
 from PSO_core.commands import *
 from PSO_functions.optimizate import main, only_fit
 from PSO_functions.simulate import init_model
+import PSO_core.messages as msg
 import time
 
 def ops_main_menu():
@@ -15,47 +15,48 @@ def ops_main_menu():
     clear_screen()
     while(op != '1' and op != '2' and op != '3' and op != '4'):# and op != '5' and op != '6'):
         print("\n-------->PSO APP<---------")
-        print("-----\Menú")
-        print("1> Optimizate")
-        print("2> Fitness function test")
-        print("3> Graphics tools")
+        print(f"-----\{msg.MAIN_MENU}")
+        print(f"1> {msg.OPTIMIZATE}")
+        print(f"2> {msg.FFT}")
+        print(f"3> {msg.GRAPHICS_TOOLS}")
         # print("4> Run script")
         # print("5> Set up")
-        print("4> Salir ")
-        op = input("Digite una opción del menú: ")
+        print(f"4> {msg.EXIT}")
+        op = input(msg.ENTER_AN_OPTION)
 
         if op != '1' and op != '2' and op != '3' and op != '4':# and op != '5' and op != '6':
-            wait_to_read("Error, digite una opción valida!")
+            wait_to_read(msg.INVALID_OPTION)
     return int(op)
 
 def ops_set_up_menu():
     op = ""
     clear_screen()
     while(op != '1' and op != '2' and op != '3'):
-        print("\n-----\Configuración")
-        print("1> Modificar valores")
-        print("2> visualizar valores")
-        print("3> Volver ")
-        op = input("Digite una opción del menú: ")
+        print(f"\n-----\{msg.SET_UP_MENU}")
+        print(f"1> {msg.MOD_PATHS}")
+        print(f"2> {msg.SHOW_VALUES}")
+        print(f"3> {msg.BACK}")
+        #print(f"2> {msg.MOD_VALUES}")
+        op = input(msg.ENTER_AN_OPTION)
 
         if op != '1' and op != '2' and op != '3':
-            wait_to_read("Error, digite una opción valida!")
+            wait_to_read(msg.INVALID_OPTION)
     return int(op)
 
 def ops_graphics_tools():
     op = ""
     clear_screen()
     while(op != '1' and op != '2' and op != '3' and op != '4' and op != '5'):
-        print("-----\Graphics tools")
-        print("1> Graficar un reporte")
-        print("2> Graficar una iteración completa")
-        print("3> Graficar una ejecución completa")
-        print("4> Graficar una comparación de reportes")
-        print("5> Salir ")
-        op = input("Digite una opción del menú: ")
+        print(f"-----\{msg.GRAPHICS_TOOLS}")
+        print(f"1> {msg.DW_ONE_REPORT}")
+        print(f"2> {msg.DW_ONE_COMPLETE_ITERATION}")
+        print(f"3> {msg.DW_ONE_COMPLETE_EJECUTION}")
+        print(f"4> {msg.DW_ONE_REPORTS_COMPARITIONS}")
+        print(f"5> {msg.BACK}")
+        op = input(msg.ENTER_AN_OPTION)
 
         if op != '1' and op != '2' and op != '3' and op != '4' and op != '5':
-            wait_to_read("Error, digite una opción valida!")
+            wait_to_read(msg.INVALID_OPTION)
     return int(op)
 
 def graphic_tools_menu():
@@ -75,7 +76,7 @@ def graphic_tools_menu():
             volver = True
             clear_screen()
         else:
-            wait_to_read("Algo salió mal")
+            wait_to_read(msg.ANOMALY_ERR)
 
 def set_up_menu():
     volver = False
@@ -84,22 +85,22 @@ def set_up_menu():
 
         if op == 1:
             info = read_data()
-            print("\nValores actuales:")
+            print(f"\n{msg.CURRENT_VALUES}:")
             for key,value in info['paths'].items():
                 print(key+" -> "+value)
             print()
             for key,value in info['paths'].items():
-                if Y_N_question("¿Desea cambiar el valor de "+key+"?") == "S":
-                    new_val = str(input("Digite el nuevo valor de "+key+": "))
+                if Y_N_question(msg.CHANGE_VALUE_1+key+msg.CHANGE_VALUE_2) == msg.YES:
+                    new_val = str(input(msg.REQUEST_NEW_VAL+key+": "))
                     update_data("paths",key,new_val)
 
                     if read_data()['paths'][key] == new_val:
-                        wait_to_read("Cambio Realizado con exito!")
+                        wait_to_read(msg.CHANGE_SUCESSFULL)
                     else:
-                        wait_to_read("Algo salió mal, trate nuevamente")
+                        wait_to_read(msg.ANOMALY_ERR_2)
         elif op == 2:
             clear_screen()
-            print("\nValores actuales:")
+            print(f"\n{msg.CURRENT_VALUES}:")
             for key,value in read_data()['paths'].items():
                 print(key+" -> "+value)
             wait_to_read("")
@@ -107,7 +108,7 @@ def set_up_menu():
             volver = True
             clear_screen()
         else:
-            wait_to_read("Algo salió mal")
+            wait_to_read(msg.ANOMALY_ERR)
 
 def main_menu(fitness):
     salir = False
@@ -117,17 +118,16 @@ def main_menu(fitness):
             ready = not init_model()
             if ready:
                 main(fitness)
-                wait_to_read("Fin de la ejecución")
+                wait_to_read(msg.END_EXE)
             else:
-                wait_to_read("El archivo del modelo no existe, verifique que su archivo .py este en la carpeta models o que el archivo .aedt exista en la carpeta .../Documents/Ansoft e intente ejecutar el código nuevamente")
+                wait_to_read(msg.INEXISTENT_DESIGN)
         elif op == 2:
             only_fit(fitness)
-            wait_to_read("Fin de la ejecución")
+            wait_to_read(msg.END_EXE)
         elif op == 3:
             graphic_tools_menu()
         elif op == 4:
-            #Tester.launch_tester(fitness)
-            print("\nGracias por usar nuestro software!")
+            print(f"\n{msg.FINAL_MSG}")
             time.sleep(2)
             clear_screen()
             salir = True
@@ -139,4 +139,4 @@ def main_menu(fitness):
         #     clear_screen()
         #     salir = True
         else:
-            wait_to_read("Algo salió mal")
+            wait_to_read(msg.ANOMALY_ERR)

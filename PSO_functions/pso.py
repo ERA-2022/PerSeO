@@ -13,6 +13,7 @@
 #from PSO import fitness_func as fit
 from numpy.core.records import array
 from PSO_core.commands import read_data
+import PSO_core.messages as msg
 import numpy as np
 from numpy.random import seed
 from numpy.random import randn
@@ -70,7 +71,7 @@ class Swarm:
         
         self.particles = [Particle(i) for i in range(self.particles_number )]
         self.x_particles = [Particle(i) for i in range(self.particles_number  )]
-        print("particulas creadas:"+str(len(self.particles)))
+        print(msg.CREATED_PARTICLES+str(len(self.particles)))
 
         interval_array=np.array(self.var_max) - np.array(self.var_min)
         self.vmax = interval_array * 0.6
@@ -175,7 +176,7 @@ class Swarm:
     def get_particle_best_fit(self, pi):
         index_pg = np.argmin(self.pbest) #toma el indice del particle best entre todas las particulas
         self.best_index = index_pg
-        print("get particle best pg="+str(pi[index_pg].values_array))
+        print(msg.GET_BEST_PARTICLE_PG+str(pi[index_pg].values_array))
         self.pg = pi[index_pg].values_array # seleccionar la mejor posicion-particula del array de particulas
         self.gbest = np.min(self.pbest)  #best global fitness 
         return index_pg

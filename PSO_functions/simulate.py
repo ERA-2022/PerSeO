@@ -67,13 +67,13 @@ def run_simulation_hfss(ansys_path = "", args= '-runscriptandexit',file_path = "
     while state and Econt < 22:
         state = bool(subprocess.run([ansys_path, args, file_path]).returncode)
         if state:
-            logging.info(msg.SIM_PARTICLE_FINISHED+", had an error")
-            print("Falló "+str(Econt+1)+" veces, intentando ejecutar de nuevo...")
+            logging.info(msg.SIM_PARTICLE_FINISHED+msg.HAD_AN_ERR)
+            print(msg.EXE_P1_ERR+str(Econt+1)+msg.EXE_P2_ERR)
             if Econt < 21:
                 time.sleep(3+Econt)
             Econt += 1
         else:
-            logging.info(msg.SIM_PARTICLE_FINISHED+" ,no errors")
+            logging.info(msg.SIM_PARTICLE_FINISHED+msg.NO_ERR)
     #print("Intentos: "+str(Econt))
     return state
 
@@ -150,27 +150,6 @@ def read_simulation_results(i,j,graph):
         for graphic, data in dataReports.items():
             specific_graphic_path = general_graphic_path + graphic +"_" + str(i)+"_"+str(j)
             draw_one_report(specific_graphic_path, graphic, data)
-            
-
-    # #derivative_data = np.genfromtxt("Derivative_"+str(i)+"_"+str(j)+".csv", skip_header = 1, delimiter = ',')
-    # #Plot S11 and S21
-
-    # dydx1_31 = np.gradient(s31[:,1],s31[:,0])
-    # dydx2_31 = np.gradient(dydx1_31,s31[:,0])
-
-    # dydx1_21 = np.gradient(s21[:,1],s21[:,0])
-    # dydx2_21 = np.gradient(dydx1_21,s31[:,0])
-    #print("second derivative max"+str(rating))
-    
-    #data_to_plot=[dydx2_31, s31[:,0], dydx2_21, s31[:,0]]
-
-    #create_plot(s11,s41,'Frequency (GHz)',r'S11,S41 (dB)',direccion_graficas_s11,[],-20)
-   
-    #Plot S31 and S41
-    #create_plot(s31,s21,'Frequency (GHz)',r'S31,S21 (dB)',direccion_graficas_s31,data_to_plot,-3)
-
-    #create_plot_imb(amp_imb,'Frequency (GHz)',r'Amplitude Imbalance (dB)',direccion_graficas_amp,1)
-    #create_plot_imb(pha_imb,'Frequency (GHz)',r'Phase Imbalance (Grad)',direccion_graficas_pha,90)
 
     return dataReports
 
@@ -203,10 +182,6 @@ def create_plot(data_1, data_2,label_x, label_y, save_path,derivative_data,bound
     plt.axhline(y=boundary+0.5,color='r', alpha=0.7, linestyle='-')
     plt.axhline(y=boundary-0.5, color='r', alpha=0.7, linestyle='-')
 
-    #if derivative_data!=[]:
-       # plt.plot(derivative_data[1],derivative_data[0],alpha=0.5)
-       # plt.plot(derivative_data[3],derivative_data[2],alpha=0.5)
-    
     plt.plot()
     plt.ylabel(label_y,fontsize=15)
     plt.xlabel(label_x,fontsize=15)
@@ -250,9 +225,9 @@ def init_model():
         state = run_simulation_hfss(file_path = data['paths']['models']+data['values']['project_name']+".py")
         if state or not os.path.isfile(data['paths']['ansys_save_def']+data['values']['project_name']+".aedt"):
             error = True
-            wait_to_read("Error, no se encontró modelo, verifique que el script de su modelo se encuentra en la carpeta models o/y que su archivo .aedt se encuentre en la carpeta Ansoft")
+            wait_to_read(msg.INEXISTENT_DESIGN)
     
     if not error:
-        print("El modelo existe, iniciando proceso de optimización")
+        print(msg.FIND_DESIGN)
     
     return error

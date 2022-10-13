@@ -6,7 +6,7 @@ This package is intended to provide a tool that supports the optimization proces
 We apply optimization algorithms supported on HFSS simulations which provides a reliable tool to evaluate how every alternative geometry bahaves and to collect data derived from every optimization batch.
 
 ## **What's included**
-1. ### **Version: v0.9**
+1. ### **Version: v0.91**
 -   Import and use
 -   PSO optimization algorithm
 -   Log file: Here you can find complete tracking of the optimization process
@@ -173,18 +173,18 @@ For interact with the interfaz of optimizer, you will be acces for the next opti
 
 ```
 -------->PSO APP<---------
------\Menú
+-----\MENU
 1> Optimizate
 2> Fitness function test
 3> Graphics tools
-4> Salir
-Digite una opción del menú:
+4> Exit
+Enter an option:
 ```
 
 ### Optimizate
 Firstly, this option verify that the model exist using the ansys file or python file, in case of the software can't run the files, it will auto run trying to run successful repeatly, if this not result, the software will notify you of error and back to main menu.
 
-once verified that the model exists, the software will ask if you want graphic the reports, for this write 's' or 'n' in the console and press intro, the optimization will start the process creating particles (new dimensions), followed of the simulation in ANSYS of this designs exporting the reports that you need and drawing the graphics (in ../ID/figures/) if is the case for later read and calculate again the fitness function value, dimensions and new particles.This process will repeat for all iterations and particles until end.
+once verified that the model exists, the software will ask if you want graphic the reports, for this write 'Y' or 'N' in the console and press intro, the optimization will start the process creating particles (new dimensions), followed of the simulation in ANSYS of this designs exporting the reports that you need and drawing the graphics (in ../ID/figures/) if is the case for later read and calculate again the fitness function value, dimensions and new particles.This process will repeat for all iterations and particles until end.
 
 All data (for iteration) will save in the output.csv file in ../results/output.csv, here you will find the majority of informatión about the simulatión previously run as your ID, time to start and end, type, category, sub category, parameters of simulation, simulations result, best particles (globals and locals) beside the number of current iteration in this moment among others.
 ### Fitness function test
@@ -197,135 +197,665 @@ All data (for iteration) will save in the output.csv file in ../results/output.c
 This option has a menu that allows draw graphics of reports simulated as follow show
 ```
 -----\Graphics tools
-1> Graficar un reporte
-2> Graficar una iteración completa
-3> Graficar una ejecución completa
-4> Graficar una comparación de reportes
-5> Salir
-Digite una opción del menú:
+1> Draw one report
+2> Draw one complete iterations
+3> Draw one complete ejecution
+4> Draw one reports comparitions
+5> Back
+Enter an option:
 ```
-#### Graficar un reporte
+#### Draw one report
 Firstly, this option will request a previously simulated ID. Later the file name to draw (you could write the '.csv' extensión or not) . Next, you will need define the label of *x* axis, this is associate to magnitude in frequency (not apply to the gain phi graphics) and the process will finish with a message notify that the process end.
 ```
 -----\Graphics tools
-1> Graficar un reporte
-2> Graficar una iteración completa
-3> Graficar una ejecución completa
-4> Graficar una comparación de reportes
-5> Salir
-Digite una opción del menú: 1
-Digite el ID de la simulación previamente ejecutada: f86eb80d-3dd1-403d-a5ad-824081d8835b
-Digite el nombre del archivo: datosVSWR(1)_0_0.csv
-Digite las unidades (ej: Hz, MHz): MHz
+1> Draw one report
+2> Draw one complete iterations
+3> Draw one complete ejecution
+4> Draw one reports comparitions
+5> Back
+Enter an option: 1
+Enter a previously simulate ID: 8b041a42-8bae-4df9-9f44-b909f84038c9
+Enter the file name: amp_imb_0_0
+Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): GHz
 
-El proceso ha terminado, verifique la grafica en la carpeta 'figures' en la carpeta con el ID digitado
-Presione enter para continuar...
+The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
+Press intro to continue...
 ```
 The graphics drawed will save in the figures folder between the ID folder previously request.
-#### Graficar una iteración completa
+#### Draw one complete iterations
 As in the previously option, this will request a previously simulated ID followed by the number of iteration to draw and the label of *x* axis (not apply to the gain phi graphics).  Next, while the software  draw the graphics, in the screen will show the name of drawed files and the process will finish with a notification in the screen.
 
 ```
 -----\Graphics tools
-1> Graficar un reporte
-2> Graficar una iteración completa     
-3> Graficar una ejecución completa     
-4> Graficar una comparación de reportes
-5> Salir
-Digite una opción del menú: 2
-Digite el ID de la simulación previamente ejecutada: f86eb80d-3dd1-403d-a5ad-824081d8835b
-Digite el número de iteración: 1
-Digite las unidades de la frecuencia (ej: KHz, MHz, GHz): MHz
-Graficando ---> datosGananciaPhi0_1_0.csv
-Graficando ---> datosGananciaPhi0_1_1.csv
-Graficando ---> datosGananciaPhi90_1_0.csv
-Graficando ---> datosGananciaPhi90_1_1.csv
-Graficando ---> datosS11_1_0.csv
-Graficando ---> datosS11_1_1.csv
-Graficando ---> datosVSWR(1)_1_0.csv
-Graficando ---> datosVSWR(1)_1_1.csv
-Graficando ---> datosZ11_1_0.csv
-Graficando ---> datosZ11_1_1.csv
+1> Draw one report
+2> Draw one complete iterations 
+3> Draw one complete ejecution  
+4> Draw one reports comparitions
+5> Back
+Enter an option: 2
+Enter a previously simulate ID: 8b041a42-8bae-4df9-9f44-b909f84038c9
+Enter the iteration number: 3
+Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): GHz
+Drawing a graphic ---> amp_imb_3_0.csv
+Drawing a graphic ---> amp_imb_3_1.csv
+Drawing a graphic ---> amp_imb_3_2.csv
+Drawing a graphic ---> amp_imb_3_3.csv
+Drawing a graphic ---> amp_imb_3_4.csv
+Drawing a graphic ---> datosS11_3_0.csv
+Drawing a graphic ---> datosS11_3_1.csv
+Drawing a graphic ---> datosS11_3_2.csv
+Drawing a graphic ---> datosS11_3_3.csv
+Drawing a graphic ---> datosS11_3_4.csv
+Drawing a graphic ---> datosS21_3_0.csv
+Drawing a graphic ---> datosS21_3_1.csv
+Drawing a graphic ---> datosS21_3_2.csv
+Drawing a graphic ---> datosS21_3_3.csv
+Drawing a graphic ---> datosS21_3_4.csv
+Drawing a graphic ---> datosS31_3_0.csv
+Drawing a graphic ---> datosS31_3_1.csv
+Drawing a graphic ---> datosS31_3_2.csv
+Drawing a graphic ---> datosS31_3_3.csv
+Drawing a graphic ---> datosS31_3_4.csv
+Drawing a graphic ---> datosS41_3_0.csv
+Drawing a graphic ---> datosS41_3_1.csv
+Drawing a graphic ---> datosS41_3_2.csv
+Drawing a graphic ---> datosS41_3_3.csv
+Drawing a graphic ---> datosS41_3_4.csv
+Drawing a graphic ---> datosS42_3_0.csv
+Drawing a graphic ---> datosS42_3_1.csv
+Drawing a graphic ---> datosS42_3_2.csv
+Drawing a graphic ---> datosS42_3_3.csv
+Drawing a graphic ---> datosS42_3_4.csv
+Drawing a graphic ---> datosVSWR(1)_3_0.csv
+Drawing a graphic ---> datosVSWR(1)_3_1.csv
+Drawing a graphic ---> datosVSWR(1)_3_2.csv
+Drawing a graphic ---> datosVSWR(1)_3_3.csv
+Drawing a graphic ---> datosVSWR(1)_3_4.csv
+Drawing a graphic ---> datosVSWR(2)_3_0.csv
+Drawing a graphic ---> datosVSWR(2)_3_1.csv
+Drawing a graphic ---> datosVSWR(2)_3_2.csv
+Drawing a graphic ---> datosVSWR(2)_3_3.csv
+Drawing a graphic ---> datosVSWR(2)_3_4.csv
+Drawing a graphic ---> datosVSWR(3)_3_0.csv
+Drawing a graphic ---> datosVSWR(3)_3_1.csv
+Drawing a graphic ---> datosVSWR(3)_3_2.csv
+Drawing a graphic ---> datosVSWR(3)_3_3.csv
+Drawing a graphic ---> datosVSWR(3)_3_4.csv
+Drawing a graphic ---> datosVSWR(4)_3_0.csv
+Drawing a graphic ---> datosVSWR(4)_3_1.csv
+Drawing a graphic ---> datosVSWR(4)_3_2.csv
+Drawing a graphic ---> datosVSWR(4)_3_3.csv
+Drawing a graphic ---> datosVSWR(4)_3_4.csv
+Drawing a graphic ---> datosZ11_3_0.csv
+Drawing a graphic ---> datosZ11_3_1.csv
+Drawing a graphic ---> datosZ11_3_2.csv
+Drawing a graphic ---> datosZ11_3_3.csv
+Drawing a graphic ---> datosZ11_3_4.csv
+Drawing a graphic ---> datosZ21_3_0.csv
+Drawing a graphic ---> datosZ21_3_1.csv
+Drawing a graphic ---> datosZ21_3_2.csv
+Drawing a graphic ---> datosZ21_3_3.csv
+Drawing a graphic ---> datosZ21_3_4.csv
+Drawing a graphic ---> datosZ31_3_0.csv
+Drawing a graphic ---> datosZ31_3_1.csv
+Drawing a graphic ---> datosZ31_3_2.csv
+Drawing a graphic ---> datosZ31_3_3.csv
+Drawing a graphic ---> datosZ31_3_4.csv
+Drawing a graphic ---> datosZ41_3_0.csv
+Drawing a graphic ---> datosZ41_3_1.csv
+Drawing a graphic ---> datosZ41_3_2.csv
+Drawing a graphic ---> datosZ41_3_3.csv
+Drawing a graphic ---> datosZ41_3_4.csv
+Drawing a graphic ---> datosZ42_3_0.csv
+Drawing a graphic ---> datosZ42_3_1.csv
+Drawing a graphic ---> datosZ42_3_2.csv
+Drawing a graphic ---> datosZ42_3_3.csv
+Drawing a graphic ---> datosZ42_3_4.csv
+Drawing a graphic ---> pha_imb_3_0.csv
+Drawing a graphic ---> pha_imb_3_1.csv
+Drawing a graphic ---> pha_imb_3_2.csv
+Drawing a graphic ---> pha_imb_3_3.csv
+Drawing a graphic ---> pha_imb_3_4.csv
 
-El proceso ha terminado, verifique las graficas en la carpeta figures en la carpeta con el ID digitado
-Presione enter para continuar...
+The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
+Press intro to continue...
 ```
 The graphics drawed will save in the figures folder between the ID folder previously request.
-#### Graficar una ejecución completa
+#### Draw one complete ejecution
 As in the previously option, this will request a previously simulated ID and the label of *x* axis (not apply to the gain phi graphics).  Next, while the software  draw the graphics, in the screen will show the name of drawed files and the process will finish with a count of files read and draw followed by a notification in the screen that it finished.
 ```
 -----\Graphics tools
-1> Graficar un reporte
-2> Graficar una iteración completa
-3> Graficar una ejecución completa
-4> Graficar una comparación de reportes
-5> Salir
-Digite una opción del menú: 3
-Digite el ID de la simulación previamente ejecutada: f86eb80d-3dd1-403d-a5ad-824081d8835b
-Digite las unidades de la frecuencia (ej: KHz, MHz, GHz): MHz
-Graficando ---> datosGananciaPhi0_0_0.csv
-Graficando ---> datosGananciaPhi0_0_1.csv
-Graficando ---> datosGananciaPhi0_1_0.csv
-Graficando ---> datosGananciaPhi0_1_1.csv
-Graficando ---> datosGananciaPhi90_0_0.csv
-Graficando ---> datosGananciaPhi90_0_1.csv
-Graficando ---> datosGananciaPhi90_1_0.csv
-Graficando ---> datosGananciaPhi90_1_1.csv
-Graficando ---> datosS11_0_0.csv
-Graficando ---> datosS11_0_1.csv
-Graficando ---> datosS11_1_0.csv
-Graficando ---> datosS11_1_1.csv
-Graficando ---> datosVSWR(1)_0_0.csv
-Graficando ---> datosVSWR(1)_0_1.csv
-Graficando ---> datosVSWR(1)_1_0.csv
-Graficando ---> datosVSWR(1)_1_1.csv
-Graficando ---> datosZ11_0_0.csv
-Graficando ---> datosZ11_0_1.csv
-Graficando ---> datosZ11_1_0.csv
-Graficando ---> datosZ11_1_1.csv
-Archivos leidos y graficados:10
+1> Draw one report
+2> Draw one complete iterations
+3> Draw one complete ejecution
+4> Draw one reports comparitions
+5> Back
+Enter an option: 3
+Enter a previously simulate ID: 8b041a42-8bae-4df9-9f44-b909f84038c9
+Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): GHz
+Drawing a graphic ---> amp_imb_0_0.csv
+Drawing a graphic ---> amp_imb_0_1.csv
+Drawing a graphic ---> amp_imb_0_2.csv
+Drawing a graphic ---> amp_imb_0_3.csv
+Drawing a graphic ---> amp_imb_0_4.csv
+Drawing a graphic ---> amp_imb_1_0.csv
+Drawing a graphic ---> amp_imb_1_1.csv
+Drawing a graphic ---> amp_imb_1_2.csv
+Drawing a graphic ---> amp_imb_1_3.csv
+Drawing a graphic ---> amp_imb_1_4.csv
+Drawing a graphic ---> amp_imb_2_0.csv
+Drawing a graphic ---> amp_imb_2_1.csv
+Drawing a graphic ---> amp_imb_2_2.csv
+Drawing a graphic ---> amp_imb_2_3.csv
+Drawing a graphic ---> amp_imb_2_4.csv
+Drawing a graphic ---> amp_imb_3_0.csv
+Drawing a graphic ---> amp_imb_3_1.csv
+Drawing a graphic ---> amp_imb_3_2.csv
+Drawing a graphic ---> amp_imb_3_3.csv
+Drawing a graphic ---> amp_imb_3_4.csv
+Drawing a graphic ---> amp_imb_4_0.csv
+Drawing a graphic ---> amp_imb_4_1.csv
+Drawing a graphic ---> amp_imb_4_2.csv
+Drawing a graphic ---> amp_imb_4_3.csv
+Drawing a graphic ---> amp_imb_4_4.csv
+Drawing a graphic ---> amp_imb_5_0.csv
+Drawing a graphic ---> amp_imb_5_1.csv
+Drawing a graphic ---> amp_imb_5_2.csv
+Drawing a graphic ---> amp_imb_5_3.csv
+Drawing a graphic ---> amp_imb_5_4.csv
+Drawing a graphic ---> datosS11_0_0.csv
+Drawing a graphic ---> datosS11_0_1.csv
+Drawing a graphic ---> datosS11_0_2.csv
+Drawing a graphic ---> datosS11_0_3.csv
+Drawing a graphic ---> datosS11_0_4.csv
+Drawing a graphic ---> datosS11_1_0.csv
+Drawing a graphic ---> datosS11_1_1.csv
+Drawing a graphic ---> datosS11_1_2.csv
+Drawing a graphic ---> datosS11_1_3.csv
+Drawing a graphic ---> datosS11_1_4.csv
+Drawing a graphic ---> datosS11_2_0.csv
+Drawing a graphic ---> datosS11_2_1.csv
+Drawing a graphic ---> datosS11_2_2.csv
+Drawing a graphic ---> datosS11_2_3.csv
+Drawing a graphic ---> datosS11_2_4.csv
+Drawing a graphic ---> datosS11_3_0.csv
+Drawing a graphic ---> datosS11_3_1.csv
+Drawing a graphic ---> datosS11_3_2.csv
+Drawing a graphic ---> datosS11_3_3.csv
+Drawing a graphic ---> datosS11_3_4.csv
+Drawing a graphic ---> datosS11_4_0.csv
+Drawing a graphic ---> datosS11_4_1.csv
+Drawing a graphic ---> datosS11_4_2.csv
+Drawing a graphic ---> datosS11_4_3.csv
+Drawing a graphic ---> datosS11_4_4.csv
+Drawing a graphic ---> datosS11_5_0.csv
+Drawing a graphic ---> datosS11_5_1.csv
+Drawing a graphic ---> datosS11_5_2.csv
+Drawing a graphic ---> datosS11_5_3.csv
+Drawing a graphic ---> datosS11_5_4.csv
+Drawing a graphic ---> datosS21_0_0.csv
+Drawing a graphic ---> datosS21_0_1.csv
+Drawing a graphic ---> datosS21_0_2.csv
+Drawing a graphic ---> datosS21_0_3.csv
+Drawing a graphic ---> datosS21_0_4.csv
+Drawing a graphic ---> datosS21_1_0.csv
+Drawing a graphic ---> datosS21_1_1.csv
+Drawing a graphic ---> datosS21_1_2.csv
+Drawing a graphic ---> datosS21_1_3.csv
+Drawing a graphic ---> datosS21_1_4.csv
+Drawing a graphic ---> datosS21_2_0.csv
+Drawing a graphic ---> datosS21_2_1.csv
+Drawing a graphic ---> datosS21_2_2.csv
+Drawing a graphic ---> datosS21_2_3.csv
+Drawing a graphic ---> datosS21_2_4.csv
+Drawing a graphic ---> datosS21_3_0.csv
+Drawing a graphic ---> datosS21_3_1.csv
+Drawing a graphic ---> datosS21_3_2.csv
+Drawing a graphic ---> datosS21_3_3.csv
+Drawing a graphic ---> datosS21_3_4.csv
+Drawing a graphic ---> datosS21_4_0.csv
+Drawing a graphic ---> datosS21_4_1.csv
+Drawing a graphic ---> datosS21_4_2.csv
+Drawing a graphic ---> datosS21_4_3.csv
+Drawing a graphic ---> datosS21_4_4.csv
+Drawing a graphic ---> datosS21_5_0.csv
+Drawing a graphic ---> datosS21_5_1.csv
+Drawing a graphic ---> datosS21_5_2.csv
+Drawing a graphic ---> datosS21_5_3.csv
+Drawing a graphic ---> datosS21_5_4.csv
+Drawing a graphic ---> datosS31_0_0.csv
+Drawing a graphic ---> datosS31_0_1.csv
+Drawing a graphic ---> datosS31_0_2.csv
+Drawing a graphic ---> datosS31_0_3.csv
+Drawing a graphic ---> datosS31_0_4.csv
+Drawing a graphic ---> datosS31_1_0.csv
+Drawing a graphic ---> datosS31_1_1.csv
+Drawing a graphic ---> datosS31_1_2.csv
+Drawing a graphic ---> datosS31_1_3.csv
+Drawing a graphic ---> datosS31_1_4.csv
+Drawing a graphic ---> datosS31_2_0.csv
+Drawing a graphic ---> datosS31_2_1.csv
+Drawing a graphic ---> datosS31_2_2.csv
+Drawing a graphic ---> datosS31_2_3.csv
+Drawing a graphic ---> datosS31_2_4.csv
+Drawing a graphic ---> datosS31_3_0.csv
+Drawing a graphic ---> datosS31_3_1.csv
+Drawing a graphic ---> datosS31_3_2.csv
+Drawing a graphic ---> datosS31_3_3.csv
+Drawing a graphic ---> datosS31_3_4.csv
+Drawing a graphic ---> datosS31_4_0.csv
+Drawing a graphic ---> datosS31_4_1.csv
+Drawing a graphic ---> datosS31_4_2.csv
+Drawing a graphic ---> datosS31_4_3.csv
+Drawing a graphic ---> datosS31_4_4.csv
+Drawing a graphic ---> datosS31_5_0.csv
+Drawing a graphic ---> datosS31_5_1.csv
+Drawing a graphic ---> datosS31_5_2.csv
+Drawing a graphic ---> datosS31_5_3.csv
+Drawing a graphic ---> datosS31_5_4.csv
+Drawing a graphic ---> datosS41_0_0.csv
+Drawing a graphic ---> datosS41_0_1.csv
+Drawing a graphic ---> datosS41_0_2.csv
+Drawing a graphic ---> datosS41_0_3.csv
+Drawing a graphic ---> datosS41_0_4.csv
+Drawing a graphic ---> datosS41_1_0.csv
+Drawing a graphic ---> datosS41_1_1.csv
+Drawing a graphic ---> datosS41_1_2.csv
+Drawing a graphic ---> datosS41_1_3.csv
+Drawing a graphic ---> datosS41_1_4.csv
+Drawing a graphic ---> datosS41_2_0.csv
+Drawing a graphic ---> datosS41_2_1.csv
+Drawing a graphic ---> datosS41_2_2.csv
+Drawing a graphic ---> datosS41_2_3.csv
+Drawing a graphic ---> datosS41_2_4.csv
+Drawing a graphic ---> datosS41_3_0.csv
+Drawing a graphic ---> datosS41_3_1.csv
+Drawing a graphic ---> datosS41_3_2.csv
+Drawing a graphic ---> datosS41_3_3.csv
+Drawing a graphic ---> datosS41_3_4.csv
+Drawing a graphic ---> datosS41_4_0.csv
+Drawing a graphic ---> datosS41_4_1.csv
+Drawing a graphic ---> datosS41_4_2.csv
+Drawing a graphic ---> datosS41_4_3.csv
+Drawing a graphic ---> datosS41_4_4.csv
+Drawing a graphic ---> datosS41_5_0.csv
+Drawing a graphic ---> datosS41_5_1.csv
+Drawing a graphic ---> datosS41_5_2.csv
+Drawing a graphic ---> datosS41_5_3.csv
+Drawing a graphic ---> datosS41_5_4.csv
+Drawing a graphic ---> datosS42_0_0.csv
+Drawing a graphic ---> datosS42_0_1.csv
+Drawing a graphic ---> datosS42_0_2.csv
+Drawing a graphic ---> datosS42_0_3.csv
+Drawing a graphic ---> datosS42_0_4.csv
+Drawing a graphic ---> datosS42_1_0.csv
+Drawing a graphic ---> datosS42_1_1.csv
+Drawing a graphic ---> datosS42_1_2.csv
+Drawing a graphic ---> datosS42_1_3.csv
+Drawing a graphic ---> datosS42_1_4.csv
+Drawing a graphic ---> datosS42_2_0.csv
+Drawing a graphic ---> datosS42_2_1.csv
+Drawing a graphic ---> datosS42_2_2.csv
+Drawing a graphic ---> datosS42_2_3.csv
+Drawing a graphic ---> datosS42_2_4.csv
+Drawing a graphic ---> datosS42_3_0.csv
+Drawing a graphic ---> datosS42_3_1.csv
+Drawing a graphic ---> datosS42_3_2.csv
+Drawing a graphic ---> datosS42_3_3.csv
+Drawing a graphic ---> datosS42_3_4.csv
+Drawing a graphic ---> datosS42_4_0.csv
+Drawing a graphic ---> datosS42_4_1.csv
+Drawing a graphic ---> datosS42_4_2.csv
+Drawing a graphic ---> datosS42_4_3.csv
+Drawing a graphic ---> datosS42_4_4.csv
+Drawing a graphic ---> datosS42_5_0.csv
+Drawing a graphic ---> datosS42_5_1.csv
+Drawing a graphic ---> datosS42_5_2.csv
+Drawing a graphic ---> datosS42_5_3.csv
+Drawing a graphic ---> datosS42_5_4.csv
+Drawing a graphic ---> datosVSWR(1)_0_0.csv
+Drawing a graphic ---> datosVSWR(1)_0_1.csv
+Drawing a graphic ---> datosVSWR(1)_0_2.csv
+Drawing a graphic ---> datosVSWR(1)_0_3.csv
+Drawing a graphic ---> datosVSWR(1)_0_4.csv
+Drawing a graphic ---> datosVSWR(1)_1_0.csv
+Drawing a graphic ---> datosVSWR(1)_1_1.csv
+Drawing a graphic ---> datosVSWR(1)_1_2.csv
+Drawing a graphic ---> datosVSWR(1)_1_3.csv
+Drawing a graphic ---> datosVSWR(1)_1_4.csv
+Drawing a graphic ---> datosVSWR(1)_2_0.csv
+Drawing a graphic ---> datosVSWR(1)_2_1.csv
+Drawing a graphic ---> datosVSWR(1)_2_2.csv
+Drawing a graphic ---> datosVSWR(1)_2_3.csv
+Drawing a graphic ---> datosVSWR(1)_2_4.csv
+Drawing a graphic ---> datosVSWR(1)_3_0.csv
+Drawing a graphic ---> datosVSWR(1)_3_1.csv
+Drawing a graphic ---> datosVSWR(1)_3_2.csv
+Drawing a graphic ---> datosVSWR(1)_3_3.csv
+Drawing a graphic ---> datosVSWR(1)_3_4.csv
+Drawing a graphic ---> datosVSWR(1)_4_0.csv
+Drawing a graphic ---> datosVSWR(1)_4_1.csv
+Drawing a graphic ---> datosVSWR(1)_4_2.csv
+Drawing a graphic ---> datosVSWR(1)_4_3.csv
+Drawing a graphic ---> datosVSWR(1)_4_4.csv
+Drawing a graphic ---> datosVSWR(1)_5_0.csv
+Drawing a graphic ---> datosVSWR(1)_5_1.csv
+Drawing a graphic ---> datosVSWR(1)_5_2.csv
+Drawing a graphic ---> datosVSWR(1)_5_3.csv
+Drawing a graphic ---> datosVSWR(1)_5_4.csv
+Drawing a graphic ---> datosVSWR(2)_0_0.csv
+Drawing a graphic ---> datosVSWR(2)_0_1.csv
+Drawing a graphic ---> datosVSWR(2)_0_2.csv
+Drawing a graphic ---> datosVSWR(2)_0_3.csv
+Drawing a graphic ---> datosVSWR(2)_0_4.csv
+Drawing a graphic ---> datosVSWR(2)_1_0.csv
+Drawing a graphic ---> datosVSWR(2)_1_1.csv
+Drawing a graphic ---> datosVSWR(2)_1_2.csv
+Drawing a graphic ---> datosVSWR(2)_1_3.csv
+Drawing a graphic ---> datosVSWR(2)_1_4.csv
+Drawing a graphic ---> datosVSWR(2)_2_0.csv
+Drawing a graphic ---> datosVSWR(2)_2_1.csv
+Drawing a graphic ---> datosVSWR(2)_2_2.csv
+Drawing a graphic ---> datosVSWR(2)_2_3.csv
+Drawing a graphic ---> datosVSWR(2)_2_4.csv
+Drawing a graphic ---> datosVSWR(2)_3_0.csv
+Drawing a graphic ---> datosVSWR(2)_3_1.csv
+Drawing a graphic ---> datosVSWR(2)_3_2.csv
+Drawing a graphic ---> datosVSWR(2)_3_3.csv
+Drawing a graphic ---> datosVSWR(2)_3_4.csv
+Drawing a graphic ---> datosVSWR(2)_4_0.csv
+Drawing a graphic ---> datosVSWR(2)_4_1.csv
+Drawing a graphic ---> datosVSWR(2)_4_2.csv
+Drawing a graphic ---> datosVSWR(2)_4_3.csv
+Drawing a graphic ---> datosVSWR(2)_4_4.csv
+Drawing a graphic ---> datosVSWR(2)_5_0.csv
+Drawing a graphic ---> datosVSWR(2)_5_1.csv
+Drawing a graphic ---> datosVSWR(2)_5_2.csv
+Drawing a graphic ---> datosVSWR(2)_5_3.csv
+Drawing a graphic ---> datosVSWR(2)_5_4.csv
+Drawing a graphic ---> datosVSWR(3)_0_0.csv
+Drawing a graphic ---> datosVSWR(3)_0_1.csv
+Drawing a graphic ---> datosVSWR(3)_0_2.csv
+Drawing a graphic ---> datosVSWR(3)_0_3.csv
+Drawing a graphic ---> datosVSWR(3)_0_4.csv
+Drawing a graphic ---> datosVSWR(3)_1_0.csv
+Drawing a graphic ---> datosVSWR(3)_1_1.csv
+Drawing a graphic ---> datosVSWR(3)_1_2.csv
+Drawing a graphic ---> datosVSWR(3)_1_3.csv
+Drawing a graphic ---> datosVSWR(3)_1_4.csv
+Drawing a graphic ---> datosVSWR(3)_2_0.csv
+Drawing a graphic ---> datosVSWR(3)_2_1.csv
+Drawing a graphic ---> datosVSWR(3)_2_2.csv
+Drawing a graphic ---> datosVSWR(3)_2_3.csv
+Drawing a graphic ---> datosVSWR(3)_2_4.csv
+Drawing a graphic ---> datosVSWR(3)_3_0.csv
+Drawing a graphic ---> datosVSWR(3)_3_1.csv
+Drawing a graphic ---> datosVSWR(3)_3_2.csv
+Drawing a graphic ---> datosVSWR(3)_3_3.csv
+Drawing a graphic ---> datosVSWR(3)_3_4.csv
+Drawing a graphic ---> datosVSWR(3)_4_0.csv
+Drawing a graphic ---> datosVSWR(3)_4_1.csv
+Drawing a graphic ---> datosVSWR(3)_4_2.csv
+Drawing a graphic ---> datosVSWR(3)_4_3.csv
+Drawing a graphic ---> datosVSWR(3)_4_4.csv
+Drawing a graphic ---> datosVSWR(3)_5_0.csv
+Drawing a graphic ---> datosVSWR(3)_5_1.csv
+Drawing a graphic ---> datosVSWR(3)_5_2.csv
+Drawing a graphic ---> datosVSWR(3)_5_3.csv
+Drawing a graphic ---> datosVSWR(3)_5_4.csv
+Drawing a graphic ---> datosVSWR(4)_0_0.csv
+Drawing a graphic ---> datosVSWR(4)_0_1.csv
+Drawing a graphic ---> datosVSWR(4)_0_2.csv
+Drawing a graphic ---> datosVSWR(4)_0_3.csv
+Drawing a graphic ---> datosVSWR(4)_0_4.csv
+Drawing a graphic ---> datosVSWR(4)_1_0.csv
+Drawing a graphic ---> datosVSWR(4)_1_1.csv
+Drawing a graphic ---> datosVSWR(4)_1_2.csv
+Drawing a graphic ---> datosVSWR(4)_1_3.csv
+Drawing a graphic ---> datosVSWR(4)_1_4.csv
+Drawing a graphic ---> datosVSWR(4)_2_0.csv
+Drawing a graphic ---> datosVSWR(4)_2_1.csv
+Drawing a graphic ---> datosVSWR(4)_2_2.csv
+Drawing a graphic ---> datosVSWR(4)_2_3.csv
+Drawing a graphic ---> datosVSWR(4)_2_4.csv
+Drawing a graphic ---> datosVSWR(4)_3_0.csv
+Drawing a graphic ---> datosVSWR(4)_3_1.csv
+Drawing a graphic ---> datosVSWR(4)_3_2.csv
+Drawing a graphic ---> datosVSWR(4)_3_3.csv
+Drawing a graphic ---> datosVSWR(4)_3_4.csv
+Drawing a graphic ---> datosVSWR(4)_4_0.csv
+Drawing a graphic ---> datosVSWR(4)_4_1.csv
+Drawing a graphic ---> datosVSWR(4)_4_2.csv
+Drawing a graphic ---> datosVSWR(4)_4_3.csv
+Drawing a graphic ---> datosVSWR(4)_4_4.csv
+Drawing a graphic ---> datosVSWR(4)_5_0.csv
+Drawing a graphic ---> datosVSWR(4)_5_1.csv
+Drawing a graphic ---> datosVSWR(4)_5_2.csv
+Drawing a graphic ---> datosVSWR(4)_5_3.csv
+Drawing a graphic ---> datosVSWR(4)_5_4.csv
+Drawing a graphic ---> datosZ11_0_0.csv
+Drawing a graphic ---> datosZ11_0_1.csv
+Drawing a graphic ---> datosZ11_0_2.csv
+Drawing a graphic ---> datosZ11_0_3.csv
+Drawing a graphic ---> datosZ11_0_4.csv
+Drawing a graphic ---> datosZ11_1_0.csv
+Drawing a graphic ---> datosZ11_1_1.csv
+Drawing a graphic ---> datosZ11_1_2.csv
+Drawing a graphic ---> datosZ11_1_3.csv
+Drawing a graphic ---> datosZ11_1_4.csv
+Drawing a graphic ---> datosZ11_2_0.csv
+Drawing a graphic ---> datosZ11_2_1.csv
+Drawing a graphic ---> datosZ11_2_2.csv
+Drawing a graphic ---> datosZ11_2_3.csv
+Drawing a graphic ---> datosZ11_2_4.csv
+Drawing a graphic ---> datosZ11_3_0.csv
+Drawing a graphic ---> datosZ11_3_1.csv
+Drawing a graphic ---> datosZ11_3_2.csv
+Drawing a graphic ---> datosZ11_3_3.csv
+Drawing a graphic ---> datosZ11_3_4.csv
+Drawing a graphic ---> datosZ11_4_0.csv
+Drawing a graphic ---> datosZ11_4_1.csv
+Drawing a graphic ---> datosZ11_4_2.csv
+Drawing a graphic ---> datosZ11_4_3.csv
+Drawing a graphic ---> datosZ11_4_4.csv
+Drawing a graphic ---> datosZ11_5_0.csv
+Drawing a graphic ---> datosZ11_5_1.csv
+Drawing a graphic ---> datosZ11_5_2.csv
+Drawing a graphic ---> datosZ11_5_3.csv
+Drawing a graphic ---> datosZ11_5_4.csv
+Drawing a graphic ---> datosZ21_0_0.csv
+Drawing a graphic ---> datosZ21_0_1.csv
+Drawing a graphic ---> datosZ21_0_2.csv
+Drawing a graphic ---> datosZ21_0_3.csv
+Drawing a graphic ---> datosZ21_0_4.csv
+Drawing a graphic ---> datosZ21_1_0.csv
+Drawing a graphic ---> datosZ21_1_1.csv
+Drawing a graphic ---> datosZ21_1_2.csv
+Drawing a graphic ---> datosZ21_1_3.csv
+Drawing a graphic ---> datosZ21_1_4.csv
+Drawing a graphic ---> datosZ21_2_0.csv
+Drawing a graphic ---> datosZ21_2_1.csv
+Drawing a graphic ---> datosZ21_2_2.csv
+Drawing a graphic ---> datosZ21_2_3.csv
+Drawing a graphic ---> datosZ21_2_4.csv
+Drawing a graphic ---> datosZ21_3_0.csv
+Drawing a graphic ---> datosZ21_3_1.csv
+Drawing a graphic ---> datosZ21_3_2.csv
+Drawing a graphic ---> datosZ21_3_3.csv
+Drawing a graphic ---> datosZ21_3_4.csv
+Drawing a graphic ---> datosZ21_4_0.csv
+Drawing a graphic ---> datosZ21_4_1.csv
+Drawing a graphic ---> datosZ21_4_2.csv
+Drawing a graphic ---> datosZ21_4_3.csv
+Drawing a graphic ---> datosZ21_4_4.csv
+Drawing a graphic ---> datosZ21_5_0.csv
+Drawing a graphic ---> datosZ21_5_1.csv
+Drawing a graphic ---> datosZ21_5_2.csv
+Drawing a graphic ---> datosZ21_5_3.csv
+Drawing a graphic ---> datosZ21_5_4.csv
+Drawing a graphic ---> datosZ31_0_0.csv
+Drawing a graphic ---> datosZ31_0_1.csv
+Drawing a graphic ---> datosZ31_0_2.csv
+Drawing a graphic ---> datosZ31_0_3.csv
+Drawing a graphic ---> datosZ31_0_4.csv
+Drawing a graphic ---> datosZ31_1_0.csv
+Drawing a graphic ---> datosZ31_1_1.csv
+Drawing a graphic ---> datosZ31_1_2.csv
+Drawing a graphic ---> datosZ31_1_3.csv
+Drawing a graphic ---> datosZ31_1_4.csv
+Drawing a graphic ---> datosZ31_2_0.csv
+Drawing a graphic ---> datosZ31_2_1.csv
+Drawing a graphic ---> datosZ31_2_2.csv
+Drawing a graphic ---> datosZ31_2_3.csv
+Drawing a graphic ---> datosZ31_2_4.csv
+Drawing a graphic ---> datosZ31_3_0.csv
+Drawing a graphic ---> datosZ31_3_1.csv
+Drawing a graphic ---> datosZ31_3_2.csv
+Drawing a graphic ---> datosZ31_3_3.csv
+Drawing a graphic ---> datosZ31_3_4.csv
+Drawing a graphic ---> datosZ31_4_0.csv
+Drawing a graphic ---> datosZ31_4_1.csv
+Drawing a graphic ---> datosZ31_4_2.csv
+Drawing a graphic ---> datosZ31_4_3.csv
+Drawing a graphic ---> datosZ31_4_4.csv
+Drawing a graphic ---> datosZ31_5_0.csv
+Drawing a graphic ---> datosZ31_5_1.csv
+Drawing a graphic ---> datosZ31_5_2.csv
+Drawing a graphic ---> datosZ31_5_3.csv
+Drawing a graphic ---> datosZ31_5_4.csv
+Drawing a graphic ---> datosZ41_0_0.csv
+Drawing a graphic ---> datosZ41_0_1.csv
+Drawing a graphic ---> datosZ41_0_2.csv
+Drawing a graphic ---> datosZ41_0_3.csv
+Drawing a graphic ---> datosZ41_0_4.csv
+Drawing a graphic ---> datosZ41_1_0.csv
+Drawing a graphic ---> datosZ41_1_1.csv
+Drawing a graphic ---> datosZ41_1_2.csv
+Drawing a graphic ---> datosZ41_1_3.csv
+Drawing a graphic ---> datosZ41_1_4.csv
+Drawing a graphic ---> datosZ41_2_0.csv
+Drawing a graphic ---> datosZ41_2_1.csv
+Drawing a graphic ---> datosZ41_2_2.csv
+Drawing a graphic ---> datosZ41_2_3.csv
+Drawing a graphic ---> datosZ41_2_4.csv
+Drawing a graphic ---> datosZ41_3_0.csv
+Drawing a graphic ---> datosZ41_3_1.csv
+Drawing a graphic ---> datosZ41_3_2.csv
+Drawing a graphic ---> datosZ41_3_3.csv
+Drawing a graphic ---> datosZ41_3_4.csv
+Drawing a graphic ---> datosZ41_4_0.csv
+Drawing a graphic ---> datosZ41_4_1.csv
+Drawing a graphic ---> datosZ41_4_2.csv
+Drawing a graphic ---> datosZ41_4_3.csv
+Drawing a graphic ---> datosZ41_4_4.csv
+Drawing a graphic ---> datosZ41_5_0.csv
+Drawing a graphic ---> datosZ41_5_1.csv
+Drawing a graphic ---> datosZ41_5_2.csv
+Drawing a graphic ---> datosZ41_5_3.csv
+Drawing a graphic ---> datosZ41_5_4.csv
+Drawing a graphic ---> datosZ42_0_0.csv
+Drawing a graphic ---> datosZ42_0_1.csv
+Drawing a graphic ---> datosZ42_0_2.csv
+Drawing a graphic ---> datosZ42_0_3.csv
+Drawing a graphic ---> datosZ42_0_4.csv
+Drawing a graphic ---> datosZ42_1_0.csv
+Drawing a graphic ---> datosZ42_1_1.csv
+Drawing a graphic ---> datosZ42_1_2.csv
+Drawing a graphic ---> datosZ42_1_3.csv
+Drawing a graphic ---> datosZ42_1_4.csv
+Drawing a graphic ---> datosZ42_2_0.csv
+Drawing a graphic ---> datosZ42_2_1.csv
+Drawing a graphic ---> datosZ42_2_2.csv
+Drawing a graphic ---> datosZ42_2_3.csv
+Drawing a graphic ---> datosZ42_2_4.csv
+Drawing a graphic ---> datosZ42_3_0.csv
+Drawing a graphic ---> datosZ42_3_1.csv
+Drawing a graphic ---> datosZ42_3_2.csv
+Drawing a graphic ---> datosZ42_3_3.csv
+Drawing a graphic ---> datosZ42_3_4.csv
+Drawing a graphic ---> datosZ42_4_0.csv
+Drawing a graphic ---> datosZ42_4_1.csv
+Drawing a graphic ---> datosZ42_4_2.csv
+Drawing a graphic ---> datosZ42_4_3.csv
+Drawing a graphic ---> datosZ42_4_4.csv
+Drawing a graphic ---> datosZ42_5_0.csv
+Drawing a graphic ---> datosZ42_5_1.csv
+Drawing a graphic ---> datosZ42_5_2.csv
+Drawing a graphic ---> datosZ42_5_3.csv
+Drawing a graphic ---> datosZ42_5_4.csv
+Drawing a graphic ---> pha_imb_0_0.csv
+Drawing a graphic ---> pha_imb_0_1.csv
+Drawing a graphic ---> pha_imb_0_2.csv
+Drawing a graphic ---> pha_imb_0_3.csv
+Drawing a graphic ---> pha_imb_0_4.csv
+Drawing a graphic ---> pha_imb_1_0.csv
+Drawing a graphic ---> pha_imb_1_1.csv
+Drawing a graphic ---> pha_imb_1_2.csv
+Drawing a graphic ---> pha_imb_1_3.csv
+Drawing a graphic ---> pha_imb_1_4.csv
+Drawing a graphic ---> pha_imb_2_0.csv
+Drawing a graphic ---> pha_imb_2_1.csv
+Drawing a graphic ---> pha_imb_2_2.csv
+Drawing a graphic ---> pha_imb_2_3.csv
+Drawing a graphic ---> pha_imb_2_4.csv
+Drawing a graphic ---> pha_imb_3_0.csv
+Drawing a graphic ---> pha_imb_3_1.csv
+Drawing a graphic ---> pha_imb_3_2.csv
+Drawing a graphic ---> pha_imb_3_3.csv
+Drawing a graphic ---> pha_imb_3_4.csv
+Drawing a graphic ---> pha_imb_4_0.csv
+Drawing a graphic ---> pha_imb_4_1.csv
+Drawing a graphic ---> pha_imb_4_2.csv
+Drawing a graphic ---> pha_imb_4_3.csv
+Drawing a graphic ---> pha_imb_4_4.csv
+Drawing a graphic ---> pha_imb_5_0.csv
+Drawing a graphic ---> pha_imb_5_1.csv
+Drawing a graphic ---> pha_imb_5_2.csv
+Drawing a graphic ---> pha_imb_5_3.csv
+Drawing a graphic ---> pha_imb_5_4.csv
+Files read and drawn:480
 
-El proceso ha terminado, verifique las graficas en la carpeta 'figures' en la carpeta con el ID digitado
-Presione enter para continuar...
+The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
+Press intro to continue...
 ```
 The graphics drawed will save in the figures folder between the ID folder previously request.
-#### Graficar una comparación de reportes
+#### Draw one reports comparitions
 For use this option is necessary that the two file have the same magnitude otherwise the graphic could see wrong.
 Firstly, will be request the path (be suggest complete path not relative path) of first file. In the same way, will be request the path of second file. 
 ```
 -----\Graphics tools
-1> Graficar un reporte
-2> Graficar una iteración completa     
-3> Graficar una ejecución completa     
-4> Graficar una comparación de reportes
-5> Salir
-Digite una opción del menú: 4
-Digite la ruta del archivo 1: C:\Users\Astrolab\Documents\Jaime\Temporal\results\f86eb80d-3dd1-403d-a5ad-824081d8835b\files\datosS11_1_0.csv
-Digite la ruta del archivo 2: C:\Users\Astrolab\Documents\Jaime\Temporal\results\ea33b78a-068e-4fa3-9149-c419164c3cfb\files\datosS11_0_1.csv
+1> Draw one report
+2> Draw one complete iterations
+3> Draw one complete ejecution
+4> Draw one reports comparitions
+5> Back
+Enter an option: 4
+Enter the path file 1: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\8b041a42-8bae-4df9-9f44-b909f84038c9\files\amp_imb_0_0.csv
+Enter the path file 2: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\8b041a42-8bae-4df9-9f44-b909f84038c9\files\amp_imb_5_4.csv
 ```
 Next, will be request the save path, however, if you press Intro with this field empty, the save path will be ../results/comparison graphics/
 * Example with specific save path
 ```
-Nota, si presiona enter sin agregar ninguna ruta, esta será guardada en ../results/comparison graphics/
-Digite la ruta donde será guardada la grafica resultante: C:\Users\Astrolab\Documents\Jaime\Comparaciones 
+Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
+Enter the save path: C:\Users\Astrolab\Documents\Jaime\Comparaciones 
 ```
 * Example with default save path
 ```
-Nota, si presiona enter sin agregar ninguna ruta, esta será guardada en ../results/comparison graphics/
-Digite la ruta donde será guardada la grafica resultante:
+Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
+Enter the save path:
 ```
 later, will be request the labels of *x* and *y* axis, the Title of the graphic,this will be the same of the save file name (this name cannot have dots) and the label  of each file tha will present in the graphic. when the process finish a message will notify it
 ```
-Nota, si presiona enter sin agregar ninguna ruta, esta será guardada en ../results/comparison graphics/
-Digite la ruta donde será guardada la grafica resultante: C:\Users\Astrolab\Documents\Jaime\Comparaciones                                       
-Digite la leyenda del eje X: Frequency(MHz)
-Digite la leyenda del eje y: dB 
-Digite el titulo de la gráfica: S11 v1 vs v2
-Digite la leyenda de los datos del archivo 1: v1 ID f86eb...
-Digite la leyenda de los datos del archivo 2: v2 ID ea33b...
+Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
+Enter the save path:
+Enter the axis x label: Frequency (GHz)
+Enter the axis y label: dB
+Enter the graphic title: Amplitud imbalace before to optimization vs after optimization
+Enter the label of the  data to file 1: Initial particle
+Enter the label of the  data to file 2: Optimizate particle
 
-El proceso ha terminado, verifique la grafica en la carpeta 'Comparaciones'
-Presione enter para continuar...
+The process has ended,  verify that the draw graphic is in the entered path or the default path
+Press intro to continue...
 ```
 <!-- ### Set up -->
 ### Exit

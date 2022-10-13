@@ -22,7 +22,7 @@ import PSO_functions.dataManagement as db
 
 def main(fun):
     graph = False
-    if commands.Y_N_question("¿Desea graficar los resutados de los reportes solicitados?") == "S":
+    if commands.Y_N_question(msg.REQUEST_DRAW_GRAPHIC) == msg.YES:
         graph = True
 
     addOp = {"type":True, "graph":graph}
@@ -108,16 +108,16 @@ def run_iterations(iteraciones, swarm:pso.Swarm, db_manager:db.DBManager,fun, ad
     
     for i in range(iteraciones):
         print(msg.NUM_ITERATIONS+str(iteraciones))
-        print("current it:"+str(i))
+        print(msg.CURRENT_ITERATION+str(i))
 
         logging.info(msg.ITERATION + str(i))
-        logging.info("Calculando nuevas particulas...")
+        logging.info(msg.CALC_NEW_PARTICLES)
        
        ### particulas anterior es una copia del objeto arreglo de Particulas
        ### que es propiedad del objeto Swarm
         particulas_anterior = []
         particulas_anterior  = swarm.particles.copy() #Array de particulas
-        logging.info("Calculando las velocidades y posiciones siguientes..")
+        logging.info(msg.CALC_VEL_AND_POS)
 
         ### el objeto swarm se ocupa de crear las particulas nuevas
         ### que realmente son actualizaciones de las particulas anteriores
@@ -218,7 +218,7 @@ def run_iterations(iteraciones, swarm:pso.Swarm, db_manager:db.DBManager,fun, ad
         db_manager.fill_df(data_to_store)
 
     ###Cierre del ciclo
-    print("Minimo global encontrado: "+str(swarm.gbest))
+    print(msg.GLOBAL_MIN_VAL+str(swarm.gbest))
     logging.info(msg.GLOBAL_MIN_VAL+str(swarm.gbest))
 
 def prepare_simulation_file(particle, id):
@@ -227,17 +227,16 @@ def prepare_simulation_file(particle, id):
 def only_fit(fun):
     reports_exist = False
     while not reports_exist:
-        id_for_read = input("Digite el ID de la simulación previamente ejecutada: ")
+        id_for_read = input(msg.REQUEST_ID)
         if not os.path.isdir(read_data()['paths']['results']+id_for_read) or id_for_read == "":
-            msj = "Error, ID no valido o existente!!\n¿Desea digitar otro ID?"
-            if commands.Y_N_question(msj) == "N":
+            if commands.Y_N_question(msg.INVALID_ID_ERR) == msg.NO:
                 break
         else:
             reports_exist = True
 
     if reports_exist:
         graph = False
-        if commands.Y_N_question("¿Desea graficar los resutados de los reportes solicitados?") == "S":
+        if commands.Y_N_question(msg.REQUEST_DRAW_GRAPHIC) == msg.YES:
             graph = True
         start_time = datetime.today()
         addOp = {"type":False, "graph":graph}
