@@ -18,7 +18,28 @@ We apply optimization algorithms supported on HFSS simulations which provides a 
 2. ### **Requirements**
     _Things you need to set prior executing the script._
 *   [Requirements file](requirements.txt) - Make sure to install all requirements from requirements.txt file
-*   *Design_name.py* or *Design_name.aedt* - Add to the models folder located in the root folder a file contains the geometric model for HFSS (Python file), in case that the model will be a .aedt file, add this file to Ansoft folder located in Documents folder (default folder that create HFSS). The name of the .py file or .aedt file  must be equal of the project name.
+    > **Note**
+    > use _pip install -r requirements.txt_ in your cmd for install all requirements
+*   *Design_name.py* or *Design_name.aedt* - Add to the models folder located in the root folder a file contains the geometric model for HFSS (Python file), in case that the model will be a .aedt file, add this file to Ansoft folder located in Documents folder (default folder that create HFSS). in both cases (.py or .aedt files), the name of the file must be equal to the project name. 
+
+    The following example exposes a part of a python file with a dipole blade antenna geometry. Verify that the name of your file (.py or .aedt) is the same as the line responsible to define the project's name
+```
+# ----------------------------------------------
+# Script Recorded by Ansys Electronics Desktop Student Version 2021.2.0
+# 15:07:57  may. 26, 2022
+# ----------------------------------------------
+import PSO_core.ansys_functions as fn
+
+import ScriptEnv
+ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
+oDesktop.RestoreWindow()
+oProject = oDesktop.NewProject()
+oProject.Rename("C:/Users/Astrolab/Documents/Ansoft/DIPOLE_BLADE_ANTENNA.aedt", True) #This line is responsible for the path and renaming the project
+oProject.InsertDesign("HFSS", "HFSSDesign1", "HFSS Modal Network", "")
+oDesign = oProject.SetActiveDesign("HFSSDesign1")
+oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
+...
+```
 
 *   __First step:__ You have to make sure to add the following imports to your main script.
     ```
@@ -32,14 +53,14 @@ We apply optimization algorithms supported on HFSS simulations which provides a 
     * Sub category of structure
     * Project name
     * Design name
-    * Variable name or name of name the array where are the dimensions
+    * Variable name or name of the array where are the dimensions
     * Units (about of distance)
     * Maximum values that can vary the optimizator
     * Minimum values that can vary the optimizator
     * Nominals or default values of design
     * Number of iteratios
     * Number of particles
-    <!-- * Number of branches  Posiblemente se elimine -->
+    * Number of branches  <!-- Posiblemente se elimine -->
     * Description about of simulation and relevant information
     * Reports what do you need for the fitness function
     
@@ -130,24 +151,24 @@ We apply optimization algorithms supported on HFSS simulations which provides a 
 
     the order of arguments in the init_system method is:
 
-    | Position |  argument name | data type |
-    |:--------:|:--------------:|:---------:|
-    |     1    |    ansys_exe   |    str    |
-    |     2    | ansys_save_def |    str    |
-    |     3    |  project_name  |    str    |
-    |     4    |   design_name  |    str    |
-    |     5    |  variable_name |    str    |
-    |     6    |      units     |    str    |
-    |     7    |       max      |    lst    |
-    |     8    |       min      |    lst    |
-    |     9    |     nomilas    |    lst    |
-    |    10    |   iterations   |    int    |
-    |    11    |    particles   |    int    |
-    |    12    |    branches    |    int    |
-    |    13    |     reports    |    dict   |
-    |    14    |    category    |    str    |
-    |    15    |  sub_category  |    str    |
-    |    16    |   description  |    str    |
+    | Position |  argument name | data type | description |
+    |:--------:|:--------------:|:---------:| :---------:|
+    |     1    |    ansys_exe   |    str    | A string that saves the executable path of Ansys |
+    |     2    | ansys_save_def |    str    | A string that saves the default save path of Ansys |
+    |     3    |  project_name  |    str    | A string that saves the project's name  |
+    |     4    |   design_name  |    str    | A string that saves the designs's name |
+    |     5    |  variable_name |    str    | Variable name or name of the array where are the dimensions |
+    |     6    |      units     |    str    | A string that contains the units of dimensions (in distance) of the design |
+    |     7    |       max      |    lst    | A list with maximun values that can take the PSO for the particles, this values must be integers |
+    |     8    |       min      |    lst    | A list with minimum values that can take the PSO for the particles, these values must be integers |
+    |     9    |     nomilas    |    lst    | A list with default values that can take the PSO for the particles, these values must be integers |
+    |    10    |   iterations   |    int    | An integer that defines how many iterations will execute the code |
+    |    11    |    particles   |    int    | An integer that defines how many particles will be created |
+    |    12    |    branches    |    int    | An integer that defines how many branches have the hybrid |
+    |    13    |     reports    |    dict   | A dictionary containing the required reports will be used in the fitness function. Among these reports are: parameter  Smn, parameter Zmn, Gain phi x angle, Amplitude imbalance, phase imbalance, and VSWR(x port) |
+    |    14    |    category    |    str    | A string that contains the category of design, for example, “Antenna”, “Hybrid”, “Filter”, among others |
+    |    15    |  sub_category  |    str    | A string that contains the category of design, for example, "Dipole blade", "Low pass", "8 branches", among others |
+    |    16    |   description  |    str    | A string with add/relevant information on design |
 
     As you see in the next example (using the data before defined):
     ```
@@ -184,7 +205,7 @@ Enter an option:
 ### Optimizate
 Firstly, this option verify that the model exist using the ansys file or python file, in case of the software can't run the files, it will auto run trying to run successful repeatly, if this not result, the software will notify you of error and back to main menu.
 
-once verified that the model exists, the software will ask if you want graphic the reports, for this write 'Y' or 'N' in the console and press intro, the optimization will start the process creating particles (new dimensions), followed of the simulation in ANSYS of this designs exporting the reports that you need and drawing the graphics (in ../ID/figures/) if is the case for later read and calculate again the fitness function value, dimensions and new particles.This process will repeat for all iterations and particles until end.
+Once the model is verified, the software will ask if you want to graphic the reports. Write 'Y' or 'N' in the console and press the Intro. The optimization will start the process of creating the particles (new random dimensions), followed by the simulation of this design in ANSYS, exporting the reports previously request, and according to requirement drawing the graphics (saves it in ../ID/figures/).later, with the data reports the software will evaluate the fitness function and new particles dimensions. This process will repeat for all iterations and particles until the end.
 
 All data (for iteration) will save in the output.csv file in ../results/output.csv, here you will find the majority of informatión about the simulatión previously run as your ID, time to start and end, type, category, sub category, parameters of simulation, simulations result, best particles (globals and locals) beside the number of current iteration in this moment among others.
 ### Fitness function test
@@ -214,9 +235,9 @@ Firstly, this option will request a previously simulated ID. Later the file name
 4> Draw one reports comparitions
 5> Back
 Enter an option: 1
-Enter a previously simulate ID: 8b041a42-8bae-4df9-9f44-b909f84038c9
-Enter the file name: amp_imb_0_0
-Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): GHz
+Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
+Enter the file name: datosS11_1_0.csv
+Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): MHz
 
 The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
 Press intro to continue...
@@ -228,94 +249,24 @@ As in the previously option, this will request a previously simulated ID followe
 ```
 -----\Graphics tools
 1> Draw one report
-2> Draw one complete iterations 
-3> Draw one complete ejecution  
+2> Draw one complete iterations
+3> Draw one complete ejecution
 4> Draw one reports comparitions
 5> Back
 Enter an option: 2
-Enter a previously simulate ID: 8b041a42-8bae-4df9-9f44-b909f84038c9
-Enter the iteration number: 3
-Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): GHz
-Drawing a graphic ---> amp_imb_3_0.csv
-Drawing a graphic ---> amp_imb_3_1.csv
-Drawing a graphic ---> amp_imb_3_2.csv
-Drawing a graphic ---> amp_imb_3_3.csv
-Drawing a graphic ---> amp_imb_3_4.csv
-Drawing a graphic ---> datosS11_3_0.csv
-Drawing a graphic ---> datosS11_3_1.csv
-Drawing a graphic ---> datosS11_3_2.csv
-Drawing a graphic ---> datosS11_3_3.csv
-Drawing a graphic ---> datosS11_3_4.csv
-Drawing a graphic ---> datosS21_3_0.csv
-Drawing a graphic ---> datosS21_3_1.csv
-Drawing a graphic ---> datosS21_3_2.csv
-Drawing a graphic ---> datosS21_3_3.csv
-Drawing a graphic ---> datosS21_3_4.csv
-Drawing a graphic ---> datosS31_3_0.csv
-Drawing a graphic ---> datosS31_3_1.csv
-Drawing a graphic ---> datosS31_3_2.csv
-Drawing a graphic ---> datosS31_3_3.csv
-Drawing a graphic ---> datosS31_3_4.csv
-Drawing a graphic ---> datosS41_3_0.csv
-Drawing a graphic ---> datosS41_3_1.csv
-Drawing a graphic ---> datosS41_3_2.csv
-Drawing a graphic ---> datosS41_3_3.csv
-Drawing a graphic ---> datosS41_3_4.csv
-Drawing a graphic ---> datosS42_3_0.csv
-Drawing a graphic ---> datosS42_3_1.csv
-Drawing a graphic ---> datosS42_3_2.csv
-Drawing a graphic ---> datosS42_3_3.csv
-Drawing a graphic ---> datosS42_3_4.csv
-Drawing a graphic ---> datosVSWR(1)_3_0.csv
-Drawing a graphic ---> datosVSWR(1)_3_1.csv
-Drawing a graphic ---> datosVSWR(1)_3_2.csv
-Drawing a graphic ---> datosVSWR(1)_3_3.csv
-Drawing a graphic ---> datosVSWR(1)_3_4.csv
-Drawing a graphic ---> datosVSWR(2)_3_0.csv
-Drawing a graphic ---> datosVSWR(2)_3_1.csv
-Drawing a graphic ---> datosVSWR(2)_3_2.csv
-Drawing a graphic ---> datosVSWR(2)_3_3.csv
-Drawing a graphic ---> datosVSWR(2)_3_4.csv
-Drawing a graphic ---> datosVSWR(3)_3_0.csv
-Drawing a graphic ---> datosVSWR(3)_3_1.csv
-Drawing a graphic ---> datosVSWR(3)_3_2.csv
-Drawing a graphic ---> datosVSWR(3)_3_3.csv
-Drawing a graphic ---> datosVSWR(3)_3_4.csv
-Drawing a graphic ---> datosVSWR(4)_3_0.csv
-Drawing a graphic ---> datosVSWR(4)_3_1.csv
-Drawing a graphic ---> datosVSWR(4)_3_2.csv
-Drawing a graphic ---> datosVSWR(4)_3_3.csv
-Drawing a graphic ---> datosVSWR(4)_3_4.csv
-Drawing a graphic ---> datosZ11_3_0.csv
-Drawing a graphic ---> datosZ11_3_1.csv
-Drawing a graphic ---> datosZ11_3_2.csv
-Drawing a graphic ---> datosZ11_3_3.csv
-Drawing a graphic ---> datosZ11_3_4.csv
-Drawing a graphic ---> datosZ21_3_0.csv
-Drawing a graphic ---> datosZ21_3_1.csv
-Drawing a graphic ---> datosZ21_3_2.csv
-Drawing a graphic ---> datosZ21_3_3.csv
-Drawing a graphic ---> datosZ21_3_4.csv
-Drawing a graphic ---> datosZ31_3_0.csv
-Drawing a graphic ---> datosZ31_3_1.csv
-Drawing a graphic ---> datosZ31_3_2.csv
-Drawing a graphic ---> datosZ31_3_3.csv
-Drawing a graphic ---> datosZ31_3_4.csv
-Drawing a graphic ---> datosZ41_3_0.csv
-Drawing a graphic ---> datosZ41_3_1.csv
-Drawing a graphic ---> datosZ41_3_2.csv
-Drawing a graphic ---> datosZ41_3_3.csv
-Drawing a graphic ---> datosZ41_3_4.csv
-Drawing a graphic ---> datosZ42_3_0.csv
-Drawing a graphic ---> datosZ42_3_1.csv
-Drawing a graphic ---> datosZ42_3_2.csv
-Drawing a graphic ---> datosZ42_3_3.csv
-Drawing a graphic ---> datosZ42_3_4.csv
-Drawing a graphic ---> pha_imb_3_0.csv
-Drawing a graphic ---> pha_imb_3_1.csv
-Drawing a graphic ---> pha_imb_3_2.csv
-Drawing a graphic ---> pha_imb_3_3.csv
-Drawing a graphic ---> pha_imb_3_4.csv
+Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
+Enter the iteration number: 2
+Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): MHz
+Drawing a graphic ---> datosGananciaPhi0_2_0.csv
+Drawing a graphic ---> datosGananciaPhi0_2_1.csv
+Drawing a graphic ---> datosGananciaPhi90_2_0.csv
+Drawing a graphic ---> datosGananciaPhi90_2_1.csv
+Drawing a graphic ---> datosS11_2_0.csv
+Drawing a graphic ---> datosS11_2_1.csv
+Drawing a graphic ---> datosVSWR(1)_2_0.csv
+Drawing a graphic ---> datosVSWR(1)_2_1.csv
+Drawing a graphic ---> datosZ11_2_0.csv
+Drawing a graphic ---> datosZ11_2_1.csv
 
 The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
 Press intro to continue...
@@ -326,494 +277,44 @@ As in the previously option, this will request a previously simulated ID and the
 ```
 -----\Graphics tools
 1> Draw one report
-2> Draw one complete iterations
-3> Draw one complete ejecution
+2> Draw one complete iterations 
+3> Draw one complete ejecution  
 4> Draw one reports comparitions
 5> Back
 Enter an option: 3
-Enter a previously simulate ID: 8b041a42-8bae-4df9-9f44-b909f84038c9
-Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): GHz
-Drawing a graphic ---> amp_imb_0_0.csv
-Drawing a graphic ---> amp_imb_0_1.csv
-Drawing a graphic ---> amp_imb_0_2.csv
-Drawing a graphic ---> amp_imb_0_3.csv
-Drawing a graphic ---> amp_imb_0_4.csv
-Drawing a graphic ---> amp_imb_1_0.csv
-Drawing a graphic ---> amp_imb_1_1.csv
-Drawing a graphic ---> amp_imb_1_2.csv
-Drawing a graphic ---> amp_imb_1_3.csv
-Drawing a graphic ---> amp_imb_1_4.csv
-Drawing a graphic ---> amp_imb_2_0.csv
-Drawing a graphic ---> amp_imb_2_1.csv
-Drawing a graphic ---> amp_imb_2_2.csv
-Drawing a graphic ---> amp_imb_2_3.csv
-Drawing a graphic ---> amp_imb_2_4.csv
-Drawing a graphic ---> amp_imb_3_0.csv
-Drawing a graphic ---> amp_imb_3_1.csv
-Drawing a graphic ---> amp_imb_3_2.csv
-Drawing a graphic ---> amp_imb_3_3.csv
-Drawing a graphic ---> amp_imb_3_4.csv
-Drawing a graphic ---> amp_imb_4_0.csv
-Drawing a graphic ---> amp_imb_4_1.csv
-Drawing a graphic ---> amp_imb_4_2.csv
-Drawing a graphic ---> amp_imb_4_3.csv
-Drawing a graphic ---> amp_imb_4_4.csv
-Drawing a graphic ---> amp_imb_5_0.csv
-Drawing a graphic ---> amp_imb_5_1.csv
-Drawing a graphic ---> amp_imb_5_2.csv
-Drawing a graphic ---> amp_imb_5_3.csv
-Drawing a graphic ---> amp_imb_5_4.csv
+Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
+Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): MHz
+Drawing a graphic ---> datosGananciaPhi0_0_0.csv
+Drawing a graphic ---> datosGananciaPhi0_0_1.csv
+Drawing a graphic ---> datosGananciaPhi0_1_0.csv
+Drawing a graphic ---> datosGananciaPhi0_1_1.csv
+Drawing a graphic ---> datosGananciaPhi0_2_0.csv
+Drawing a graphic ---> datosGananciaPhi0_2_1.csv
+Drawing a graphic ---> datosGananciaPhi90_0_0.csv
+Drawing a graphic ---> datosGananciaPhi90_0_1.csv
+Drawing a graphic ---> datosGananciaPhi90_1_0.csv
+Drawing a graphic ---> datosGananciaPhi90_1_1.csv
+Drawing a graphic ---> datosGananciaPhi90_2_0.csv
+Drawing a graphic ---> datosGananciaPhi90_2_1.csv
 Drawing a graphic ---> datosS11_0_0.csv
 Drawing a graphic ---> datosS11_0_1.csv
-Drawing a graphic ---> datosS11_0_2.csv
-Drawing a graphic ---> datosS11_0_3.csv
-Drawing a graphic ---> datosS11_0_4.csv
 Drawing a graphic ---> datosS11_1_0.csv
 Drawing a graphic ---> datosS11_1_1.csv
-Drawing a graphic ---> datosS11_1_2.csv
-Drawing a graphic ---> datosS11_1_3.csv
-Drawing a graphic ---> datosS11_1_4.csv
 Drawing a graphic ---> datosS11_2_0.csv
 Drawing a graphic ---> datosS11_2_1.csv
-Drawing a graphic ---> datosS11_2_2.csv
-Drawing a graphic ---> datosS11_2_3.csv
-Drawing a graphic ---> datosS11_2_4.csv
-Drawing a graphic ---> datosS11_3_0.csv
-Drawing a graphic ---> datosS11_3_1.csv
-Drawing a graphic ---> datosS11_3_2.csv
-Drawing a graphic ---> datosS11_3_3.csv
-Drawing a graphic ---> datosS11_3_4.csv
-Drawing a graphic ---> datosS11_4_0.csv
-Drawing a graphic ---> datosS11_4_1.csv
-Drawing a graphic ---> datosS11_4_2.csv
-Drawing a graphic ---> datosS11_4_3.csv
-Drawing a graphic ---> datosS11_4_4.csv
-Drawing a graphic ---> datosS11_5_0.csv
-Drawing a graphic ---> datosS11_5_1.csv
-Drawing a graphic ---> datosS11_5_2.csv
-Drawing a graphic ---> datosS11_5_3.csv
-Drawing a graphic ---> datosS11_5_4.csv
-Drawing a graphic ---> datosS21_0_0.csv
-Drawing a graphic ---> datosS21_0_1.csv
-Drawing a graphic ---> datosS21_0_2.csv
-Drawing a graphic ---> datosS21_0_3.csv
-Drawing a graphic ---> datosS21_0_4.csv
-Drawing a graphic ---> datosS21_1_0.csv
-Drawing a graphic ---> datosS21_1_1.csv
-Drawing a graphic ---> datosS21_1_2.csv
-Drawing a graphic ---> datosS21_1_3.csv
-Drawing a graphic ---> datosS21_1_4.csv
-Drawing a graphic ---> datosS21_2_0.csv
-Drawing a graphic ---> datosS21_2_1.csv
-Drawing a graphic ---> datosS21_2_2.csv
-Drawing a graphic ---> datosS21_2_3.csv
-Drawing a graphic ---> datosS21_2_4.csv
-Drawing a graphic ---> datosS21_3_0.csv
-Drawing a graphic ---> datosS21_3_1.csv
-Drawing a graphic ---> datosS21_3_2.csv
-Drawing a graphic ---> datosS21_3_3.csv
-Drawing a graphic ---> datosS21_3_4.csv
-Drawing a graphic ---> datosS21_4_0.csv
-Drawing a graphic ---> datosS21_4_1.csv
-Drawing a graphic ---> datosS21_4_2.csv
-Drawing a graphic ---> datosS21_4_3.csv
-Drawing a graphic ---> datosS21_4_4.csv
-Drawing a graphic ---> datosS21_5_0.csv
-Drawing a graphic ---> datosS21_5_1.csv
-Drawing a graphic ---> datosS21_5_2.csv
-Drawing a graphic ---> datosS21_5_3.csv
-Drawing a graphic ---> datosS21_5_4.csv
-Drawing a graphic ---> datosS31_0_0.csv
-Drawing a graphic ---> datosS31_0_1.csv
-Drawing a graphic ---> datosS31_0_2.csv
-Drawing a graphic ---> datosS31_0_3.csv
-Drawing a graphic ---> datosS31_0_4.csv
-Drawing a graphic ---> datosS31_1_0.csv
-Drawing a graphic ---> datosS31_1_1.csv
-Drawing a graphic ---> datosS31_1_2.csv
-Drawing a graphic ---> datosS31_1_3.csv
-Drawing a graphic ---> datosS31_1_4.csv
-Drawing a graphic ---> datosS31_2_0.csv
-Drawing a graphic ---> datosS31_2_1.csv
-Drawing a graphic ---> datosS31_2_2.csv
-Drawing a graphic ---> datosS31_2_3.csv
-Drawing a graphic ---> datosS31_2_4.csv
-Drawing a graphic ---> datosS31_3_0.csv
-Drawing a graphic ---> datosS31_3_1.csv
-Drawing a graphic ---> datosS31_3_2.csv
-Drawing a graphic ---> datosS31_3_3.csv
-Drawing a graphic ---> datosS31_3_4.csv
-Drawing a graphic ---> datosS31_4_0.csv
-Drawing a graphic ---> datosS31_4_1.csv
-Drawing a graphic ---> datosS31_4_2.csv
-Drawing a graphic ---> datosS31_4_3.csv
-Drawing a graphic ---> datosS31_4_4.csv
-Drawing a graphic ---> datosS31_5_0.csv
-Drawing a graphic ---> datosS31_5_1.csv
-Drawing a graphic ---> datosS31_5_2.csv
-Drawing a graphic ---> datosS31_5_3.csv
-Drawing a graphic ---> datosS31_5_4.csv
-Drawing a graphic ---> datosS41_0_0.csv
-Drawing a graphic ---> datosS41_0_1.csv
-Drawing a graphic ---> datosS41_0_2.csv
-Drawing a graphic ---> datosS41_0_3.csv
-Drawing a graphic ---> datosS41_0_4.csv
-Drawing a graphic ---> datosS41_1_0.csv
-Drawing a graphic ---> datosS41_1_1.csv
-Drawing a graphic ---> datosS41_1_2.csv
-Drawing a graphic ---> datosS41_1_3.csv
-Drawing a graphic ---> datosS41_1_4.csv
-Drawing a graphic ---> datosS41_2_0.csv
-Drawing a graphic ---> datosS41_2_1.csv
-Drawing a graphic ---> datosS41_2_2.csv
-Drawing a graphic ---> datosS41_2_3.csv
-Drawing a graphic ---> datosS41_2_4.csv
-Drawing a graphic ---> datosS41_3_0.csv
-Drawing a graphic ---> datosS41_3_1.csv
-Drawing a graphic ---> datosS41_3_2.csv
-Drawing a graphic ---> datosS41_3_3.csv
-Drawing a graphic ---> datosS41_3_4.csv
-Drawing a graphic ---> datosS41_4_0.csv
-Drawing a graphic ---> datosS41_4_1.csv
-Drawing a graphic ---> datosS41_4_2.csv
-Drawing a graphic ---> datosS41_4_3.csv
-Drawing a graphic ---> datosS41_4_4.csv
-Drawing a graphic ---> datosS41_5_0.csv
-Drawing a graphic ---> datosS41_5_1.csv
-Drawing a graphic ---> datosS41_5_2.csv
-Drawing a graphic ---> datosS41_5_3.csv
-Drawing a graphic ---> datosS41_5_4.csv
-Drawing a graphic ---> datosS42_0_0.csv
-Drawing a graphic ---> datosS42_0_1.csv
-Drawing a graphic ---> datosS42_0_2.csv
-Drawing a graphic ---> datosS42_0_3.csv
-Drawing a graphic ---> datosS42_0_4.csv
-Drawing a graphic ---> datosS42_1_0.csv
-Drawing a graphic ---> datosS42_1_1.csv
-Drawing a graphic ---> datosS42_1_2.csv
-Drawing a graphic ---> datosS42_1_3.csv
-Drawing a graphic ---> datosS42_1_4.csv
-Drawing a graphic ---> datosS42_2_0.csv
-Drawing a graphic ---> datosS42_2_1.csv
-Drawing a graphic ---> datosS42_2_2.csv
-Drawing a graphic ---> datosS42_2_3.csv
-Drawing a graphic ---> datosS42_2_4.csv
-Drawing a graphic ---> datosS42_3_0.csv
-Drawing a graphic ---> datosS42_3_1.csv
-Drawing a graphic ---> datosS42_3_2.csv
-Drawing a graphic ---> datosS42_3_3.csv
-Drawing a graphic ---> datosS42_3_4.csv
-Drawing a graphic ---> datosS42_4_0.csv
-Drawing a graphic ---> datosS42_4_1.csv
-Drawing a graphic ---> datosS42_4_2.csv
-Drawing a graphic ---> datosS42_4_3.csv
-Drawing a graphic ---> datosS42_4_4.csv
-Drawing a graphic ---> datosS42_5_0.csv
-Drawing a graphic ---> datosS42_5_1.csv
-Drawing a graphic ---> datosS42_5_2.csv
-Drawing a graphic ---> datosS42_5_3.csv
-Drawing a graphic ---> datosS42_5_4.csv
 Drawing a graphic ---> datosVSWR(1)_0_0.csv
 Drawing a graphic ---> datosVSWR(1)_0_1.csv
-Drawing a graphic ---> datosVSWR(1)_0_2.csv
-Drawing a graphic ---> datosVSWR(1)_0_3.csv
-Drawing a graphic ---> datosVSWR(1)_0_4.csv
 Drawing a graphic ---> datosVSWR(1)_1_0.csv
 Drawing a graphic ---> datosVSWR(1)_1_1.csv
-Drawing a graphic ---> datosVSWR(1)_1_2.csv
-Drawing a graphic ---> datosVSWR(1)_1_3.csv
-Drawing a graphic ---> datosVSWR(1)_1_4.csv
 Drawing a graphic ---> datosVSWR(1)_2_0.csv
 Drawing a graphic ---> datosVSWR(1)_2_1.csv
-Drawing a graphic ---> datosVSWR(1)_2_2.csv
-Drawing a graphic ---> datosVSWR(1)_2_3.csv
-Drawing a graphic ---> datosVSWR(1)_2_4.csv
-Drawing a graphic ---> datosVSWR(1)_3_0.csv
-Drawing a graphic ---> datosVSWR(1)_3_1.csv
-Drawing a graphic ---> datosVSWR(1)_3_2.csv
-Drawing a graphic ---> datosVSWR(1)_3_3.csv
-Drawing a graphic ---> datosVSWR(1)_3_4.csv
-Drawing a graphic ---> datosVSWR(1)_4_0.csv
-Drawing a graphic ---> datosVSWR(1)_4_1.csv
-Drawing a graphic ---> datosVSWR(1)_4_2.csv
-Drawing a graphic ---> datosVSWR(1)_4_3.csv
-Drawing a graphic ---> datosVSWR(1)_4_4.csv
-Drawing a graphic ---> datosVSWR(1)_5_0.csv
-Drawing a graphic ---> datosVSWR(1)_5_1.csv
-Drawing a graphic ---> datosVSWR(1)_5_2.csv
-Drawing a graphic ---> datosVSWR(1)_5_3.csv
-Drawing a graphic ---> datosVSWR(1)_5_4.csv
-Drawing a graphic ---> datosVSWR(2)_0_0.csv
-Drawing a graphic ---> datosVSWR(2)_0_1.csv
-Drawing a graphic ---> datosVSWR(2)_0_2.csv
-Drawing a graphic ---> datosVSWR(2)_0_3.csv
-Drawing a graphic ---> datosVSWR(2)_0_4.csv
-Drawing a graphic ---> datosVSWR(2)_1_0.csv
-Drawing a graphic ---> datosVSWR(2)_1_1.csv
-Drawing a graphic ---> datosVSWR(2)_1_2.csv
-Drawing a graphic ---> datosVSWR(2)_1_3.csv
-Drawing a graphic ---> datosVSWR(2)_1_4.csv
-Drawing a graphic ---> datosVSWR(2)_2_0.csv
-Drawing a graphic ---> datosVSWR(2)_2_1.csv
-Drawing a graphic ---> datosVSWR(2)_2_2.csv
-Drawing a graphic ---> datosVSWR(2)_2_3.csv
-Drawing a graphic ---> datosVSWR(2)_2_4.csv
-Drawing a graphic ---> datosVSWR(2)_3_0.csv
-Drawing a graphic ---> datosVSWR(2)_3_1.csv
-Drawing a graphic ---> datosVSWR(2)_3_2.csv
-Drawing a graphic ---> datosVSWR(2)_3_3.csv
-Drawing a graphic ---> datosVSWR(2)_3_4.csv
-Drawing a graphic ---> datosVSWR(2)_4_0.csv
-Drawing a graphic ---> datosVSWR(2)_4_1.csv
-Drawing a graphic ---> datosVSWR(2)_4_2.csv
-Drawing a graphic ---> datosVSWR(2)_4_3.csv
-Drawing a graphic ---> datosVSWR(2)_4_4.csv
-Drawing a graphic ---> datosVSWR(2)_5_0.csv
-Drawing a graphic ---> datosVSWR(2)_5_1.csv
-Drawing a graphic ---> datosVSWR(2)_5_2.csv
-Drawing a graphic ---> datosVSWR(2)_5_3.csv
-Drawing a graphic ---> datosVSWR(2)_5_4.csv
-Drawing a graphic ---> datosVSWR(3)_0_0.csv
-Drawing a graphic ---> datosVSWR(3)_0_1.csv
-Drawing a graphic ---> datosVSWR(3)_0_2.csv
-Drawing a graphic ---> datosVSWR(3)_0_3.csv
-Drawing a graphic ---> datosVSWR(3)_0_4.csv
-Drawing a graphic ---> datosVSWR(3)_1_0.csv
-Drawing a graphic ---> datosVSWR(3)_1_1.csv
-Drawing a graphic ---> datosVSWR(3)_1_2.csv
-Drawing a graphic ---> datosVSWR(3)_1_3.csv
-Drawing a graphic ---> datosVSWR(3)_1_4.csv
-Drawing a graphic ---> datosVSWR(3)_2_0.csv
-Drawing a graphic ---> datosVSWR(3)_2_1.csv
-Drawing a graphic ---> datosVSWR(3)_2_2.csv
-Drawing a graphic ---> datosVSWR(3)_2_3.csv
-Drawing a graphic ---> datosVSWR(3)_2_4.csv
-Drawing a graphic ---> datosVSWR(3)_3_0.csv
-Drawing a graphic ---> datosVSWR(3)_3_1.csv
-Drawing a graphic ---> datosVSWR(3)_3_2.csv
-Drawing a graphic ---> datosVSWR(3)_3_3.csv
-Drawing a graphic ---> datosVSWR(3)_3_4.csv
-Drawing a graphic ---> datosVSWR(3)_4_0.csv
-Drawing a graphic ---> datosVSWR(3)_4_1.csv
-Drawing a graphic ---> datosVSWR(3)_4_2.csv
-Drawing a graphic ---> datosVSWR(3)_4_3.csv
-Drawing a graphic ---> datosVSWR(3)_4_4.csv
-Drawing a graphic ---> datosVSWR(3)_5_0.csv
-Drawing a graphic ---> datosVSWR(3)_5_1.csv
-Drawing a graphic ---> datosVSWR(3)_5_2.csv
-Drawing a graphic ---> datosVSWR(3)_5_3.csv
-Drawing a graphic ---> datosVSWR(3)_5_4.csv
-Drawing a graphic ---> datosVSWR(4)_0_0.csv
-Drawing a graphic ---> datosVSWR(4)_0_1.csv
-Drawing a graphic ---> datosVSWR(4)_0_2.csv
-Drawing a graphic ---> datosVSWR(4)_0_3.csv
-Drawing a graphic ---> datosVSWR(4)_0_4.csv
-Drawing a graphic ---> datosVSWR(4)_1_0.csv
-Drawing a graphic ---> datosVSWR(4)_1_1.csv
-Drawing a graphic ---> datosVSWR(4)_1_2.csv
-Drawing a graphic ---> datosVSWR(4)_1_3.csv
-Drawing a graphic ---> datosVSWR(4)_1_4.csv
-Drawing a graphic ---> datosVSWR(4)_2_0.csv
-Drawing a graphic ---> datosVSWR(4)_2_1.csv
-Drawing a graphic ---> datosVSWR(4)_2_2.csv
-Drawing a graphic ---> datosVSWR(4)_2_3.csv
-Drawing a graphic ---> datosVSWR(4)_2_4.csv
-Drawing a graphic ---> datosVSWR(4)_3_0.csv
-Drawing a graphic ---> datosVSWR(4)_3_1.csv
-Drawing a graphic ---> datosVSWR(4)_3_2.csv
-Drawing a graphic ---> datosVSWR(4)_3_3.csv
-Drawing a graphic ---> datosVSWR(4)_3_4.csv
-Drawing a graphic ---> datosVSWR(4)_4_0.csv
-Drawing a graphic ---> datosVSWR(4)_4_1.csv
-Drawing a graphic ---> datosVSWR(4)_4_2.csv
-Drawing a graphic ---> datosVSWR(4)_4_3.csv
-Drawing a graphic ---> datosVSWR(4)_4_4.csv
-Drawing a graphic ---> datosVSWR(4)_5_0.csv
-Drawing a graphic ---> datosVSWR(4)_5_1.csv
-Drawing a graphic ---> datosVSWR(4)_5_2.csv
-Drawing a graphic ---> datosVSWR(4)_5_3.csv
-Drawing a graphic ---> datosVSWR(4)_5_4.csv
 Drawing a graphic ---> datosZ11_0_0.csv
 Drawing a graphic ---> datosZ11_0_1.csv
-Drawing a graphic ---> datosZ11_0_2.csv
-Drawing a graphic ---> datosZ11_0_3.csv
-Drawing a graphic ---> datosZ11_0_4.csv
 Drawing a graphic ---> datosZ11_1_0.csv
 Drawing a graphic ---> datosZ11_1_1.csv
-Drawing a graphic ---> datosZ11_1_2.csv
-Drawing a graphic ---> datosZ11_1_3.csv
-Drawing a graphic ---> datosZ11_1_4.csv
 Drawing a graphic ---> datosZ11_2_0.csv
 Drawing a graphic ---> datosZ11_2_1.csv
-Drawing a graphic ---> datosZ11_2_2.csv
-Drawing a graphic ---> datosZ11_2_3.csv
-Drawing a graphic ---> datosZ11_2_4.csv
-Drawing a graphic ---> datosZ11_3_0.csv
-Drawing a graphic ---> datosZ11_3_1.csv
-Drawing a graphic ---> datosZ11_3_2.csv
-Drawing a graphic ---> datosZ11_3_3.csv
-Drawing a graphic ---> datosZ11_3_4.csv
-Drawing a graphic ---> datosZ11_4_0.csv
-Drawing a graphic ---> datosZ11_4_1.csv
-Drawing a graphic ---> datosZ11_4_2.csv
-Drawing a graphic ---> datosZ11_4_3.csv
-Drawing a graphic ---> datosZ11_4_4.csv
-Drawing a graphic ---> datosZ11_5_0.csv
-Drawing a graphic ---> datosZ11_5_1.csv
-Drawing a graphic ---> datosZ11_5_2.csv
-Drawing a graphic ---> datosZ11_5_3.csv
-Drawing a graphic ---> datosZ11_5_4.csv
-Drawing a graphic ---> datosZ21_0_0.csv
-Drawing a graphic ---> datosZ21_0_1.csv
-Drawing a graphic ---> datosZ21_0_2.csv
-Drawing a graphic ---> datosZ21_0_3.csv
-Drawing a graphic ---> datosZ21_0_4.csv
-Drawing a graphic ---> datosZ21_1_0.csv
-Drawing a graphic ---> datosZ21_1_1.csv
-Drawing a graphic ---> datosZ21_1_2.csv
-Drawing a graphic ---> datosZ21_1_3.csv
-Drawing a graphic ---> datosZ21_1_4.csv
-Drawing a graphic ---> datosZ21_2_0.csv
-Drawing a graphic ---> datosZ21_2_1.csv
-Drawing a graphic ---> datosZ21_2_2.csv
-Drawing a graphic ---> datosZ21_2_3.csv
-Drawing a graphic ---> datosZ21_2_4.csv
-Drawing a graphic ---> datosZ21_3_0.csv
-Drawing a graphic ---> datosZ21_3_1.csv
-Drawing a graphic ---> datosZ21_3_2.csv
-Drawing a graphic ---> datosZ21_3_3.csv
-Drawing a graphic ---> datosZ21_3_4.csv
-Drawing a graphic ---> datosZ21_4_0.csv
-Drawing a graphic ---> datosZ21_4_1.csv
-Drawing a graphic ---> datosZ21_4_2.csv
-Drawing a graphic ---> datosZ21_4_3.csv
-Drawing a graphic ---> datosZ21_4_4.csv
-Drawing a graphic ---> datosZ21_5_0.csv
-Drawing a graphic ---> datosZ21_5_1.csv
-Drawing a graphic ---> datosZ21_5_2.csv
-Drawing a graphic ---> datosZ21_5_3.csv
-Drawing a graphic ---> datosZ21_5_4.csv
-Drawing a graphic ---> datosZ31_0_0.csv
-Drawing a graphic ---> datosZ31_0_1.csv
-Drawing a graphic ---> datosZ31_0_2.csv
-Drawing a graphic ---> datosZ31_0_3.csv
-Drawing a graphic ---> datosZ31_0_4.csv
-Drawing a graphic ---> datosZ31_1_0.csv
-Drawing a graphic ---> datosZ31_1_1.csv
-Drawing a graphic ---> datosZ31_1_2.csv
-Drawing a graphic ---> datosZ31_1_3.csv
-Drawing a graphic ---> datosZ31_1_4.csv
-Drawing a graphic ---> datosZ31_2_0.csv
-Drawing a graphic ---> datosZ31_2_1.csv
-Drawing a graphic ---> datosZ31_2_2.csv
-Drawing a graphic ---> datosZ31_2_3.csv
-Drawing a graphic ---> datosZ31_2_4.csv
-Drawing a graphic ---> datosZ31_3_0.csv
-Drawing a graphic ---> datosZ31_3_1.csv
-Drawing a graphic ---> datosZ31_3_2.csv
-Drawing a graphic ---> datosZ31_3_3.csv
-Drawing a graphic ---> datosZ31_3_4.csv
-Drawing a graphic ---> datosZ31_4_0.csv
-Drawing a graphic ---> datosZ31_4_1.csv
-Drawing a graphic ---> datosZ31_4_2.csv
-Drawing a graphic ---> datosZ31_4_3.csv
-Drawing a graphic ---> datosZ31_4_4.csv
-Drawing a graphic ---> datosZ31_5_0.csv
-Drawing a graphic ---> datosZ31_5_1.csv
-Drawing a graphic ---> datosZ31_5_2.csv
-Drawing a graphic ---> datosZ31_5_3.csv
-Drawing a graphic ---> datosZ31_5_4.csv
-Drawing a graphic ---> datosZ41_0_0.csv
-Drawing a graphic ---> datosZ41_0_1.csv
-Drawing a graphic ---> datosZ41_0_2.csv
-Drawing a graphic ---> datosZ41_0_3.csv
-Drawing a graphic ---> datosZ41_0_4.csv
-Drawing a graphic ---> datosZ41_1_0.csv
-Drawing a graphic ---> datosZ41_1_1.csv
-Drawing a graphic ---> datosZ41_1_2.csv
-Drawing a graphic ---> datosZ41_1_3.csv
-Drawing a graphic ---> datosZ41_1_4.csv
-Drawing a graphic ---> datosZ41_2_0.csv
-Drawing a graphic ---> datosZ41_2_1.csv
-Drawing a graphic ---> datosZ41_2_2.csv
-Drawing a graphic ---> datosZ41_2_3.csv
-Drawing a graphic ---> datosZ41_2_4.csv
-Drawing a graphic ---> datosZ41_3_0.csv
-Drawing a graphic ---> datosZ41_3_1.csv
-Drawing a graphic ---> datosZ41_3_2.csv
-Drawing a graphic ---> datosZ41_3_3.csv
-Drawing a graphic ---> datosZ41_3_4.csv
-Drawing a graphic ---> datosZ41_4_0.csv
-Drawing a graphic ---> datosZ41_4_1.csv
-Drawing a graphic ---> datosZ41_4_2.csv
-Drawing a graphic ---> datosZ41_4_3.csv
-Drawing a graphic ---> datosZ41_4_4.csv
-Drawing a graphic ---> datosZ41_5_0.csv
-Drawing a graphic ---> datosZ41_5_1.csv
-Drawing a graphic ---> datosZ41_5_2.csv
-Drawing a graphic ---> datosZ41_5_3.csv
-Drawing a graphic ---> datosZ41_5_4.csv
-Drawing a graphic ---> datosZ42_0_0.csv
-Drawing a graphic ---> datosZ42_0_1.csv
-Drawing a graphic ---> datosZ42_0_2.csv
-Drawing a graphic ---> datosZ42_0_3.csv
-Drawing a graphic ---> datosZ42_0_4.csv
-Drawing a graphic ---> datosZ42_1_0.csv
-Drawing a graphic ---> datosZ42_1_1.csv
-Drawing a graphic ---> datosZ42_1_2.csv
-Drawing a graphic ---> datosZ42_1_3.csv
-Drawing a graphic ---> datosZ42_1_4.csv
-Drawing a graphic ---> datosZ42_2_0.csv
-Drawing a graphic ---> datosZ42_2_1.csv
-Drawing a graphic ---> datosZ42_2_2.csv
-Drawing a graphic ---> datosZ42_2_3.csv
-Drawing a graphic ---> datosZ42_2_4.csv
-Drawing a graphic ---> datosZ42_3_0.csv
-Drawing a graphic ---> datosZ42_3_1.csv
-Drawing a graphic ---> datosZ42_3_2.csv
-Drawing a graphic ---> datosZ42_3_3.csv
-Drawing a graphic ---> datosZ42_3_4.csv
-Drawing a graphic ---> datosZ42_4_0.csv
-Drawing a graphic ---> datosZ42_4_1.csv
-Drawing a graphic ---> datosZ42_4_2.csv
-Drawing a graphic ---> datosZ42_4_3.csv
-Drawing a graphic ---> datosZ42_4_4.csv
-Drawing a graphic ---> datosZ42_5_0.csv
-Drawing a graphic ---> datosZ42_5_1.csv
-Drawing a graphic ---> datosZ42_5_2.csv
-Drawing a graphic ---> datosZ42_5_3.csv
-Drawing a graphic ---> datosZ42_5_4.csv
-Drawing a graphic ---> pha_imb_0_0.csv
-Drawing a graphic ---> pha_imb_0_1.csv
-Drawing a graphic ---> pha_imb_0_2.csv
-Drawing a graphic ---> pha_imb_0_3.csv
-Drawing a graphic ---> pha_imb_0_4.csv
-Drawing a graphic ---> pha_imb_1_0.csv
-Drawing a graphic ---> pha_imb_1_1.csv
-Drawing a graphic ---> pha_imb_1_2.csv
-Drawing a graphic ---> pha_imb_1_3.csv
-Drawing a graphic ---> pha_imb_1_4.csv
-Drawing a graphic ---> pha_imb_2_0.csv
-Drawing a graphic ---> pha_imb_2_1.csv
-Drawing a graphic ---> pha_imb_2_2.csv
-Drawing a graphic ---> pha_imb_2_3.csv
-Drawing a graphic ---> pha_imb_2_4.csv
-Drawing a graphic ---> pha_imb_3_0.csv
-Drawing a graphic ---> pha_imb_3_1.csv
-Drawing a graphic ---> pha_imb_3_2.csv
-Drawing a graphic ---> pha_imb_3_3.csv
-Drawing a graphic ---> pha_imb_3_4.csv
-Drawing a graphic ---> pha_imb_4_0.csv
-Drawing a graphic ---> pha_imb_4_1.csv
-Drawing a graphic ---> pha_imb_4_2.csv
-Drawing a graphic ---> pha_imb_4_3.csv
-Drawing a graphic ---> pha_imb_4_4.csv
-Drawing a graphic ---> pha_imb_5_0.csv
-Drawing a graphic ---> pha_imb_5_1.csv
-Drawing a graphic ---> pha_imb_5_2.csv
-Drawing a graphic ---> pha_imb_5_3.csv
-Drawing a graphic ---> pha_imb_5_4.csv
-Files read and drawn:480
+Files read and drawn:30
 
 The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
 Press intro to continue...
@@ -830,14 +331,14 @@ Firstly, will be request the path (be suggest complete path not relative path) o
 4> Draw one reports comparitions
 5> Back
 Enter an option: 4
-Enter the path file 1: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\8b041a42-8bae-4df9-9f44-b909f84038c9\files\amp_imb_0_0.csv
-Enter the path file 2: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\8b041a42-8bae-4df9-9f44-b909f84038c9\files\amp_imb_5_4.csv
+Enter the path file 1: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_0_1.csv
+Enter the path file 2: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_2_1.csv
 ```
 Next, will be request the save path, however, if you press Intro with this field empty, the save path will be ../results/comparison graphics/
 * Example with specific save path
 ```
 Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
-Enter the save path: C:\Users\Astrolab\Documents\Jaime\Comparaciones 
+Enter the save path: C:\Users\ESTACION\Documents\Jaime\Comparaciones 
 ```
 * Example with default save path
 ```
@@ -847,12 +348,12 @@ Enter the save path:
 later, will be request the labels of *x* and *y* axis, the Title of the graphic,this will be the same of the save file name (this name cannot have dots) and the label  of each file tha will present in the graphic. when the process finish a message will notify it
 ```
 Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
-Enter the save path:
-Enter the axis x label: Frequency (GHz)
+Enter the save path: C:\Users\Astrolab\Documents\Jaime\Comparaciones
+Enter the axis x label: Frequency (MHz)
 Enter the axis y label: dB
-Enter the graphic title: Amplitud imbalace before to optimization vs after optimization
+Enter the graphic title: S11 initial particle vs final particle
 Enter the label of the  data to file 1: Initial particle
-Enter the label of the  data to file 2: Optimizate particle
+Enter the label of the  data to file 2: Final particle 
 
 The process has ended,  verify that the draw graphic is in the entered path or the default path
 Press intro to continue...
