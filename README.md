@@ -1,9 +1,9 @@
 # PSO_for_hybrids_and_antennas
 ## **Geometry Optimization**
 
-This package is intended to provide a tool that supports the optimization process of different components as hybrids or antennas, which electromagnetic performance is highly dependant on geometry. 
+This package is intended to provide a tool that supports the optimization process of different components, such as hybrids or antennas, in which electromagnetic performance is highly dependent on geometry.
 
-We apply optimization algorithms supported on HFSS simulations which provides a reliable tool to evaluate how every alternative geometry bahaves and to collect data derived from every optimization batch.
+We apply optimization algorithms supported by HFSS simulations, which provide a reliable tool to evaluate how every alternative geometry behaves and to collect data derived from every optimization batch.
 
 ## **What's included**
 1. ### **Version: v0.91**
@@ -11,16 +11,16 @@ We apply optimization algorithms supported on HFSS simulations which provides a 
 -   PSO optimization algorithm
 -   Log file: Here you can find complete tracking of the optimization process
 -   Data collection in CSV files
--   Passing configuration data through json files or from the code.
+-   Passing configuration data through JSON files or from the code.
 -   Simulation control by ID
--   Include two example for use the PSO in Hibryds and Antennas
+-   Include two examples for using the PSO in Hibryds and Antennas
 
 2. ### **Requirements**
-    _Things you need to set prior executing the script._
-*   [Requirements file](requirements.txt) - Make sure to install all requirements from requirements.txt file
+    _Things you need to set up before executing the script._
+*   [Requirements file](requirements.txt) - Make sure to install all requirements from the requirements.txt file.
     > **Note**
     > use _pip install -r requirements.txt_ in your cmd for install all requirements
-*   *Design_name.py* or *Design_name.aedt* - Add to the models folder located in the root folder a file contains the geometric model for HFSS (Python file), in case that the model will be a .aedt file, add this file to Ansoft folder located in Documents folder (default folder that create HFSS). in both cases (.py or .aedt files), the name of the file must be equal to the project name. 
+*   *Design_name.py* or *Design_name.aedt* - Add a file containing the geometric model for HFSS (Python file) to the model's folder located in the root folder. If the model is a .aedt file, add this file to the Ansoft folder located in the Documents folder (the default folder that creates HFSS). in both cases (.py or .aedt files), the name of the file must be equal to the project name.
 
     The following example exposes a part of a python file with a dipole blade antenna geometry. Verify that the name of your file (.py or .aedt) is the same as the line responsible to define the project's name
 ```
@@ -55,17 +55,16 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     * Design name
     * Variable name or name of the array where are the dimensions
     * Units (about of distance)
-    * Maximum values that can vary the optimizator
-    * Minimum values that can vary the optimizator
+    * Maximum values that can vary the optimization
+    * Minimum values that can vary the optimization
     * Nominals or default values of design
-    * Number of iteratios
+    * Number of iterations
     * Number of particles
     * Number of branches  <!-- Posiblemente se elimine -->
-    * Description about of simulation and relevant information
-    * Reports what do you need for the fitness function
+    * Description of simulation and relevant information
+    * Reports what you need for the fitness function
     
-    This informatión will be use as parameters for initialize the optimizator with a method that later view.
-    Follow the next example:
+    This information will be used as parameters for initializing the optimization with a later view method. Follow the next example:
     ```
     exe = "C:/Program Files/AnsysEM/AnsysEM19.0/Win64/ansysedt.exe"
     save = "C:/Users/Astrolab/Documents/Ansoft/"
@@ -96,7 +95,7 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     }
     ```    
 
-*   __Third step:__, you need define your fitness function, this must recive one parameter (the data of requiered reports as a dictionary) and must return the value of the fitness function as show to continue in the follow example.
+*   __Third step:__ you need define your fitness function, this must recive one parameter (the data of requiered reports as a dictionary) and must return the value of the fitness function as show to continue in the follow example.
     ```
     def fit (dataReports):
         for key in dataReports:
@@ -147,9 +146,9 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
 
     In the same way that the before point, this function will use later.
 
-*   __Fourth step:__ You must initialize the system with init_system(...), this method come on from commands of the first importation and you must add the arguments  definded in the second step.
+*   __Fourth step:__ You must initialize the system with init_system(...), this method comes from commands of the first importation, and you must add the arguments defined in the second step.
 
-    the order of arguments in the init_system method is:
+    The order of arguments in the init_system method is:
 
     | Position |  argument name | data type | description |
     |:--------:|:--------------:|:---------:| :---------:|
@@ -159,9 +158,9 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     |     4    |   design_name  |    str    | A string that saves the designs's name |
     |     5    |  variable_name |    str    | Variable name or name of the array where are the dimensions |
     |     6    |      units     |    str    | A string that contains the units of dimensions (in distance) of the design |
-    |     7    |       max      |    lst    | A list with maximun values that can take the PSO for the particles, this values must be integers |
-    |     8    |       min      |    lst    | A list with minimum values that can take the PSO for the particles, these values must be integers |
-    |     9    |     nomilas    |    lst    | A list with default values that can take the PSO for the particles, these values must be integers |
+    |     7    |       max      |    lst    | A list with maximun values that can take the PSO for the particles, this values must be numbers |
+    |     8    |       min      |    lst    | A list with minimum values that can take the PSO for the particles, these values must be numbers |
+    |     9    |     nomilas    |    lst    | A list with default values that can take the PSO for the particles, these values must be numbers |
     |    10    |   iterations   |    int    | An integer that defines how many iterations will execute the code |
     |    11    |    particles   |    int    | An integer that defines how many particles will be created |
     |    12    |    branches    |    int    | An integer that defines how many branches have the hybrid |
@@ -170,12 +169,12 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     |    15    |  sub_category  |    str    | A string that contains the category of design, for example, "Dipole blade", "Low pass", "8 branches", among others |
     |    16    |   description  |    str    | A string with add/relevant information on design |
 
-    As you see in the next example (using the data before defined):
+    As you see in the following example (using the data before defined):
     ```
     commands.init_system(exe, save, pname, dname,vname, u, ma, mi, nom, i, p, b, reports, category, sub_category, desc)
     ```
 
-* __Fifth step:__ You must use the main_menu(...), this method come on from Interfaz of the second importation and you must add the fitness function as argumet of main_menu(...) as show in the next example:
+* __Fifth step:__ You must use the main_menu(...), this method comes on from Interfaz of the second importation, and you must add the fitness function as an argument of main_menu(...) as shown in the following example:
 
     ```
     Interfaz.main_menu(fit)
@@ -183,14 +182,14 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
 
 ## **How to use**
 
-After verifying all requirements and save you main script, you can run that script in cmd as shown as below.
+After verifying all requirements and saving your main script, you can run that script in cmd, as shown below.
 
 ```
 C:\Users\Astrolab\Documents\Jaime\Temporal>python3 Example_1.py
 ```
-Other form to run your code is using some IDLE as VSCode, Spider, Conda, among others.
+Another form to run your code is using some IDLE such as VSCode, Spider, and Conda, among others.
 
-For interact with the interfaz of optimizer, you will be acces for the next options:
+To interact with the interface of the optimizer, you will be accessed the following options:
 
 ```
 -------->PSO APP<---------
@@ -203,19 +202,19 @@ Enter an option:
 ```
 
 ### Optimizate
-Firstly, this option verify that the model exist using the ansys file or python file, in case of the software can't run the files, it will auto run trying to run successful repeatly, if this not result, the software will notify you of error and back to main menu.
+Firstly, this option verifies that the model exists using the Ansys or python files. In case of the software cannot run the files, it will autorun trying to run successfully repeatedly; if this does not result, the software will notify you of the error and go back to the main menu.
 
 Once the model is verified, the software will ask if you want to graphic the reports. Write 'Y' or 'N' in the console and press the Intro. The optimization will start the process of creating the particles (new random dimensions), followed by the simulation of this design in ANSYS, exporting the reports previously request, and according to requirement drawing the graphics (saves it in ../ID/figures/).later, with the data reports the software will evaluate the fitness function and new particles dimensions. This process will repeat for all iterations and particles until the end.
 
-All data (for iteration) will save in the output.csv file in ../results/output.csv, here you will find the majority of informatión about the simulatión previously run as your ID, time to start and end, type, category, sub category, parameters of simulation, simulations result, best particles (globals and locals) beside the number of current iteration in this moment among others.
+When the optimization process finishes, all results obtained will save in the _ output.csv file located in the results folder (.../results/output.csv). In this file, you will find the ID, time to start and end, type, category, sub-category, simulation parameters, results, and best particles. All this ordinate for rows as summaries to each iteration.
 ### Fitness function test
-This option allows to execute a new simulation based on previous results, for this it is necessary to have the previous ID of one simulation, the diferents  reports  files (.csv) , and to have loaded the same parameters of the previous simulation. As the option 1 (Optimizate) you could choose if draw the graphics or not.
+This option allows to execution of a new simulation based on previous results. For this, it is necessary to have the previous ID of one simulation and the different reports files (.csv) and to have loaded the exact parameters of the previous simulation. As option 1 (Optimization), you could choose if you draw the graphics or not.
 
-This optios is think to make fast test with diferents fitness functions since skip the simulation step wich use more time in all simulation process. but for this reason also you must understand that the optimizator show new dimensions it have not simulated.
+This option makes a fast test with different fitness functions since skipping the simulation step uses more time in all simulation processes. However, for this reason, also you must understand that the optimization shows new dimensions it has not simulated.
 
-All data (for iteration) will save in the output.csv file in ../results/output.csv, here you will find the majority of informatión about the simulatión previously run as your ID, time to start and end, type, category, sub category, parameters of simulation, simulations result, best particles (globals and locals) beside the number of current iteration in this moment among others.
+In the same way that the previous option, all data obtained will save in the _output.csv_ file in ../results/output.csv.
 ### Graphics tools
-This option has a menu that allows draw graphics of reports simulated as follow show
+This option has a menu that allows drawing graphics of reports simulated as it's shown in the following.
 ```
 -----\Graphics tools
 1> Draw one report
@@ -226,7 +225,7 @@ This option has a menu that allows draw graphics of reports simulated as follow 
 Enter an option:
 ```
 #### Draw one report
-Firstly, this option will request a previously simulated ID. Later the file name to draw (you could write the '.csv' extensión or not) . Next, you will need define the label of *x* axis, this is associate to magnitude in frequency (not apply to the gain phi graphics) and the process will finish with a message notify that the process end.
+Firstly, this option will request a previously simulated ID. Later the file name to draw (you could write the '.csv' extensión or not). Next, you will need to define the label of the x-axis, which is associated with magnitude in frequency (not applied to the gain phi graphics), and the process will finish with a message that the process ends.
 ```
 -----\Graphics tools
 1> Draw one report
@@ -242,9 +241,9 @@ Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): 
 The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
 Press intro to continue...
 ```
-The graphics drawed will save in the figures folder between the ID folder previously request.
-#### Draw one complete iterations
-As in the previously option, this will request a previously simulated ID followed by the number of iteration to draw and the label of *x* axis (not apply to the gain phi graphics).  Next, while the software  draw the graphics, in the screen will show the name of drawed files and the process will finish with a notification in the screen.
+The graphics drawn will be saved in the figures folder between the previously requested ID folder.
+#### Draw one complete iteration
+As in the previous option, this will request a previously simulated ID followed by the number of iterations to draw and the label of the x-axis (not applicable to the gain phi graphics). Next, while the software draws the graphics, the screen will show the drawn files' names, and the process will finish with a notification on the screen.
 
 ```
 -----\Graphics tools
@@ -271,9 +270,9 @@ Drawing a graphic ---> datosZ11_2_1.csv
 The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
 Press intro to continue...
 ```
-The graphics drawed will save in the figures folder between the ID folder previously request.
-#### Draw one complete ejecution
-As in the previously option, this will request a previously simulated ID and the label of *x* axis (not apply to the gain phi graphics).  Next, while the software  draw the graphics, in the screen will show the name of drawed files and the process will finish with a count of files read and draw followed by a notification in the screen that it finished.
+The graphics drawn will be saved in the figures folder between the previously requested ID folder.
+#### Draw one complete execution
+As in the previous option, this will request a previously simulated ID and the x-axis label (not applicable to the gain phi graphics). Next, while the software draws the graphics, the screen will show the name of the drawn files, and the process will finish with a count of files read and drawn, followed by a notification on the screen that it finished.
 ```
 -----\Graphics tools
 1> Draw one report
@@ -319,10 +318,11 @@ Files read and drawn:30
 The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
 Press intro to continue...
 ```
-The graphics drawed will save in the figures folder between the ID folder previously request.
-#### Draw one reports comparitions
-For use this option is necessary that the two file have the same magnitude otherwise the graphic could see wrong.
-Firstly, will be request the path (be suggest complete path not relative path) of first file. In the same way, will be request the path of second file. 
+The graphics drawn will be saved in the figures folder between the previously requested ID folder.
+#### Draw one reports comparison
+For use, this option is necessary that the two files have the same magnitude; otherwise, the graphic could see wrong.
+
+Firstly, it will request the path (suggest a complete path, not a relative path) of the first file. In the same way, it will request the path of the second file. 
 ```
 -----\Graphics tools
 1> Draw one report
@@ -334,7 +334,7 @@ Enter an option: 4
 Enter the path file 1: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_0_1.csv
 Enter the path file 2: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_2_1.csv
 ```
-Next, will be request the save path, however, if you press Intro with this field empty, the save path will be ../results/comparison graphics/
+Next, it will request the save path; however, if you press Intro with this field empty, the save path will be ../results/comparison graphics/
 * Example with specific save path
 ```
 Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
@@ -345,7 +345,7 @@ Enter the save path: C:\Users\ESTACION\Documents\Jaime\Comparaciones
 Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
 Enter the save path:
 ```
-later, will be request the labels of *x* and *y* axis, the Title of the graphic,this will be the same of the save file name (this name cannot have dots) and the label  of each file tha will present in the graphic. when the process finish a message will notify it
+Later, it will request the labels of the x and y-axis, the Title of the graphic, which will be the same as the save file name (this name cannot have dots), and the label of each file that will present in the graphic. When the process finishes, a message will notify it.
 ```
 Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
 Enter the save path: C:\Users\Astrolab\Documents\Jaime\Comparaciones
@@ -360,7 +360,7 @@ Press intro to continue...
 ```
 <!-- ### Set up -->
 ### Exit
-This option is for end the script that is running
+This option is to end the script that is running.
 
 __*Developed by:*__ German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 
