@@ -9,7 +9,7 @@ We apply optimization algorithms supported by HFSS simulations, which provide a 
 1. ### **Version: v0.91**
 -   Import and use
 -   PSO optimization algorithm
--   Log file: Here you can find complete tracking of the optimization process
+-   Log file: Here, you can find complete tracking of the optimization process
 -   Data collection in CSV files
 -   Passing configuration data through JSON files or from the code.
 -   Simulation control by ID
@@ -17,12 +17,12 @@ We apply optimization algorithms supported by HFSS simulations, which provide a 
 
 2. ### **Requirements**
     _Things you need to set up before executing the script._
-*   [Requirements file](requirements.txt) - Make sure to install all requirements from the requirements.txt file.
+*   [Requirements file](requirements.txt) - Install all requirements from the requirements.txt file.
     > **Note**
     > use _pip install -r requirements.txt_ in your cmd for install all requirements
-*   *Design_name.py* or *Design_name.aedt* - Add a file containing the geometric model for HFSS (Python file) to the model's folder located in the root folder. If the model is a .aedt file, add this file to the Ansoft folder located in the Documents folder (the default folder that creates HFSS). in both cases (.py or .aedt files), the name of the file must be equal to the project name.
+*   *Design_name.py* or *Design_name.aedt* - Add a file containing the geometric model for HFSS (Python file) to the model's folder located in the root folder. If the model is a .aedt file, add this file to the Ansoft folder located in the Documents folder (the default folder that creates HFSS) in both cases (.py or .aedt files), the file's name  must be equal to the project name.
 
-    The following example exposes a part of a python file with a dipole blade antenna geometry. Verify that the name of your file (.py or .aedt) is the same as the line responsible to define the project's name
+    The following example exposes a part of a python file with a dipole blade antenna geometry. Verify that the name of your file (.py or .aedt) is the same as the line responsible for defining the project's name
 ```
 # ----------------------------------------------
 # Script Recorded by Ansys Electronics Desktop Student Version 2021.2.0
@@ -41,16 +41,16 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
 ...
 ```
 
-*   __First step:__ You have to make sure to add the following imports to your main script.
+*   __First step:__ You must add the following imports to your main script.
     ```
     from PSO_core import commands
     from PSO_functions import Interfaz
     ```
-*   __Second step:__ You have to define the following parameters for the optimizator, is recomended save this data in independents variables:
+*   __Second step:__ You have to define the following parameters for the optimization. It is recommended to save this data in independents variables:
     * Path to executable of ANSYS
     * Path to default save of ANSYS
     * Category of structure (Antenna, Hybrid, Filter, among others)
-    * Sub category of structure
+    * Subcategory of structure
     * Project name
     * Design name
     * Variable name or name of the array where are the dimensions
@@ -95,7 +95,7 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     }
     ```    
 
-*   __Third step:__ you need define your fitness function, this must recive one parameter (the data of requiered reports as a dictionary) and must return the value of the fitness function as show to continue in the follow example.
+*   __Third step:__ You need to define your fitness function; this must receive one parameter (the data of required reports as a dictionary) and must return the value of the fitness function as shown to continue in the following example.
     ```
     def fit (dataReports):
         for key in dataReports:
@@ -146,9 +146,9 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
 
     In the same way that the before point, this function will use later.
 
-*   __Fourth step:__ You must initialize the system with init_system(...), this method comes from commands of the first importation, and you must add the arguments defined in the second step.
+*   __Fourth step:__ You must initialize the system with init_system(...). This method comes from commands of the first importation, and you must add the arguments defined in the second step.
 
-    The order of arguments in the init_system method is:
+    The order of arguments in the init_system method is as follows:
 
     | Position |  argument name | data type | description |
     |:--------:|:--------------:|:---------:| :---------:|
@@ -157,10 +157,10 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     |     3    |  project_name  |    str    | A string that saves the project's name  |
     |     4    |   design_name  |    str    | A string that saves the designs's name |
     |     5    |  variable_name |    str    | Variable name or name of the array where are the dimensions |
-    |     6    |      units     |    str    | A string that contains the units of dimensions (in distance) of the design |
-    |     7    |       max      |    lst    | A list with maximun values that can take the PSO for the particles, this values must be numbers |
-    |     8    |       min      |    lst    | A list with minimum values that can take the PSO for the particles, these values must be numbers |
-    |     9    |     nomilas    |    lst    | A list with default values that can take the PSO for the particles, these values must be numbers |
+    |     6    |      units     |    str    | A string that contains the units of dimensions (in the distance) of the design |
+    |     7    |       max      |    lst    | A list with maximum values that can take the PSO for the particles. These values must be numbers |
+    |     8    |       min      |    lst    | A list with minimum values that can take the PSO for the particles. These values must be numbers |
+    |     9    |     nomilas    |    lst    | A list with default values that can take the PSO for the particles. These values must be numbers |
     |    10    |   iterations   |    int    | An integer that defines how many iterations will execute the code |
     |    11    |    particles   |    int    | An integer that defines how many particles will be created |
     |    12    |    branches    |    int    | An integer that defines how many branches have the hybrid |
@@ -208,19 +208,19 @@ Once the model is verified, the software will ask if you want to graphic the rep
 
 When the optimization process finishes, all results obtained will save in the _ output.csv file located in the results folder (.../results/output.csv). In this file, you will find the ID, time to start and end, type, category, sub-category, simulation parameters, results, and best particles. All this ordinate for rows as summaries to each iteration.
 ### Fitness function test
-This option allows to execution of a new simulation based on previous results. For this, it is necessary to have the previous ID of one simulation and the different reports files (.csv) and to have loaded the exact parameters of the previous simulation. As option 1 (Optimization), you could choose if you draw the graphics or not.
+This option allows to execution of a new simulation based on previous results. For this, it is necessary to have the previous ID of one simulation and the different reports files (.csv) and to have loaded the exact parameters of the previous simulation. As option 1 (Optimization), you could choose whether you draw the graphics. 
 
 This option makes a fast test with different fitness functions since skipping the simulation step uses more time in all simulation processes. However, for this reason, also you must understand that the optimization shows new dimensions it has not simulated.
 
 In the same way that the previous option, all data obtained will save in the _output.csv_ file in ../results/output.csv.
 ### Graphics tools
-This option has a menu that allows drawing graphics of reports simulated as it's shown in the following.
+This option has a menu that allows drawing graphics of reports simulated, as it's shown in the following.
 ```
 -----\Graphics tools
 1> Draw one report
-2> Draw one complete iterations
-3> Draw one complete ejecution
-4> Draw one reports comparitions
+2> Draw one complete iteration
+3> Draw one complete execution
+4> Draw one report comparitions
 5> Back
 Enter an option:
 ```
@@ -229,11 +229,11 @@ Firstly, this option will request a previously simulated ID. Later the file name
 ```
 -----\Graphics tools
 1> Draw one report
-2> Draw one complete iterations
-3> Draw one complete ejecution
-4> Draw one reports comparitions
+2> Draw one complete iteration
+3> Draw one complete execution
+4> Draw one report comparitions
 5> Back
-Enter an option: 1
+Enter option: 1
 Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
 Enter the file name: datosS11_1_0.csv
 Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): MHz
@@ -248,14 +248,14 @@ As in the previous option, this will request a previously simulated ID followed 
 ```
 -----\Graphics tools
 1> Draw one report
-2> Draw one complete iterations
-3> Draw one complete ejecution
-4> Draw one reports comparitions
+2> Draw one complete iteration
+3> Draw one complete execution
+4> Draw one report comparitions
 5> Back
-Enter an option: 2
+Enter option: 2
 Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
 Enter the iteration number: 2
-Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): MHz
+Enter the magnitude of frequency (for example, Hz, kHz, MHz, GHz, among others): MHz
 Drawing a graphic ---> datosGananciaPhi0_2_0.csv
 Drawing a graphic ---> datosGananciaPhi0_2_1.csv
 Drawing a graphic ---> datosGananciaPhi90_2_0.csv
@@ -267,7 +267,7 @@ Drawing a graphic ---> datosVSWR(1)_2_1.csv
 Drawing a graphic ---> datosZ11_2_0.csv
 Drawing a graphic ---> datosZ11_2_1.csv
 
-The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
+The process has ended. Verify that the drawn graphic is in the 'figures' folder in the entered ID folder
 Press intro to continue...
 ```
 The graphics drawn will be saved in the figures folder between the previously requested ID folder.
@@ -276,13 +276,13 @@ As in the previous option, this will request a previously simulated ID and the x
 ```
 -----\Graphics tools
 1> Draw one report
-2> Draw one complete iterations 
-3> Draw one complete ejecution  
-4> Draw one reports comparitions
+2> Draw one complete iteration
+3> Draw one complete execution  
+4> Draw one report comparitions
 5> Back
-Enter an option: 3
+Enter option: 3
 Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
-Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): MHz
+Enter the magnitude of frequency (for example, Hz, kHz, MHz, GHz, among others): MHz
 Drawing a graphic ---> datosGananciaPhi0_0_0.csv
 Drawing a graphic ---> datosGananciaPhi0_0_1.csv
 Drawing a graphic ---> datosGananciaPhi0_1_0.csv
@@ -315,7 +315,7 @@ Drawing a graphic ---> datosZ11_2_0.csv
 Drawing a graphic ---> datosZ11_2_1.csv
 Files read and drawn:30
 
-The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
+The process has ended. Verify that the drawn graphic is in the 'figures' folder in the entered ID folder.
 Press intro to continue...
 ```
 The graphics drawn will be saved in the figures folder between the previously requested ID folder.
@@ -326,23 +326,23 @@ Firstly, it will request the path (suggest a complete path, not a relative path)
 ```
 -----\Graphics tools
 1> Draw one report
-2> Draw one complete iterations
-3> Draw one complete ejecution
-4> Draw one reports comparitions
+2> Draw one complete iteration
+3> Draw one complete execution
+4> Draw one report comparitions
 5> Back
-Enter an option: 4
+Enter option: 4
 Enter the path file 1: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_0_1.csv
 Enter the path file 2: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_2_1.csv
 ```
 Next, it will request the save path; however, if you press Intro with this field empty, the save path will be ../results/comparison graphics/
 * Example with specific save path
 ```
-Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
+Note: if you press Intro without adding nothing path, this will save in ../results/comparison graphics/ by default
 Enter the save path: C:\Users\ESTACION\Documents\Jaime\Comparaciones 
 ```
 * Example with default save path
 ```
-Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
+Note: if you press Intro without adding nothing path, this will save in ../results/comparison graphics/ by default
 Enter the save path:
 ```
 Later, it will request the labels of the x and y-axis, the Title of the graphic, which will be the same as the save file name (this name cannot have dots), and the label of each file that will present in the graphic. When the process finishes, a message will notify it.
@@ -355,7 +355,7 @@ Enter the graphic title: S11 initial particle vs final particle
 Enter the label of the  data to file 1: Initial particle
 Enter the label of the  data to file 2: Final particle 
 
-The process has ended,  verify that the draw graphic is in the entered path or the default path
+The process has ended. Verify that the drawn graphic is in the entered path or the default path.
 Press intro to continue...
 ```
 <!-- ### Set up -->
