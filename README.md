@@ -17,6 +17,7 @@ We apply optimization algorithms supported by HFSS simulations, which provide a 
 
 2. ### **Requirements**
     _Things you need to set up before executing the script._
+* You need to have [Python version 3.10.4](https://www.python.org/downloads/release/python-3104/) installed. This is important because, with other versions (upgraded or downgraded), the packages that require the optimizer may not function correctly.
 *   [Requirements file](requirements.txt) - Install all requirements from the requirements.txt file.
     > **Note**
     > use _pip install -r requirements.txt_ in your cmd for install all requirements
