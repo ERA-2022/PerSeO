@@ -28,6 +28,7 @@ def create_sim_file(particle, i, j):
     f = open(read_data()['paths']['src']+"simulacion.py", "w")   #abre un archivo para escribir
     direccion_dibujo = '"'+read_data()["paths"]["ansys_save_def"]+read_data()["values"]["project_name"]+'.aedt"' 
     
+    f.write("# -*- coding: utf-8 -*-\n")
     f.write("import PSO_core.ansys_functions as fn\n")
 
     f.write("\n")
