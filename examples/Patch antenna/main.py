@@ -18,7 +18,12 @@ p = 10
 b = 0
 desc = "Patch antenna working in 2.6GHz adapted minimum to -10dB"
 rep = {
-    "SMN":[(1,1)]
+    "SMN":[(1,1)],
+    "aditional_data":{
+        "fmin":1.5,
+        "points":201,
+        "units":"GHz"
+    }
 }
 
 def funcion_fitness (dataReports):
@@ -27,7 +32,7 @@ def funcion_fitness (dataReports):
         print(str(key)+"--->"+str(len(dataReports[key])))
     
     # FIST FILTER TO GET ONLY DATA UNDER db <= -10
-    freq = [dataReports['S11'][0][index] for index in range(len(dataReports["S11"])) if dataReports["S11"][1][index] <= -10]
+    freq = [dataReports['S11'][index][0] for index in range(len(dataReports["S11"])) if dataReports["S11"][index][1] <= -10]
     dB = [ med for med in dataReports['S11'][1] if med <= -10]
     
     if len(freq) == 0 or len(dB) == 0:
