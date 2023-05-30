@@ -25,12 +25,11 @@ We apply optimization algorithms supported by HFSS simulations, which provide a 
 
     The following example exposes a part of a python file with a dipole blade antenna geometry. Verify that the name of your file (.py or .aedt) is the same as the line responsible for defining the project's name
 ```
+# -*- coding: utf-8 -*-
 # ----------------------------------------------
 # Script Recorded by Ansys Electronics Desktop Student Version 2021.2.0
 # 15:07:57  may. 26, 2022
 # ----------------------------------------------
-import PSO_core.ansys_functions as fn
-
 import ScriptEnv
 ScriptEnv.Initialize("Ansoft.ElectronicsDesktop")
 oDesktop.RestoreWindow()
