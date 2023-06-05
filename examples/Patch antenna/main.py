@@ -33,7 +33,7 @@ def funcion_fitness (dataReports):
     
     # FIST FILTER TO GET ONLY DATA UNDER db <= -10
     freq = [dataReports['S11'][index][0] for index in range(len(dataReports["S11"])) if dataReports["S11"][index][1] <= -10]
-    dB = [ med for med in dataReports['S11'][1] if med <= -10]
+    dB = [dataReports['S11'][index][1] for index in range(len(dataReports["S11"])) if dataReports["S11"][index][1] <= -10]
     
     if len(freq) == 0 or len(dB) == 0:
         # PENALY THE FIT VALUE
