@@ -1,29 +1,30 @@
-# PSO_for_hybrids_and_antennas
+# PerSeO: PSO Applied to RF Device Design
 ## **Geometry Optimization**
+This package is crafted to provide a tool that aids the optimization process for various components, such as hybrids or antennas, where the electromagnetic performance is significantly dependent on their geometric structure.
 
-This package is intended to provide a tool that supports the optimization process of different components, such as hybrids or antennas, in which electromagnetic performance is highly dependent on geometry.
-
-We apply optimization algorithms supported by HFSS simulations, which provide a reliable tool to evaluate how every alternative geometry behaves and to collect data derived from every optimization batch.
+Our optimization algorithms are corroborated by HFSS simulations, thereby offering a dependable tool to assess the performance of each proposed geometry and to extract data from each optimization batch.
 
 ## **What's included**
 1. ### **Version: v0.91**
--   Import and use
--   PSO optimization algorithm
--   Log file: Here, you can find complete tracking of the optimization process
--   Data collection in CSV files
--   Passing configuration data through JSON files or from the code.
--   Simulation control by ID
--   Include two examples for using the PSO in Hibryds and Antennas
+-   Import and usage functionality
+-   Implementation of the PSO optimization algorithm
+-   A log file providing comprehensive tracking of the optimization process
+-   Data collection in CSV format
+-   Configurations passable via JSON files or directly from the code
+-   Simulation control via unique IDs
+-   Includes two examples demonstrating PSO usage in Hybrids and Antennas
 
-2. ### **Requirements**
-    _Things you need to set up before executing the script._
-* You need to have [Python version 3.10.4](https://www.python.org/downloads/release/python-3104/) installed. This is important because, with other versions (upgraded or downgraded), the packages that require the optimizer may not function correctly.
-*   [Requirements file](requirements.txt) - Install all requirements from the requirements.txt file.
+
+2. ### **Prerequisites**
+    _These are necessary setup procedures before executing the script._
+* [Python version 3.10.4](https://www.python.org/downloads/release/python-3104/) must be installed. Compatibility with other Python versions cannot be guaranteed.
+*   [Requirements file](requirements.txt) - All necessary dependencies can be found and installed from the requirements.txt file.
     > **Note**
-    > use _pip install -r requirements.txt_ in your cmd for install all requirements
+    > To install all requirements, use the command _pip install -r requirements.txt_ in your terminal.
+    
 *   *Design_name.py* or *Design_name.aedt* - Add a file containing the geometric model for HFSS (Python file) to the model's folder located in the root folder. If the model is a .aedt file, add this file to the Ansoft folder located in the Documents folder (the default folder that creates HFSS) in both cases (.py or .aedt files), the file's name  must be equal to the project name.
 
-    The following example exposes a part of a python file with a dipole blade antenna geometry. Verify that the name of your file (.py or .aedt) is the same as the line responsible for defining the project's name
+    The following example shows part of a Python file containing the geometry of a blade dipole antenna. The file name (.py or .aedt) should correspond to the line that defines the project name.
 ```
 # -*- coding: utf-8 -*-
 # ----------------------------------------------
@@ -41,12 +42,12 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
 ...
 ```
 
-*   __First step:__ You must add the following imports to your main script.
+*   __First step:__ Add the following imports to your main script:
     ```
     from PSO_core import commands
     from PSO_functions import Interfaz
     ```
-*   __Second step:__ You have to define the following parameters for the optimization. It is recommended to save this data in independents variables:
+*   __Second step:__ Define the following parameters for the optimization process. It is recommended to save these parameters as individual variables:
     * Path to executable of ANSYS
     * Path to default save of ANSYS
     * Category of structure (Antenna, Hybrid, Filter, among others)
@@ -60,11 +61,11 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     * Nominals or default values of design
     * Number of iterations
     * Number of particles
-    * Number of branches  <!-- Posiblemente se elimine -->
+    * Number of branches  <!-- Possibly removed -->
     * Description of simulation and relevant information
     * Reports what you need for the fitness function
     
-    This information will be used as parameters for initializing the optimization with a later view method. Follow the next example:
+    These parameters will be used in the optimization initialization method as shown below:
     ```
     exe = "C:/Program Files/AnsysEM/AnsysEM19.0/Win64/ansysedt.exe"
     save = "C:/Users/Astrolab/Documents/Ansoft/"
@@ -95,7 +96,7 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     }
     ```    
 
-*   __Third step:__ You need to define your fitness function; this must receive one parameter (the data of required reports as a dictionary) and must return the value of the fitness function as shown to continue in the following example.
+*   __Third step:__ Define your fitness function; it must take in one parameter (a dictionary of required reports) and return the value of the fitness function. Refer to the example below:
     ```
     def fit (dataReports):
         for key in dataReports:
@@ -144,11 +145,13 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
         return coeficiente
     ```
 
-    In the same way that the before point, this function will use later.
+    Similar to the previous point, this function will be used later on.
 
-*   __Fourth step:__ You must initialize the system with init_system(...). This method comes from commands of the first importation, and you must add the arguments defined in the second step.
+*   __Fourth step:__ Initialize the system using the init_system(...) method from the commands module. This method takes in the parameters defined in the second step.
 
-    The order of arguments in the init_system method is as follows:
+The order of arguments in the init_system method is as follows:
+
+    
 
     | Position |  argument name | data type | description |
     |:--------:|:--------------:|:---------:| :---------:|
@@ -174,7 +177,7 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     commands.init_system(exe, save, pname, dname,vname, u, ma, mi, nom, i, p, b, reports, category, sub_category, desc)
     ```
 
-* __Fifth step:__ You must use the main_menu(...), this method comes on from Interfaz of the second importation, and you must add the fitness function as an argument of main_menu(...) as shown in the following example:
+* __Fifth step:__ You must use the main_menu(...), this method comes on from Interfaz of the second importation, and you must add the fitness function as an argument of main_menu(...) as shown in the following example:      
 
     ```
     Interfaz.main_menu(fit)
