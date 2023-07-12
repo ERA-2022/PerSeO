@@ -185,14 +185,14 @@ The order of arguments in the init_system method is as follows:
 
 ## **How to use**
 
-After verifying all requirements and saving your main script, you can run that script in cmd, as shown below.
+Once you have verified all requirements and saved your primary script, you may run this script in your command line as depicted below:
 
 ```
 C:\Users\Astrolab\Documents\Jaime\Temporal>python3 Example_1.py
 ```
-Another form to run your code is using some IDLE such as VSCode, Spider, and Conda, among others.
+An alternative way to execute your code involves using an Integrated Development Environment (IDE) such as VSCode, Spyder, or Anaconda, among others.
 
-To interact with the interface of the optimizer, you will be accessed the following options:
+Upon interacting with the PSO optimizer's user interface, you will be presented with the following options:
 
 ```
 -------->PSO APP<---------
@@ -205,19 +205,21 @@ Enter an option:
 ```
 
 ### Optimizate
-Firstly, this option verifies that the model exists using the Ansys or python files. In case of the software cannot run the files, it will autorun trying to run successfully repeatedly; if this does not result, the software will notify you of the error and go back to the main menu.
+The first operation checks for the existence of a model utilizing Ansys or Python files. In the event the software cannot execute these files, it will continuously attempt to do so. If this attempt is not successful, the software will alert you to the error and revert to the main menu.
 
-Once the model is verified, the software will ask if you want to graphic the reports. Write 'Y' or 'N' in the console and press the Intro. The optimization will start the process of creating the particles (new random dimensions), followed by the simulation of this design in ANSYS, exporting the reports previously request, and according to requirement drawing the graphics (saves it in ../ID/figures/).later, with the data reports the software will evaluate the fitness function and new particles dimensions. This process will repeat for all iterations and particles until the end.
+After the model's verification, the software will inquire if you wish to graphically represent the reports. To respond, enter 'Y' for yes or 'N' for no in the console and press Enter. The optimization process will commence by generating particles (new random dimensions) and simulating these designs in ANSYS. Subsequently, the previously requested reports will be exported, and graphics will be produced if necessary (stored in ../ID/figures/). The software will then evaluate the fitness function and generate new particle dimensions using the data reports. This process will iterate for all particles until completion.
 
-When the optimization process finishes, all results obtained will save in the _ output.csv file located in the results folder (.../results/output.csv). In this file, you will find the ID, time to start and end, type, category, sub-category, simulation parameters, results, and best particles. All this ordinate for rows as summaries to each iteration.
+Upon finishing the optimization process, all obtained results will be stored in the _output.csv file located in the results folder (.../results/output.csv). This file will include the ID, start and end times, type, category, sub-category, simulation parameters, results, and optimal particles. All this information will be systematically organized in rows, each summarizing an iteration.
+
 ### Fitness function test
-This option allows to execution of a new simulation based on previous results. For this, it is necessary to have the previous ID of one simulation and the different reports files (.csv) and to have loaded the exact parameters of the previous simulation. As option 1 (Optimization), you could choose whether you draw the graphics. 
+This option allows the execution of a new simulation based on previous results. It requires the ID from a previous simulation, different report files (.csv), and the exact parameters from the previous simulation. Like option 1 (Optimization), you can choose to graphically represent the results.
 
-This option makes a fast test with different fitness functions since skipping the simulation step uses more time in all simulation processes. However, for this reason, also you must understand that the optimization shows new dimensions it has not simulated.
+This option provides a rapid test with different fitness functions by omitting the time-consuming simulation step. However, keep in mind that the optimization may show new dimensions that have not been simulated.
 
-In the same way that the previous option, all data obtained will save in the _output.csv_ file in ../results/output.csv.
+As with the previous option, all data obtained will be stored in the output.csv file at ../results/output.csv.
+
 ### Graphics tools
-This option has a menu that allows drawing graphics of reports simulated, as it's shown in the following.
+This option provides a menu that allows the creation of graphs from simulated reports. The structure is as follows:
 ```
 -----\Graphics tools
 1> Draw one report
@@ -228,7 +230,7 @@ This option has a menu that allows drawing graphics of reports simulated, as it'
 Enter an option:
 ```
 #### Draw one report
-Firstly, this option will request a previously simulated ID. Later the file name to draw (you could write the '.csv' extensión or not). Next, you will need to define the label of the x-axis, which is associated with magnitude in frequency (not applied to the gain phi graphics), and the process will finish with a message that the process ends.
+This feature will prompt the user for an ID associated with a prior simulation. Following this, the name of the file to be plotted is requested (the '.csv' extension can be optionally included). The user will also need to define the label for the x-axis, which corresponds to frequency magnitude (this does not apply to the gain phi graphs). The operation concludes with a confirmation message indicating that the process has completed.
 ```
 -----\Graphics tools
 1> Draw one report
@@ -244,9 +246,10 @@ Enter the magnitude of frequency (for example Hz, KHz, MHz, GHz, among others): 
 The process has ended,  verify that the draw graphic is in 'figures' folder in the entered ID folder
 Press intro to continue...
 ```
-The graphics drawn will be saved in the figures folder between the previously requested ID folder.
-#### Draw one complete iteration
-As in the previous option, this will request a previously simulated ID followed by the number of iterations to draw and the label of the x-axis (not applicable to the gain phi graphics). Next, while the software draws the graphics, the screen will show the drawn files' names, and the process will finish with a notification on the screen.
+The resulting graphics are stored in the 'figures' folder within the specified ID folder.
+
+#### Draw a complete iteration
+Similar to the previous option, this feature will ask for an ID from a previous simulation, then the iteration number to be plotted, and the label for the x-axis (not applicable to the gain phi graphs). As the software generates the graphics, the names of the files being plotted will be displayed on the screen. The process concludes with a notification on screen.
 
 ```
 -----\Graphics tools
@@ -273,9 +276,10 @@ Drawing a graphic ---> datosZ11_2_1.csv
 The process has ended. Verify that the drawn graphic is in the 'figures' folder in the entered ID folder
 Press intro to continue...
 ```
-The graphics drawn will be saved in the figures folder between the previously requested ID folder.
-#### Draw one complete execution
-As in the previous option, this will request a previously simulated ID and the x-axis label (not applicable to the gain phi graphics). Next, while the software draws the graphics, the screen will show the name of the drawn files, and the process will finish with a count of files read and drawn, followed by a notification on the screen that it finished.
+The resulting graphics are stored in the 'figures' folder within the specified ID folder.
+
+#### Draw a Complete Execution
+Similar to the previous options, this feature will ask for an ID from a previous simulation, then the unit of frequency (not applicable to the gain phi graphs). As the software generates the graphics, the names of the files being plotted will be displayed on the screen. The process concludes with a count of the files that were read and plotted, followed by a completion notification on the screen.
 ```
 -----\Graphics tools
 1> Draw one report
@@ -321,11 +325,13 @@ Files read and drawn:30
 The process has ended. Verify that the drawn graphic is in the 'figures' folder in the entered ID folder.
 Press intro to continue...
 ```
-The graphics drawn will be saved in the figures folder between the previously requested ID folder.
-#### Draw one reports comparison
-For use, this option is necessary that the two files have the same magnitude; otherwise, the graphic could see wrong.
+The resulting graphics are stored in the 'figures' folder within the specified ID folder.
 
-Firstly, it will request the path (suggest a complete path, not a relative path) of the first file. In the same way, it will request the path of the second file. 
+
+#### Draw a Report Comparison
+In order to utilize this function, it is crucial to ensure that the two files being compared share the same units of magnitude. If not, the resulting graphic may display inaccurately.
+
+To initiate the process, the system will prompt you to input the absolute path of the first file. The same will be requested for the second file.
 ```
 -----\Graphics tools
 1> Draw one report
@@ -337,8 +343,9 @@ Enter option: 4
 Enter the path file 1: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_0_1.csv
 Enter the path file 2: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_2_1.csv
 ```
-Next, it will request the save path; however, if you press Intro with this field empty, the save path will be ../results/comparison graphics/
-* Example with specific save path
+Next, you'll be asked to define the saving path. By default, if you press 'Enter' without providing a path, the graphic will be saved in the default path: ../results/comparison graphics/
+
+* Example with a specific save path
 ```
 Note: if you press Intro without adding nothing path, this will save in ../results/comparison graphics/ by default
 Enter the save path: C:\Users\ESTACION\Documents\Jaime\Comparaciones 
@@ -348,7 +355,7 @@ Enter the save path: C:\Users\ESTACION\Documents\Jaime\Comparaciones
 Note: if you press Intro without adding nothing path, this will save in ../results/comparison graphics/ by default
 Enter the save path:
 ```
-Later, it will request the labels of the x and y-axis, the Title of the graphic, which will be the same as the save file name (this name cannot have dots), and the label of each file that will present in the graphic. When the process finishes, a message will notify it.
+Following this, the system will request labels for the x and y-axes, the graphic's title (which will also serve as the saved file name - this cannot include periods), and the data label for each file to be displayed on the graphic. When the process concludes, you will be notified with a message.
 ```
 Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
 Enter the save path: C:\Users\Astrolab\Documents\Jaime\Comparaciones
@@ -363,7 +370,7 @@ Press intro to continue...
 ```
 <!-- ### Set up -->
 ### Exit
-This option is to end the script that is running.
+This function is designed to terminate the currently running script.
 
 __*Developed by:*__ German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 
