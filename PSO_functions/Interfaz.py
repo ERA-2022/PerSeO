@@ -10,13 +10,14 @@ from PSO_functions.simulate import init_model
 import PSO_core.messages as msg
 import time
 
+
 def ops_main_menu():
     op = ""
     clear_screen()
-    while(op != '1' and op != '2' and op != '3' and op != '4'):# and op != '5' and op != '6'):
+    while (op != '1' and op != '2' and op != '3' and op != '4'):  # and op != '5' and op != '6'):
         print("\n-------->PSO APP<---------")
         print(f"-----\{msg.MAIN_MENU}")
-        print(f"1> {msg.OPTIMIZATE}")
+        print(f"1> {msg.OPTIMIZE}")
         print(f"2> {msg.FFT}")
         print(f"3> {msg.GRAPHICS_TOOLS}")
         # print("4> Run script")
@@ -24,14 +25,15 @@ def ops_main_menu():
         print(f"4> {msg.EXIT}")
         op = input(msg.ENTER_AN_OPTION)
 
-        if op != '1' and op != '2' and op != '3' and op != '4':# and op != '5' and op != '6':
+        if op != '1' and op != '2' and op != '3' and op != '4':  # and op != '5' and op != '6':
             wait_to_read(msg.INVALID_OPTION)
     return int(op)
+
 
 def ops_set_up_menu():
     op = ""
     clear_screen()
-    while(op != '1' and op != '2' and op != '3'):
+    while (op != '1' and op != '2' and op != '3'):
         print(f"\n-----\{msg.SET_UP_MENU}")
         print(f"1> {msg.MOD_PATHS}")
         print(f"2> {msg.SHOW_VALUES}")
@@ -43,21 +45,23 @@ def ops_set_up_menu():
             wait_to_read(msg.INVALID_OPTION)
     return int(op)
 
+
 def ops_graphics_tools():
     op = ""
     clear_screen()
-    while(op != '1' and op != '2' and op != '3' and op != '4' and op != '5'):
+    while (op != '1' and op != '2' and op != '3' and op != '4' and op != '5'):
         print(f"-----\{msg.GRAPHICS_TOOLS}")
         print(f"1> {msg.DW_ONE_REPORT}")
         print(f"2> {msg.DW_ONE_COMPLETE_ITERATION}")
-        print(f"3> {msg.DW_ONE_COMPLETE_EJECUTION}")
-        print(f"4> {msg.DW_ONE_REPORTS_COMPARITIONS}")
+        print(f"3> {msg.DW_ONE_COMPLETE_EXECUTION}")
+        print(f"4> {msg.DW_ONE_REPORTS_COMPARISONS}")
         print(f"5> {msg.BACK}")
         op = input(msg.ENTER_AN_OPTION)
 
         if op != '1' and op != '2' and op != '3' and op != '4' and op != '5':
             wait_to_read(msg.INVALID_OPTION)
     return int(op)
+
 
 def graphic_tools_menu():
     volver = False
@@ -78,6 +82,7 @@ def graphic_tools_menu():
         else:
             wait_to_read(msg.ANOMALY_ERR)
 
+
 def set_up_menu():
     volver = False
     while not volver:
@@ -86,29 +91,30 @@ def set_up_menu():
         if op == 1:
             info = read_data()
             print(f"\n{msg.CURRENT_VALUES}:")
-            for key,value in info['paths'].items():
-                print(key+" -> "+value)
+            for key, value in info['paths'].items():
+                print(key + " -> " + value)
             print()
-            for key,value in info['paths'].items():
-                if Y_N_question(msg.CHANGE_VALUE_1+key+msg.CHANGE_VALUE_2) == msg.YES:
-                    new_val = str(input(msg.REQUEST_NEW_VAL+key+": "))
-                    update_data("paths",key,new_val)
+            for key, value in info['paths'].items():
+                if Y_N_question(msg.CHANGE_VALUE_1 + key + msg.CHANGE_VALUE_2) == msg.YES:
+                    new_val = str(input(msg.REQUEST_NEW_VAL + key + ": "))
+                    update_data("paths", key, new_val)
 
                     if read_data()['paths'][key] == new_val:
-                        wait_to_read(msg.CHANGE_SUCESSFULL)
+                        wait_to_read(msg.CHANGE_SUCCESSFUL)
                     else:
                         wait_to_read(msg.ANOMALY_ERR_2)
         elif op == 2:
             clear_screen()
             print(f"\n{msg.CURRENT_VALUES}:")
-            for key,value in read_data()['paths'].items():
-                print(key+" -> "+value)
+            for key, value in read_data()['paths'].items():
+                print(key + " -> " + value)
             wait_to_read("")
         elif op == 3:
             volver = True
             clear_screen()
         else:
             wait_to_read(msg.ANOMALY_ERR)
+
 
 def main_menu(fitness):
     salir = False

@@ -9,7 +9,7 @@ from . import commands
 
 try:
     if not path.isfile("src/data.json"):
-        commands.init_system("","","","","","",[],[],[],0,0,0,{},"","","")
+        commands.init_system("", "", "", "", "", "", [], [], [], 0, 0, 0, {}, "", "", "")
 
 except:
     print(messages.FIRST_RUN_ERR)
