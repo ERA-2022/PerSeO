@@ -13,6 +13,11 @@ import PSO_core.messages as messages
 
 
 def read_data():
+    """Reads the data.json file located in ./src/ and returns its contents
+
+    Returns:
+        dict | None: if the file data.json exists, returns a dictionary with its information, otherwise returns None
+    """
     try:
         path = os.getcwd().replace('\\', '/') + '/src'
         with open(path + '/data.json', 'r') as file:
@@ -24,6 +29,16 @@ def read_data():
 
 
 def update_data(category="", key="", value=""):
+    """Updates the data.json file, modifying the value of a specific key within a given category, such as routes or info.
+
+    Args:
+        category (str, optional): category or main key, among these are paths and info. Defaults to "".
+        key (str, optional): sub-category or secondary key of a category. Defaults to "".
+        value (str, optional): new value. Defaults to "".
+
+    Returns:
+        dict | None: returns a dictionary with the updated data from the file data.json
+    """
     try:
         path = os.getcwd().replace('\\', '/') + '/src'
         with open(path + "/data.json", "r") as file:
@@ -108,10 +123,18 @@ def create_data_file(
 
 
 def clear_screen():
+    """Clean the console
+    """
     os.system("cls")
 
 
 def wait_to_read(msj="\nError!", clr=0):
+    """Concatenates the string of a message with the constant INTRO_BTN_MSG to then pause the system. Depending on the value of the clr argument, passing the wait may or may not clear the console.
+
+    Args:
+        msj (str, optional): Custom message, default is "Error!".
+        clr (int, optional): Value that if 0 will clear the console. default is 0.
+    """
     msj += messages.INTRO_BTN_MSG
     input(msj)
 
@@ -119,7 +142,13 @@ def wait_to_read(msj="\nError!", clr=0):
         clear_screen()
 
 
-def make_directory(name, path):
+def make_directory(name: str, path: str):
+    """Creates a directory if it does not exist with the name and path passed in the arguments.
+
+    Args:
+        name (str): directory name
+        path (str): path where the new directory will be created
+    """
     try:
         if not os.path.isdir(name):
             os.mkdir(path + name)
@@ -128,7 +157,15 @@ def make_directory(name, path):
         print(messages.CREATE_DIR_ERR + name)
 
 
-def Y_N_question(msj):
+def Y_N_question(msj: str):
+    """Asks the user a question that requires an affirmative or negative answer (yes or no).
+
+    Args:
+        msj (str): Contains the question you want to ask.
+
+    Returns:
+        str: Affirmative (Y) or negative (N) answer to the question asked.
+    """
     op = ""
     while op.upper() != messages.YES and op.upper() != messages.NO:
         op = input(msj + messages.Y_N)
@@ -139,17 +176,41 @@ def Y_N_question(msj):
 
 
 def start_timing():
+    """Records the current time when the function is called.
+
+    Returns:
+        datetime: datetime object with the date when this function is called
+    """
     return datetime.now()
 
 
 def get_elapsed_time(start_time=""):
+    """calculates the time elapsed from a given time to the current time.
+
+    Args:
+        start_time (str, optional): string containing the start date, default is "" which throughout the function is taken as the current date.
+
+    Returns:
+        str: string containing the elapsed time in seconds
+    """
     if start_time == "":
         start_time = read_data()['info']['start_time']
     diff = datetime.now() - start_time
     return str(diff.total_seconds())
 
 
-def get_instructions_to_reports(tag, report, value):
+def get_instructions_to_reports(tag: str, report: str, value: list | dict | str):
+    """generates a text string containing the necessary instructions to generate an Ansys HFSS report.
+
+    Args:
+        tag (str): tag that accompanies the name of the report after it is generated, generally associated with the particle and iteration from which it is generated e.g. S11_0_0.
+        report (str): report name e.g. Smn, Zmn, Gain, AmpImb, PhaseImb, VSWR, BW or DataTable
+        value (list | dict | str): value of the report to be generated
+
+    Returns:
+        str: string containing the instructions to generate the report(s) in Ansys HFSS
+    """
+
     instructions = ""
 
     if report.upper() == "SMN":
@@ -199,7 +260,18 @@ def get_instructions_to_reports(tag, report, value):
     return instructions
 
 
-def get_graphic_name(report, value, i, j):
+def get_graphic_name(report: str, value: list | dict | str, i: int, j: int):
+    """generates the name of a graph based on the report, the iteration number and the particle.
+
+    Args:
+        report (str): report name
+        value (list | dict | str): value of the report
+        i (int): iteration number
+        j (int): particle number
+
+    Returns:
+        str: name of a graph
+    """
     graphic_name = ""
 
     if report.upper() == "SMN":
@@ -232,13 +304,39 @@ def get_graphic_name(report, value, i, j):
 
 
 def setSimID():
+    """generates a universally unique identifier (UUID) as a text string
+
+    Returns:
+        str: text string that contain a UUID
+    """
     return str(uuid.uuid4())
 
 
 def init_system(
-    ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations,
-    particles, branches, reports, category, sub_category, description
+    ansys_exe: str, ansys_save_def: str, project_name: str, design_name: str, variable_name: str, units: str,
+    max: list[float | int], min: list[float | int], nominals: list[float | int], iterations: int, particles: int,
+    branches: int, reports: dict, category: str, sub_category: str, description: str
 ):
+    """Creates the necessary directories and files that will be used in the execution of an optimization.
+
+    Args:
+        ansys_exe (str): string containing the path to the Ansys HFSS executable, usually found in C:/program files/
+        ansys_save_def (str): string containing the path where the Ansys model file is located, it is recommended to leave the default path Ansys uses to save its files.
+        project_name (str): string containing the name of the project within the Ansys model
+        design_name (str): string containing the name of the design within the Ansys model
+        variable_name (str): string containing the name of the array name of the model dimensions
+        units (str): string containing the unit of measure of the model, e.g. mm (millimeters)
+        max (list[float  |  int]): List of numbers with the maximum values that the PSO can take to modify the model's dimensions.
+        min (list[float  |  int]): List of numbers with the minimum values the PSO can take to modify the model's dimensions.
+        nominals (list[float  |  int]): List of numbers with the nominal or default values that the model has in its dimensions.
+        iterations (int): number of iterations to be executed by the PSO
+        particles (int): number of particles to be executed by the PSO
+        branches (int): number of branches (only for hybrids with branches)
+        reports (dict): dictionary with the reports to be generated by ansys
+        category (str): string containing the category you want to give to the model or optimization
+        sub_category (str): string containing the sub-category you want to give to the model or optimization
+        description (str): string containing the description of the model, the setting function, additional information
+    """
     print(messages.START_SYS)
     main_path = os.getcwd().replace('\\', '/') + '/'
 
@@ -248,7 +346,7 @@ def init_system(
     make_directory('src', main_path)
 
     create_data_file(
-        ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nomilas, iterations,
+        ansys_exe, ansys_save_def, project_name, design_name, variable_name, units, max, min, nominals, iterations,
         particles, branches, reports, category, sub_category, description
     )
 
