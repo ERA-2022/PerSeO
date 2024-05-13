@@ -1,6 +1,6 @@
 """
-	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-	Year: 2022
+Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+Year: 2022
 """
 from os import path
 from . import messages
