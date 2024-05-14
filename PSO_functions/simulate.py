@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-	Year: 2022
+Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+Year: 2022
 """
 from PSO_core.commands import get_graphic_name, read_data, get_instructions_to_reports, wait_to_read
 from .graphicsManagement import draw_one_report
@@ -24,7 +24,7 @@ def create_sim_file(particle: np.ndarray, i: int, j: int):
     particle = particle.round(4)
 
     tag = "_" + str(i) + "_" + str(j)  # esta linea genera el string _i_j
-    var = "[" + ", ".join([str(x) for x in particle]) + "]"  # Generar string del array de datos de la particula
+    var = "[" + ", ".join([str(x) for x in particle]) + "]"  # Generar string del array de datos de la partícula
 
     f = open(read_data()['paths']['src'] + "simulacion.py", "w")  # abre un archivo para escribir
     direccion_dibujo = '"' + read_data()["paths"]["ansys_save_def"] + read_data()["values"]["project_name"] + '.aedt"'
@@ -85,12 +85,12 @@ def run_simulation_hfss(ansys_path="", args='-runscriptandexit', file_path=""):
 ## read the simulation results
 def read_simulation_results(i, j, graph):
     dataReports = {}
-    requiered_reports = read_data()['values']['reports']
+    required_reports = read_data()['values']['reports']
 
     files_location = read_data()['paths']['files']
     general_graphic_path = read_data()['paths']['figures']
 
-    for report, value in requiered_reports.items():
+    for report, value in required_reports.items():
         if report.upper() == "SMN":
             if len(value) > 0:
                 for mn_val in value:

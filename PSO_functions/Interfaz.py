@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-	Year: 2022
+Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+Year: 2022
 """
 import PSO_functions.graphicsManagement as graphics
 from PSO_core.commands import *

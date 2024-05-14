@@ -22,7 +22,7 @@ def draw_one_report(path="", report_n="", data=[], points=0, units=""):
     if units == "":
         units = read_data()['values']['reports']["aditional_data"]["units"]
 
-    # requiered_reports = read_data()['values']['reports']
+    # required_reports = read_data()['values']['reports']
 
     if "GAIN" in report_n.upper() or "GANANCIA" in report_n.upper():
         if points >= 100:
@@ -35,13 +35,13 @@ def draw_one_report(path="", report_n="", data=[], points=0, units=""):
             steps = 1
 
         x = np.arange(1, points, steps)
-        #y=np.arange(1,6,1)
-        #colours=['b','g','b','k','y','r']
+        # y=np.arange(1,6,1)
+        # colors=['b','g','b','k','y','r']
         figure = plt.figure(figsize=(8, 6))
         for k in x:
             plt.plot(
                 data[:, 0], data[:, k]
-            )  #,label = str(k+(requiered_reports["aditional_data"]["fmin"]-1)) +requiered_reports["aditional_data"]["units"]
+            )  # ,label = str(k+(requiered_reports["aditional_data"]["fmin"]-1)) +requiered_reports["aditional_data"]["units"]
             # plt.legend(loc = 1,prop={'size': 12}) # Configuración del texto si se ponen labels
             plt.ylabel(r'Gain (lineal)', fontsize=18)
             plt.xlabel(r'$\theta$ (deg)', fontsize=18)
@@ -289,7 +289,7 @@ def draw_a_comparison():
                 if Y_N_question(msg.INVALID_PATH_ERR) == msg.NO:
                     break
 
-    if Valid:  # Graficación
+    if Valid:
         x_name = input(msg.REQUEST_X_LABEL)
         y_name = input(msg.REQUEST_Y_LABEL)
         graphicTitle = input(msg.REQUEST_TITLE)
