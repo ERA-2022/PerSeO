@@ -7,7 +7,7 @@ Year: 2022
 from .commands import read_data
 
 
-def agregaVariable(proj, name: str, value: str):
+def agregaVariable(proj, name, value):
     """Adds a variable to the Ansys HFSS design, it is suggested that the value be accompanied by the units of measurement.
 
     Args:
@@ -25,7 +25,7 @@ def agregaVariable(proj, name: str, value: str):
     ])
 
 
-def modificaVariable(proj, name: str, value: str):
+def modificaVariable(proj, name, value):
     """Modify a variable to the Ansys HFSS design, it is suggested that the value be accompanied by the units of measurement.
 
     Args:
@@ -43,7 +43,7 @@ def modificaVariable(proj, name: str, value: str):
     ])
 
 
-def agregaArreglo(proj, name: str, value: str):
+def agregaArreglo(proj, name, value):
     """Adds a variable type array to the Ansys HFSS design, it is suggested that the value be accompanied by the units of measurement.
 
     Args:
@@ -61,7 +61,7 @@ def agregaArreglo(proj, name: str, value: str):
     ])
 
 
-def modificaArreglo(proj, name: str, value: str):
+def modificaArreglo(proj, name, value):
     """Modify a variable type array to the Ansys HFSS design, it is suggested that the value be accompanied by the units of measurement.
 
     Args:
@@ -80,7 +80,7 @@ def modificaArreglo(proj, name: str, value: str):
 
 
 #UNDERNEATH THE COMMANDS TO GENERATE THE S PARAMETERS ARE PRESENTED.
-def creaSmn(proj, name: str, simID: str, m: str | int, n: str | int):
+def creaSmn(proj, name, simID, m, n):
     """Creates, generates and exports Smn report in Ansys HFSS
 
     Args:
@@ -105,7 +105,7 @@ def creaSmn(proj, name: str, simID: str, m: str | int, n: str | int):
     )
 
 
-def creaZmn(proj, name: str, simID: str, m: str | int, n: str | int):
+def creaZmn(proj, name, simID, m, n):
     """Creates, generates and exports Zmn report in Ansys HFSS
 
     Args:
@@ -130,7 +130,7 @@ def creaZmn(proj, name: str, simID: str, m: str | int, n: str | int):
     )
 
 
-def creaAmpImb(proj, name: str, simID: str):
+def creaAmpImb(proj, name, simID):
     """Creates, generates and exports AmpImb report in Ansys HFSS
 
     Args:
@@ -155,7 +155,7 @@ def creaAmpImb(proj, name: str, simID: str):
     )
 
 
-def creaPhaseImb(proj, name: str, simID: str):
+def creaPhaseImb(proj, name, simID):
     """Creates, generates and exports PhaseImb report in Ansys HFSS
 
     Args:
@@ -179,7 +179,7 @@ def creaPhaseImb(proj, name: str, simID: str):
 
 
 #UNDERNEATH THE COMMANDS TO GENERATE THE VSWR, GAIN, BW AND DATA TABLE PARAMETERS.
-def creaVSWR(proj, name: str, simID: str, port: str | int):
+def creaVSWR(proj, name, simID, port):
     """Creates, generates and exports VSWR report in Ansys HFSS
 
     Args:
@@ -201,7 +201,7 @@ def creaVSWR(proj, name: str, simID: str, port: str | int):
     oModule.ExportToFile("VSWR(" + str(port) + ")", direccion)
 
 
-def creaGain(proj, name: str, simID: str, angle: str | int | float):
+def creaGain(proj, name, simID, angle):
     """Creates, generates and exports gain report in Ansys HFSS
 
     Args:
@@ -223,7 +223,7 @@ def creaGain(proj, name: str, simID: str, angle: str | int | float):
     oModule.ExportToFile("Gain Phi " + str(angle), direccion)
 
 
-def creaBW(proj, name: str, simID: str):
+def creaBW(proj, name, simID):
     """Creates, generates and exports BW report in Ansys HFSS
 
     Args:
@@ -239,7 +239,7 @@ def creaBW(proj, name: str, simID: str):
     oModule.ExportTableToFile("S11", direccion, "Legend")
 
 
-def creaDataTable(proj, name: str, simID: str):
+def creaDataTable(proj, name, simID):
     """Creates, generates and exports a data table report in Ansys HFSS
 
     Args:
