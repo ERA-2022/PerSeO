@@ -78,7 +78,7 @@ def main(fun):
     data_to_store = {
         "sim_id": info['ID'],
         "created_at": start_time,
-        "elapced_time": elapsed,
+        "elapsed_time": elapsed,
         "sim_type": "Full simulation",
         "category": info['category'],
         "sub_category": info['sub_category'],
@@ -210,7 +210,7 @@ def run_iterations(iteraciones, swarm: pso.Swarm, db_manager: db.DBManager, fun,
         data_to_store = {
             "sim_id": info['ID'],
             "created_at": start_time,
-            "elapced_time": elapsed,
+            "elapsed_time": elapsed,
             "sim_type": s_type,
             "category": info['category'],
             "sub_category": info['sub_category'],
@@ -298,7 +298,7 @@ def only_fit(fun):
         data_to_store = {
             "sim_id": info['ID'],
             "created_at": start_time,
-            "elapced_time": elapsed,
+            "elapsed_time": elapsed,
             "sim_type": "Fitness function test",
             "category": info['category'],
             "sub_category": info['sub_category'],

@@ -3,9 +3,9 @@
 Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 Year: 2022
 """
-from datetime import datetime
 import os
 from sys import platform
+from datetime import datetime
 import time
 import json
 import uuid
@@ -216,46 +216,46 @@ def get_instructions_to_reports(tag, report, value):
     if report.upper() == "SMN":
         if len(value) > 0:
             for mn_val in value:
-                instructions += "fn.creaSmn(oProject,'" + tag + "','" + read_data()['info']['ID'] + "','" + str(
+                instructions += "fn.createsSmn(oProject,'" + tag + "','" + read_data()['info']['ID'] + "','" + str(
                     mn_val[0]
                 ) + "','" + str(mn_val[1]) + "')\n"
 
     elif report.upper() == "ZMN":
         if len(value) > 0:
             for mn_val in value:
-                instructions += "fn.creaZmn(oProject,'" + tag + "','" + read_data()['info']['ID'] + "','" + str(
+                instructions += "fn.createsZmn(oProject,'" + tag + "','" + read_data()['info']['ID'] + "','" + str(
                     mn_val[0]
                 ) + "','" + str(mn_val[1]) + "')\n"
 
     elif report.upper() == "GAIN":
         if len(value) > 0:
             for angle in value:
-                instructions += "fn.creaGain(oProject,'" + tag + "','" + read_data(
+                instructions += "fn.createsGain(oProject,'" + tag + "','" + read_data(
                 )['info']['ID'] + "','" + str(angle) + "')\n"
 
     elif report.upper() == "AMPIMB":
         instructions = 'oModule.CreateOutputVariable("AmpImbalance", "' + str(
             value
         ) + '", "Setup1 : Sweep", "Modal Solution Data", [])\n'
-        instructions += "fn.creaAmpImb(oProject,'" + tag + "','" + read_data()['info']['ID'] + "')\n"
+        instructions += "fn.createsAmpImb(oProject,'" + tag + "','" + read_data()['info']['ID'] + "')\n"
 
     elif report.upper() == "PHASEIMB":
         instructions = 'oModule.CreateOutputVariable("PhaseImb", "' + str(
             value
         ) + '", "Setup1 : Sweep", "Modal Solution Data", [])\n'
-        instructions += "fn.creaPhaseImb(oProject,'" + tag + "','" + read_data()['info']['ID'] + "')\n"
+        instructions += "fn.createsPhaseImb(oProject,'" + tag + "','" + read_data()['info']['ID'] + "')\n"
 
     elif report.upper() == "VSWR":
         if len(value) > 0:
             for port in value:
-                instructions += "fn.creaVSWR(oProject,'" + tag + "','" + read_data(
+                instructions += "fn.createsVSWR(oProject,'" + tag + "','" + read_data(
                 )['info']['ID'] + "','" + str(port) + "')\n"
 
     elif report.upper() == "BW":
-        instructions = "fn.creaBW(oProject,'" + tag + "','" + read_data()['info']['ID'] + "')\n"
+        instructions = "fn.createsBW(oProject,'" + tag + "','" + read_data()['info']['ID'] + "')\n"
 
     elif report.upper() == "DATATABLE":
-        instructions = "fn.creaDataTable(oProject,'" + tag + "','" + read_data()['info']['ID'] + "')\n"
+        instructions = "fn.createsDataTable(oProject,'" + tag + "','" + read_data()['info']['ID'] + "')\n"
 
     return instructions
 

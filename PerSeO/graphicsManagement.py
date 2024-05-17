@@ -2,27 +2,45 @@
 Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 Year: 2022
 """
+import os
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
-import os
 
 from . import messages as msg
-from .commands import read_data, Y_N_question, wait_to_read, update_data, make_directory, clear_screen
+from .commands import read_data, Y_N_question, wait_to_read, make_directory
 
 
-def size_of_step(init_freq, final_freq, num_steps):
+def size_of_step(init_freq: int | float, final_freq: int | float, num_steps: int):
+    """Calculates the amount of data that a report will generate based on the initial frequency, final frequency and number of points in the sweep, both frequency values must be in the same scientific notation.
+
+    Args:
+        init_freq (int | float): numerical value of the initial frequency of the model analysis in Ansys HFSS
+        final_freq (int | float): numerical value of the final frequency of the model analysis in Ansys HFSS
+        num_steps (int): number of steps or points used in the sweep analysis
+
+    Returns:
+        float: numerical value representing the amount of data that a report can deliver.
+    """
     return ((final_freq - init_freq) / (num_steps - 1))
 
 
 def draw_one_report(path="", report_n="", data=[], points=0, units=""):
+    """Generates the graph of an AnsysHFSS report, such as the Smn, Zmn, AmpImb, PhaseImb, Gain and VSWR.
+
+    Args:
+        path (str, optional): path where the graphic will be saved.
+        report_n (str, optional): Name of the report to be plotted.
+        data (list, optional): data to be plotted.
+        points (int, optional): number of points used in the sweep analysis (point on the x-axis). By default it take the points obtained in the ./src/data.json file
+        units (str, optional): data units, e.g. KHz, MHz, GHz. By default it take the units obtained in the ./src/data.json file.
+    """
+
     matplotlib.use("Agg")
     if points <= 0:
-        points = read_data()['values']['reports']["aditional_data"]["points"]
+        points = read_data()['values']['reports']["additional_data"]["points"]
     if units == "":
-        units = read_data()['values']['reports']["aditional_data"]["units"]
-
-    # required_reports = read_data()['values']['reports']
+        units = read_data()['values']['reports']["additional_data"]["units"]
 
     if "GAIN" in report_n.upper() or "GANANCIA" in report_n.upper():
         if points >= 100:
@@ -35,14 +53,9 @@ def draw_one_report(path="", report_n="", data=[], points=0, units=""):
             steps = 1
 
         x = np.arange(1, points, steps)
-        # y=np.arange(1,6,1)
-        # colors=['b','g','b','k','y','r']
         figure = plt.figure(figsize=(8, 6))
         for k in x:
-            plt.plot(
-                data[:, 0], data[:, k]
-            )  # ,label = str(k+(requiered_reports["aditional_data"]["fmin"]-1)) +requiered_reports["aditional_data"]["units"]
-            # plt.legend(loc = 1,prop={'size': 12}) # Configuración del texto si se ponen labels
+            plt.plot(data[:, 0], data[:, k])
             plt.ylabel(r'Gain (lineal)', fontsize=18)
             plt.xlabel(r'$\theta$ (deg)', fontsize=18)
             plt.title(r'optimized (Plane $\phi$=' + report_n.replace("GAINPhi", "") + ")", fontsize=18)
@@ -94,10 +107,12 @@ def draw_one_report(path="", report_n="", data=[], points=0, units=""):
 
 
 def get_data_for_one_report():
+    """Prompts the user for a simulation ID and a report to plot, then reads the file and plots it.
+    """
     temp_path = os.getcwd().replace('\\', '/') + '/results/'
 
     valid = False
-    while not valid:  # Verificación de ID
+    while not valid:
         id_for_read = input(msg.REQUEST_ID)
         if not os.path.isdir(temp_path + id_for_read):
             if Y_N_question(msg.INVALID_ID_ERR) == msg.NO:
@@ -105,7 +120,7 @@ def get_data_for_one_report():
         else:
             valid = True
 
-    if valid:  # Verificación de archivo
+    if valid:
         valid = False
         while not valid:
             file_path = temp_path + id_for_read + '/'
@@ -137,12 +152,14 @@ def get_data_for_one_report():
             units = ""
         else:
             units = input(msg.REQUEST_MAGNITUDE_FREQ)
-        # print(f"report: {complement[0]} iteration: {complement[1]} particle: {complement[2]} points:{points}")
+
         draw_one_report(fig_path, complement[0], data, points, units)
         wait_to_read(msg.END_GRAPHIC_PROCESS)
 
 
 def draw_all_iteration():
+    """Prompts the user for a simulation ID and a iteration to plot, then reads the files and plots it.
+    """
     temp_path = os.getcwd().replace('\\', '/') + '/results/'
     valid = False
     while not valid:
@@ -196,6 +213,8 @@ def draw_all_iteration():
 
 
 def draw_all_optimization():
+    """It prompts the user for a simulation ID to plot, then reads all files in that simulation and plots them.
+    """
     results_path = os.getcwd().replace('\\', '/') + '/results/'
 
     reports_exist = False
@@ -237,7 +256,9 @@ def draw_all_optimization():
 
 
 def draw_a_comparison():
-    Valid = False  # Verificación del archivo 1
+    """It prompts the user for the path to two .csv files, a save path and additional information about the chart, such as title and axis name.
+    """
+    Valid = False
     while not Valid:
         filePath1 = input(msg.REQUEST_PATH_FILE_1)
         if os.path.isfile(filePath1):
@@ -250,7 +271,7 @@ def draw_a_comparison():
             if Y_N_question(msg.INVALID_PATH_ERR) == msg.NO:
                 break
 
-    if Valid:  # Verificación del archivo 2
+    if Valid:
         Valid = False
         while not Valid:
             filePath2 = input(msg.REQUEST_PATH_FILE_2)
@@ -264,7 +285,7 @@ def draw_a_comparison():
                 if Y_N_question(msg.INVALID_PATH_ERR) == msg.NO:
                     break
 
-    if Valid:  # Selección y verificación de la ruta de guardado
+    if Valid:
         Valid = False
         while not Valid:
             print(msg.ADD_NOTE_SAVE_PATH)

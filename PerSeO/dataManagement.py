@@ -4,11 +4,9 @@ Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera,
 Year: 2022
 """
 
-#import csv
-#import os
-from .commands import read_data
-import pandas as pd
 import os.path as path
+import pandas as pd
+from .commands import read_data
 
 
 class DBManager:
@@ -26,7 +24,7 @@ class DBManager:
         else:
 
             column_names = [
-                "sim_id", "created_at", "elapced_time", "sim_type", "category", "sub_category", "sim_setup", "pbest",
+                "sim_id", "created_at", "elapsed_time", "sim_type", "category", "sub_category", "sim_setup", "pbest",
                 "gbest", "best_particle_id", "best_particle", "iteration"
             ]
 
@@ -34,7 +32,7 @@ class DBManager:
 
             self.df['sim_id'] = self.df['sim_id'].astype('object')
             self.df['created_at'] = self.df['created_at'].astype('datetime64')
-            self.df['elapced_time'] = self.df['elapced_time'].astype(str)
+            self.df['elapsed_time'] = self.df['elapsed_time'].astype(str)
             self.df['sim_type'] = self.df['sim_type'].astype(str)
             self.df['category'] = self.df['category'].astype(str)
             self.df['sub_category'] = self.df['sub_category'].astype(str)

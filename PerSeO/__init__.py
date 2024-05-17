@@ -4,8 +4,8 @@ Year: 2022
 """
 from os import path
 from . import messages
-from . import ansys_functions
 from . import commands
+from . import ansys_functions
 
 
 try:
@@ -18,8 +18,8 @@ except:
 try:
     from . import dataManagement
     from . import graphicsManagement
-    from . import Interfaz
-    from . import optimizate
+    from . import interfaz
+    from . import optimize
     from . import pso
     from . import simulate
 except:

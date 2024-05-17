@@ -3,17 +3,17 @@
 Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 Year: 2022
 """
-from .commands import get_graphic_name, read_data, get_instructions_to_reports, wait_to_read
-from .graphicsManagement import draw_one_report
-import logging
-import subprocess
 import os
+import subprocess
+import logging
+import time
+import shutil
 import numpy as np
 import matplotlib.pyplot as plt
-import time
-# modulo que contiene strings de mensajes
 from . import messages as msg
-import shutil
+from .commands import get_graphic_name, read_data, get_instructions_to_reports, wait_to_read
+from .graphicsManagement import draw_one_report
+
 #=============================================================================
 # THIS customized FUNCTION CALLS 'funciones.py' FILE AND GENERATES THE DATA
 # TO BE USED BY THE OPTIMIZER.
@@ -39,7 +39,7 @@ def create_sim_file(particle: np.ndarray, i: int, j: int):
     f.write("oProject = oDesktop.SetActiveProject(" + '"' + read_data()['values']['project_name'] + '"' + ")\n")
 
     f.write(
-        'fn.modificaArreglo(oProject,"' + read_data()['values']['variable_name'] + ' ","' + var +
+        'fn.changeArray(oProject,"' + read_data()['values']['variable_name'] + ' ","' + var +
         read_data()['values']['units'] + '")\n'
     )
 
@@ -156,7 +156,7 @@ def read_simulation_results(i, j, graph):
                         )
 
         else:
-            if report.upper() != "ADITIONAL_DATA":
+            if report.upper() != "additional_data":
                 graphic_name = get_graphic_name(report, value, i, j)
                 try:
                     dataReports[report.upper()] = np.genfromtxt(
