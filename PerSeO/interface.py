@@ -3,20 +3,25 @@
 Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 Year: 2022
 """
+import time
+from . import messages as msg
 from . import graphicsManagement as graphics
 from .commands import clear_screen, wait_to_read, read_data, Y_N_question, update_data
-from .optimizate import main, only_fit
+from .optimize import main, only_fit
 from .simulate import init_model
-from . import messages as msg
-import time
 
 
 def ops_main_menu():
+    """It displays the main menu on the console and prompts the user to enter a menu option which is returned by this function.
+
+    Returns:
+        int: numerical value representing the option selected in the main menu by the user.
+    """
     op = ""
     clear_screen()
     while (op != '1' and op != '2' and op != '3' and op != '4'):  # and op != '5' and op != '6'):
         print("\n-------->PSO APP<---------")
-        print(f"-----\{msg.MAIN_MENU}")
+        print(f"-----\\{msg.MAIN_MENU}")
         print(f"1> {msg.OPTIMIZE}")
         print(f"2> {msg.FFT}")
         print(f"3> {msg.GRAPHICS_TOOLS}")
@@ -31,10 +36,15 @@ def ops_main_menu():
 
 
 def ops_set_up_menu():
+    """It displays the set up menu on the console and prompts the user to enter a menu option which is returned by this function.
+
+    Returns:
+        int: numerical value representing the option selected in the set up main menu by the user.
+    """
     op = ""
     clear_screen()
     while (op != '1' and op != '2' and op != '3'):
-        print(f"\n-----\{msg.SET_UP_MENU}")
+        print(f"\n-----\\{msg.SET_UP_MENU}")
         print(f"1> {msg.MOD_PATHS}")
         print(f"2> {msg.SHOW_VALUES}")
         print(f"3> {msg.BACK}")
@@ -47,10 +57,15 @@ def ops_set_up_menu():
 
 
 def ops_graphics_tools():
+    """It displays the graphic tools menu on the console and prompts the user to enter a menu option which is returned by this function.
+
+    Returns:
+        int: numerical value representing the option selected in the graphic tools menu by the user.
+    """
     op = ""
     clear_screen()
     while (op != '1' and op != '2' and op != '3' and op != '4' and op != '5'):
-        print(f"-----\{msg.GRAPHICS_TOOLS}")
+        print(f"-----\\{msg.GRAPHICS_TOOLS}")
         print(f"1> {msg.DW_ONE_REPORT}")
         print(f"2> {msg.DW_ONE_COMPLETE_ITERATION}")
         print(f"3> {msg.DW_ONE_COMPLETE_EXECUTION}")
@@ -64,8 +79,10 @@ def ops_graphics_tools():
 
 
 def graphic_tools_menu():
-    volver = False
-    while not volver:
+    """use the ops_graphics_tools function to show get an option from the graphic tools menu, then execute the action corresponding to the selected option
+    """
+    back = False
+    while not back:
         op = ops_graphics_tools()
 
         if op == 1:
@@ -77,15 +94,17 @@ def graphic_tools_menu():
         elif op == 4:
             graphics.draw_a_comparison()
         elif op == 5:
-            volver = True
+            back = True
             clear_screen()
         else:
             wait_to_read(msg.ANOMALY_ERR)
 
 
 def set_up_menu():
-    volver = False
-    while not volver:
+    """use the ops_set_up_menu function to show get an option from the set up menu, then execute the action corresponding to the selected option
+    """
+    back = False
+    while not back:
         op = ops_set_up_menu()
 
         if op == 1:
@@ -110,15 +129,19 @@ def set_up_menu():
                 print(key + " -> " + value)
             wait_to_read("")
         elif op == 3:
-            volver = True
+            back = True
             clear_screen()
         else:
             wait_to_read(msg.ANOMALY_ERR)
 
 
 def main_menu(fitness):
-    salir = False
-    while not salir:
+    """this function uses the ops_main_menu function to display and obtain an option from the main menu, then it executes the action corresponding to the selected option, it receives as parameter a function which will be used as an adjustment function in the process of optimizing option one or two of the menu, this adjustment function in turn must receive as parameter a dictionary where the access key will be the name of the report and the associated value will be the data obtained..
+    Args:
+        fitness (function(dataReports: dict)): The adjustment function to be used in the optimization process must receive as a parameter a dictionary with the names of the reports generated in Ansys HFSS, where the access key will be the name of the report and the associated value will be the data obtained.
+    """
+    stop = False
+    while not stop:
         op = ops_main_menu()
         if op == 1:
             ready = not init_model()
@@ -136,13 +159,13 @@ def main_menu(fitness):
             print(f"\n{msg.FINAL_MSG}")
             time.sleep(2)
             clear_screen()
-            salir = True
+            stop = True
         # elif op == 5:
         #     set_up_menu()
         # elif op == 6:
-        #     print("\nGracias por usar nuestro software!")
+        #     print(f"\n{msg.FINAL_MSG}")
         #     time.sleep(2)
         #     clear_screen()
-        #     salir = True
+        #     stop = True
         else:
             wait_to_read(msg.ANOMALY_ERR)

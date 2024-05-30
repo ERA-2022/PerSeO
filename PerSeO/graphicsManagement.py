@@ -18,9 +18,9 @@ def size_of_step(init_freq, final_freq, num_steps):
 def draw_one_report(path="", report_n="", data=[], points=0, units=""):
     matplotlib.use("Agg")
     if points <= 0:
-        points = read_data()['values']['reports']["aditional_data"]["points"]
+        points = read_data()['values']['reports']["additional_data"]["points"]
     if units == "":
-        units = read_data()['values']['reports']["aditional_data"]["units"]
+        units = read_data()['values']['reports']["additional_data"]["units"]
 
     # required_reports = read_data()['values']['reports']
 
@@ -41,7 +41,7 @@ def draw_one_report(path="", report_n="", data=[], points=0, units=""):
         for k in x:
             plt.plot(
                 data[:, 0], data[:, k]
-            )  # ,label = str(k+(requiered_reports["aditional_data"]["fmin"]-1)) +requiered_reports["aditional_data"]["units"]
+            )  # ,label = str(k+(requiered_reports["additional_data"]["fmin"]-1)) +requiered_reports["additional_data"]["units"]
             # plt.legend(loc = 1,prop={'size': 12}) # Configuración del texto si se ponen labels
             plt.ylabel(r'Gain (lineal)', fontsize=18)
             plt.xlabel(r'$\theta$ (deg)', fontsize=18)

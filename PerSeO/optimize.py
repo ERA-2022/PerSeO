@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-	Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-	Year: 2022
+Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+Year: 2022
 """
-#import os
 #import sys
 #from scipy.sparse import data
 import logging
@@ -14,11 +13,11 @@ import os
 
 from . import messages as msg
 from . import commands
-from .commands import read_data
-
 from . import pso as pso
 from . import simulate as simulate
 from . import dataManagement as db
+
+from .commands import read_data
 
 
 def main(fun):
@@ -46,7 +45,7 @@ def main(fun):
     db_manager.load_df()
 
     logging.info(msg.STARTED)
-    swarm = set_Swarm()  #initialize swarm
+    swarm = set_Swarm()  # initialize swarm
 
     for index in range(len(swarm.particles)):
         particle = swarm.particles[index]
@@ -69,7 +68,7 @@ def main(fun):
     best_index = swarm.get_particle_best_fit(swarm.particles)
 
     logging.info(msg.PBEST + str(swarm.pbest))
-    logging.info(msg.GBEST + str(swarm.gbest))  #swarm.gbest comes from get_particle_best_fit
+    logging.info(msg.GBEST + str(swarm.gbest))  # swarm.gbest comes from get_particle_best_fit
     logging.info(msg.PGVALUE + str(swarm.pg))
     logging.info(msg.BEST_PARTICLE_INDEX + str(best_index) + '\n')
 
@@ -78,7 +77,7 @@ def main(fun):
     data_to_store = {
         "sim_id": info['ID'],
         "created_at": start_time,
-        "elapced_time": elapsed,
+        "elapsed_time": elapsed,
         "sim_type": "Full simulation",
         "category": info['category'],
         "sub_category": info['sub_category'],
@@ -114,7 +113,7 @@ def set_Swarm():
 
 def run_iterations(iteraciones, swarm: pso.Swarm, db_manager: db.DBManager, fun, addOp: dict):
 
-    pi_best = swarm.particles.copy()  #array initial particles
+    pi_best = swarm.particles.copy()  # array initial particles
 
     for i in range(iteraciones):
         print(msg.NUM_ITERATIONS + str(iteraciones))
@@ -126,7 +125,7 @@ def run_iterations(iteraciones, swarm: pso.Swarm, db_manager: db.DBManager, fun,
         ### particulas anterior es una copia del objeto arreglo de Particulas
         ### que es propiedad del objeto Swarm
         particulas_anterior = []
-        particulas_anterior = swarm.particles.copy()  #Array de particulas
+        particulas_anterior = swarm.particles.copy()  # Array de particulas
         logging.info(msg.CALC_VEL_AND_POS)
 
         ### el objeto swarm se ocupa de crear las particulas nuevas
@@ -141,13 +140,13 @@ def run_iterations(iteraciones, swarm: pso.Swarm, db_manager: db.DBManager, fun,
         for index_, particle in enumerate(x):
 
             swarm.particles[index_].values_array = particle.values_array
-            #swarm.particles  = x.copy() #aqui se está copiando un objeto
+            #swarm.particles  = x.copy() # aqui se está copiando un objeto
 
-        swarm.velocidades = np.copy(v)  #aquí un arreglo de vectores
+        swarm.velocidades = np.copy(v)  # aquí un arreglo de vectores
         logging.info(msg.SIM_NEW_PARTICLE + "\n")
 
         #Array valores se ocupa de recibir los valores de fitness de cada particula en la
-        #actual iteraciòn
+        #actual iteración
         valores = np.zeros(read_data()['values']['particles'])
 
         ### se itera sobre cada particula y se simula
@@ -186,13 +185,13 @@ def run_iterations(iteraciones, swarm: pso.Swarm, db_manager: db.DBManager, fun,
             #sort pbest
             if fit < swarm.pbest[index]:
                 swarm.pbest[index] = fit
-                pi_best[index] = swarm.particles[index]  #swarm particles is updated before with new particle
+                pi_best[index] = swarm.particles[index]  # swarm particles is updated before with new particle
 
         ## After each iteration we end up with pbest, pi
         #these values come from the iteration 0
         if np.min(swarm.pbest) < swarm.gbest:
 
-            swarm.gbest = np.min(swarm.pbest)  #swarm.gbest comes from get_particle_best_fit
+            swarm.gbest = np.min(swarm.pbest)  # swarm.gbest comes from get_particle_best_fit
             swarm.pg = pi_best[np.argmin(swarm.pbest)].values_array
 
         best_index = np.argmin(swarm.pbest)
@@ -210,7 +209,7 @@ def run_iterations(iteraciones, swarm: pso.Swarm, db_manager: db.DBManager, fun,
         data_to_store = {
             "sim_id": info['ID'],
             "created_at": start_time,
-            "elapced_time": elapsed,
+            "elapsed_time": elapsed,
             "sim_type": s_type,
             "category": info['category'],
             "sub_category": info['sub_category'],
@@ -270,7 +269,7 @@ def only_fit(fun):
         db_manager.load_df()
 
         logging.info(msg.STARTED)
-        swarm = set_Swarm()  #initialize swarm
+        swarm = set_Swarm()  # initialize swarm
 
         for index in range(len(swarm.particles)):
             particle = swarm.particles[index]
@@ -289,7 +288,7 @@ def only_fit(fun):
         best_index = swarm.get_particle_best_fit(swarm.particles)
 
         logging.info(msg.PBEST + str(swarm.pbest))
-        logging.info(msg.GBEST + str(swarm.gbest))  #swarm.gbest comes from get_particle_best_fit
+        logging.info(msg.GBEST + str(swarm.gbest))  # swarm.gbest comes from get_particle_best_fit
         logging.info(msg.PGVALUE + str(swarm.pg))
         logging.info(msg.BEST_PARTICLE_INDEX + str(best_index) + '\n')
 
@@ -298,7 +297,7 @@ def only_fit(fun):
         data_to_store = {
             "sim_id": info['ID'],
             "created_at": start_time,
-            "elapced_time": elapsed,
+            "elapsed_time": elapsed,
             "sim_type": "Fitness function test",
             "category": info['category'],
             "sub_category": info['sub_category'],
