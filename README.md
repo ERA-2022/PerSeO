@@ -44,8 +44,7 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
 
 *   __First step:__ Add the following imports to your main script:
     ```
-    from PSO_core import commands
-    from PSO_functions import Interfaz
+    from PerSeO import commands, interface
     ```
 *   __Second step:__ Define the following parameters for the optimization process. It is recommended to save these parameters as individual variables:
     * Path to executable of ANSYS
@@ -81,14 +80,14 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     i = 2
     p = 2
     b = 0
-    desc = "100%BW with ideal BW to 80MHz, denominator (or cut-off frecuency) in 40MHz working in the frecuency band of 40MHz to 120MHz"
+    desc = "100%BW with ideal BW to 80MHz, denominator (or cut-off frequency) in 40MHz working in the frequency band of 40MHz to 120MHz"
 
     reports = {
         "SMN":[(1,1)],
         "gain":[0,90],
         "vswr":[1],
         "zmn":[(1,1)],
-        "aditional_data":{
+        "additional_data":{
             "fmin":40,
             "points":81,
             "units":"MHz"
@@ -177,10 +176,10 @@ The order of arguments in the init_system method is as follows:
     commands.init_system(exe, save, pname, dname,vname, u, ma, mi, nom, i, p, b, reports, category, sub_category, desc)
     ```
 
-* __Fifth step:__ You must use the main_menu(...), this method comes on from Interfaz of the second importation, and you must add the fitness function as an argument of main_menu(...) as shown in the following example:      
+* __Fifth step:__ You must use the main_menu(...), this method comes on from interface of the second importation, and you must add the fitness function as an argument of main_menu(...) as shown in the following example:      
 
     ```
-    Interfaz.main_menu(fit)
+    interface.main_menu(fit)
     ```
 
 ## **How to use**

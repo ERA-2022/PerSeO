@@ -30,7 +30,7 @@ def create_sim_file(particle: np.ndarray, i: int, j: int):
     direccion_dibujo = '"' + read_data()["paths"]["ansys_save_def"] + read_data()["values"]["project_name"] + '.aedt"'
 
     f.write("# -*- coding: utf-8 -*-\n")
-    f.write("import PerSeo.ansys_functions as fn\n")
+    f.write("import PerSeO.ansys_functions as fn\n")
 
     f.write("\n")
     f.write("import ScriptEnv\n")
@@ -156,7 +156,7 @@ def read_simulation_results(i, j, graph):
                         )
 
         else:
-            if report.upper() != "additional_data":
+            if report.upper() != "ADDITIONAL_DATA":
                 graphic_name = get_graphic_name(report, value, i, j)
                 try:
                     dataReports[report.upper()] = np.genfromtxt(

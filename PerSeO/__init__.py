@@ -18,7 +18,7 @@ except:
 try:
     from . import dataManagement
     from . import graphicsManagement
-    from . import interfaz
+    from . import interface
     from . import optimize
     from . import pso
     from . import simulate

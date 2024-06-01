@@ -81,8 +81,8 @@ def ops_graphics_tools():
 def graphic_tools_menu():
     """use the ops_graphics_tools function to show get an option from the graphic tools menu, then execute the action corresponding to the selected option
     """
-    volver = False
-    while not volver:
+    back = False
+    while not back:
         op = ops_graphics_tools()
 
         if op == 1:
@@ -94,7 +94,7 @@ def graphic_tools_menu():
         elif op == 4:
             graphics.draw_a_comparison()
         elif op == 5:
-            volver = True
+            back = True
             clear_screen()
         else:
             wait_to_read(msg.ANOMALY_ERR)
@@ -103,8 +103,8 @@ def graphic_tools_menu():
 def set_up_menu():
     """use the ops_set_up_menu function to show get an option from the set up menu, then execute the action corresponding to the selected option
     """
-    volver = False
-    while not volver:
+    back = False
+    while not back:
         op = ops_set_up_menu()
 
         if op == 1:
@@ -129,7 +129,7 @@ def set_up_menu():
                 print(key + " -> " + value)
             wait_to_read("")
         elif op == 3:
-            volver = True
+            back = True
             clear_screen()
         else:
             wait_to_read(msg.ANOMALY_ERR)
@@ -140,8 +140,8 @@ def main_menu(fitness):
     Args:
         fitness (function(dataReports: dict)): The adjustment function to be used in the optimization process must receive as a parameter a dictionary with the names of the reports generated in Ansys HFSS, where the access key will be the name of the report and the associated value will be the data obtained.
     """
-    salir = False
-    while not salir:
+    stop = False
+    while not stop:
         op = ops_main_menu()
         if op == 1:
             ready = not init_model()
@@ -159,13 +159,13 @@ def main_menu(fitness):
             print(f"\n{msg.FINAL_MSG}")
             time.sleep(2)
             clear_screen()
-            salir = True
+            stop = True
         # elif op == 5:
         #     set_up_menu()
         # elif op == 6:
-        #     print("\nGracias por usar nuestro software!")
+        #     print(f"\n{msg.FINAL_MSG}")
         #     time.sleep(2)
         #     clear_screen()
-        #     salir = True
+        #     stop = True
         else:
             wait_to_read(msg.ANOMALY_ERR)

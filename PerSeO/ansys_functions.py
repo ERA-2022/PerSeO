@@ -79,6 +79,7 @@ def changeArray(proj, name, value):
     ])
 
 
+#UNDERNEATH THE COMMANDS TO GENERATE THE S PARAMETERS ARE PRESENTED.
 def createsSmn(proj, name, simID, m, n):
     """Creates, generates and exports Smn report in Ansys HFSS
 
@@ -177,6 +178,7 @@ def createsPhaseImb(proj, name, simID):
     )
 
 
+#UNDERNEATH THE COMMANDS TO GENERATE THE VSWR, GAIN, BW AND DATA TABLE PARAMETERS.
 def createsVSWR(proj, name, simID, port):
     """Creates, generates and exports VSWR report in Ansys HFSS
 

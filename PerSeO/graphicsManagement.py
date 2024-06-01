@@ -42,6 +42,8 @@ def draw_one_report(path="", report_n="", data=[], points=0, units=""):
     if units == "":
         units = read_data()['values']['reports']["additional_data"]["units"]
 
+    # required_reports = read_data()['values']['reports']
+
     if "GAIN" in report_n.upper() or "GANANCIA" in report_n.upper():
         if points >= 100:
             steps = 10
@@ -55,7 +57,10 @@ def draw_one_report(path="", report_n="", data=[], points=0, units=""):
         x = np.arange(1, points, steps)
         figure = plt.figure(figsize=(8, 6))
         for k in x:
-            plt.plot(data[:, 0], data[:, k])
+            plt.plot(
+                data[:, 0], data[:, k]
+            )  # ,label = str(k+(requiered_reports["additional_data"]["fmin"]-1)) +requiered_reports["additional_data"]["units"]
+            # plt.legend(loc = 1,prop={'size': 12}) # Configuración del texto si se ponen labels
             plt.ylabel(r'Gain (lineal)', fontsize=18)
             plt.xlabel(r'$\theta$ (deg)', fontsize=18)
             plt.title(r'optimized (Plane $\phi$=' + report_n.replace("GAINPhi", "") + ")", fontsize=18)
