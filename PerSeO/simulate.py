@@ -9,7 +9,6 @@ import logging
 import time
 import shutil
 import numpy as np
-import matplotlib.pyplot as plt
 from . import messages as msg
 from .commands import get_graphic_name, read_data, get_instructions_to_reports, wait_to_read
 from .graphicsManagement import draw_one_report
@@ -224,43 +223,6 @@ def get_simulation_params():
         "description": info['info']['description']
     }
     return params
-
-
-def create_plot(data_1, data_2, label_x, label_y, save_path, derivative_data, boundary):
-    #Plot S11 and S21
-    figure = plt.figure(figsize=(8, 6))
-    plt.plot(data_1[:, 0], data_1[:, 1])
-    plt.plot(data_2[:, 0], data_2[:, 1])
-    plt.axhline(y=boundary, color='r', linestyle='-')
-    plt.axhline(y=boundary + 0.5, color='r', alpha=0.7, linestyle='-')
-    plt.axhline(y=boundary - 0.5, color='r', alpha=0.7, linestyle='-')
-
-    plt.plot()
-    plt.ylabel(label_y, fontsize=15)
-    plt.xlabel(label_x, fontsize=15)
-    plt.tick_params(axis='both', which='major', labelsize=15)
-    plt.grid(True)
-    plt.grid(color='0.5', linestyle='--', linewidth=1.5)
-    plt.show
-    plt.savefig(save_path)
-    plt.close(figure)
-
-
-def create_plot_imb(data_1, label_x, label_y, save_path, boundary):
-    #Plot S11 and S21
-    figure = plt.figure(figsize=(8, 6))
-    plt.plot(data_1[:, 0], data_1[:, 1])
-    plt.axhline(y=boundary, color='r', linestyle='-')
-
-    plt.plot()
-    plt.ylabel(label_y, fontsize=15)
-    plt.xlabel(label_x, fontsize=15)
-    plt.tick_params(axis='both', which='major', labelsize=15)
-    plt.grid(True)
-    plt.grid(color='0.5', linestyle='--', linewidth=1.5)
-    plt.show
-    plt.savefig(save_path)
-    plt.close(figure)
 
 
 def copy_rename(old_file_name: str, new_file_name: str):
