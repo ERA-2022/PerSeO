@@ -14,10 +14,6 @@ from . import messages as msg
 from .commands import get_graphic_name, read_data, get_instructions_to_reports, wait_to_read
 from .graphicsManagement import draw_one_report
 
-#=============================================================================
-# THIS customized FUNCTION CALLS 'funciones.py' FILE AND GENERATES THE DATA
-# TO BE USED BY THE OPTIMIZER.
-
 
 def create_sim_file(particle: np.ndarray, i: int, j: int):
     """Create a Python script that can be executed from Ansys HFSS with the necessary instructions to open the model, modify the array in the model dimensions, generate the required reports and close the program.
@@ -65,7 +61,6 @@ def create_sim_file(particle: np.ndarray, i: int, j: int):
     f.close()
 
 
-## Launches HFSS simulation file
 def run_simulation_hfss(ansys_path="", args='-runscriptandexit', file_path=""):
     """Open Ansys HFSS and from that program run the script 'simulacion.py', if the simulation runs correctly it returns true, otherwise false.
 
@@ -99,7 +94,6 @@ def run_simulation_hfss(ansys_path="", args='-runscriptandexit', file_path=""):
     return state
 
 
-## read the simulation results
 def read_simulation_results(i: int, j: int, graph: bool):
     """Reads the reports of a particle in one iteration, and returns them in a dictionary, optionally graphs them.
 
