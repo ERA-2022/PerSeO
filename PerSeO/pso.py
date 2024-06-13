@@ -19,22 +19,50 @@ from numpy.random import randn
 
 
 class Particle:
-    """
-    Particle class enabling the creation of multiple and dynamic number of particles.
+    """Particle class enabling the creation of multiple and dynamic number of particles.
+
+    Attributes:
+        id_(int): identifier
+        values_array(ndarray): Array with the numerical values that the particle has
+
+    Methods:
+        random_array(array_size: int):
+            Assigns to the values_array attribute a Numpy array (ndarray) of random values between 0 and 1, the number of array elements will be determined by the argument passed in the function.
+        fill_zeros_array(array_size: int):
+            Assigns to the values_array attribute a Numpy array (ndarray), the number of array elements will be determined by the argument passed in the function and each element will be zero.
+        reset_xParticles_id_counter():
+            Assigns 0 to the class variable id_.
     """
     id_ = 0
     values_array = []
 
-    def __init__(self, id):
+    def __init__(self, id: int):
+        """Initializes a new particle
+
+        Args:
+            id (int): identifier
+        """
         self.id_ = id
 
-    def random_array(self, array_size):
+    def random_array(self, array_size: int):
+        """Assigns to the values_array attribute a Numpy array (ndarray) of random values between 0 and 1, the number of array elements will be determined by the argument passed in the function.
+
+        Args:
+            array_size (int): _description_
+        """
         self.values_array = np.array(np.random.random_sample(array_size))
 
-    def fill_zeros_array(self, array_size):
+    def fill_zeros_array(self, array_size: int):
+        """Assigns to the values_array attribute a Numpy array (ndarray), the number of array elements will be determined by the argument passed in the function and each element will be zero.
+
+        Args:
+            array_size (int): _description_
+        """
         self.values_array = np.zeros(array_size)
 
     def reset_xParticles_id_counter(self):
+        """Assigns 0 to the class variable id_.
+        """
         self.id_ = 0
 
 
