@@ -19,7 +19,7 @@ from numpy.random import randn
 
 
 class Particle:
-    """Particle class enabling the creation of multiple and dynamic number of particles.
+    """Represents a particle in the PSO algorithm.
 
     Attributes:
         id_(int): identifier
@@ -67,7 +67,27 @@ class Particle:
 
 
 class Swarm:
+    """Represents a swarm of particles in the PSO algorithm.
 
+    Attributes:
+        phiv(float): Swarm inertia coefficient
+        particles(list): List of all particles that are part of the swarm
+        x_particles(list): list to calculate the new particles  (internal use)
+        best_index(int): Index of the best particle in the particle list
+        vmax(list): List of maximum particle velocities.
+        velocidades(ndarray): Matrix of current particle velocities.
+        gbest(float): Best overall value found by the swarm
+        pbest(ndarray): Matrix of the best personal/local values of the particles.
+        pg(ndarray): Matrix of the best global positions found by the swarm.
+        variables_number(int): Number of variables defining each particle (In the interface provided by PerSeO it is associated to the array of dimensions of the Ansys HFSS model).
+        var_max(ndarray): Maximum values that a particle can take
+        var_min(ndarray): Minimum values that a particle can take
+    Methods:
+        create(): Initializes all swarm particles, generating them randomly.
+        nuevas_particulas(self, particulas_ant, pi_best, pg, vel_anterior, iteration): Generate new particles based on previous particles, personal and global best values, previous velocities and current iteration. At the end it returns a tuple of two elements, the first one is a list with the new calculated particles and the second one is a ndarray with the new calculated velocities.
+        drilling_relation(self, dimension, height): Calculate a drilling ratio. ((height / 2) * 1 / dimension)
+        get_particle_best_fit(self, pi): Obtains the best particle fit among all particles.
+    """
     phiv = 0.9
 
     particles = []  # array with all particles part of the swarm
@@ -81,7 +101,15 @@ class Swarm:
     pg = []
     variables_number = 0
 
-    def __init__(self, particles_number, variables_number, var_max, var_min):
+    def __init__(self, particles_number: int, variables_number: int, var_max: list | np.ndarray, var_min: list | np.ndarray):
+        """Initializes a new swarm
+
+        Args:
+            particles_number (int): Number of particles that the swarm will have
+            variables_number (int): Number of variables defining each particle (In the interface provided by PerSeO it is associated to the array of dimensions of the Ansys HFSS model).
+            var_max (list | ndarray): Maximum values that a particle can take
+            var_min (list | ndarray): Minimum values that a particle can take
+        """
         # swarm variables
         self.particles_number = particles_number
         self.variables_number = variables_number
@@ -95,10 +123,10 @@ class Swarm:
         self.pbest = np.zeros(read_data()['values']['particles'])
         self.pg = np.zeros(read_data()['values']['n_var'])
 
-    """Create particles swarm"""
-
+    
     def create(self):
-
+        """Initializes all swarm particles, generating them randomly.
+        """
         self.particles = [Particle(i) for i in range(self.particles_number)]
         self.x_particles = [Particle(i) for i in range(self.particles_number)]
         print(msg.CREATED_PARTICLES + str(len(self.particles)))
@@ -118,12 +146,19 @@ class Swarm:
             #      máximo = particle.values_array[1]-0.1
             #      particle.values_array[2] = random*(máximo-self.var_min[2]) + self.var_min[2]
 
-    def nuevas_particulas(self, particulas_ant, pi_best, pg, vel_anterior, iteration):
-        #      # Partículas => xi(t-1)
-        #      # pi => individual optimal position!?
-        #      #  x son partículas que vienen definidas desde la creación del enjambre
-        #      #  Solo se van actualizando en el transcurso de las iteraciones
+    def nuevas_particulas(self, particulas_ant: list, pi_best: list, pg: np.ndarray, vel_anterior: np.ndarray, iteration: int):
+        """Generate new particles based on previous particles, personal and global best values, previous velocities and current iteration. At the end it returns a tuple of two elements, the first one is a list with the new calculated particles and the second one is a ndarray with the new calculated velocities.
 
+        Args:
+            particulas_ant (list[Particle]): List of previous particles
+            pi_best (list[Particle]): Better personal/local values
+            pg (ndarray): Better global values
+            vel_anterior (ndarray): previous speeds
+            iteration (int): current iteration
+
+        Returns:
+        tuple(list[Particle], ndArray): Returns a tuple with two elements, the first is a list with the new calculated particles, and the other is a ndarray with the new calculated velocities.
+        """
         [
             item.fill_zeros_array(read_data()['values']['n_var']) for item in self.x_particles
         ]  # llenar de ceros las partículas x
@@ -207,11 +242,28 @@ class Swarm:
 
         return self.x_particles, vel
 
-    def drilling_relation(self, dimension, height):
+    def drilling_relation(self, dimension: float, height: float):
+        """Calculate a drilling ratio. ((height / 2) * 1 / dimension)
+
+        Args:
+            dimension (float): Model size
+            height (float): Model height
+
+        Returns:
+            float:  drilling ratio
+        """
         relation = (height / 2) * 1 / dimension
         return relation
 
-    def get_particle_best_fit(self, pi):
+    def get_particle_best_fit(self, pi: list):
+        """Obtains the best particle fit among all particles.
+
+        Args:
+            pi (list[Particle]): list of current particles
+
+        Returns:
+            int: Best particle index.
+        """
         index_pg = np.argmin(self.pbest)  # toma el indice del particle best entre todas las particulas
         self.best_index = index_pg
         print(msg.GET_BEST_PARTICLE_PG + str(pi[index_pg].values_array))
