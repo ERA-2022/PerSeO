@@ -153,7 +153,7 @@ def run_iterations(iteraciones: int, swarm: pso.Swarm, db_manager: db.DBManager,
         #array Particulas iniciales
         #pg -> mejor posocion encontrada para cualquier particula
         #arreglo de velocidades
-        x, v = swarm.nuevas_particulas(particulas_anterior, pi_best, swarm.pg, swarm.velocidades, i)
+        x, v = swarm.calculate_new_particles(particulas_anterior, pi_best, swarm.pg, swarm.velocities, i)
         ### se actualizan las particulas originales con las nuevas particulas actualizadas
 
         for index_, particle in enumerate(x):
@@ -161,7 +161,7 @@ def run_iterations(iteraciones: int, swarm: pso.Swarm, db_manager: db.DBManager,
             swarm.particles[index_].values_array = particle.values_array
             #swarm.particles  = x.copy() # aqui se está copiando un objeto
 
-        swarm.velocidades = np.copy(v)  # aquí un arreglo de vectores
+        swarm.velocities = np.copy(v)  # aquí un arreglo de vectores
         logging.info(msg.SIM_NEW_PARTICLE + "\n")
 
         #Array valores se ocupa de recibir los valores de fitness de cada particula en la

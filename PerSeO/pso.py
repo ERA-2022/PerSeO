@@ -3,19 +3,9 @@
 Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 Year: 2022
 """
-# import os
-# import importlib
-# import matplotlib.pyplot as plt
-# from scipy import stats
-# from scipy import integrate
-# from sklearn.metrics import mean_squared_error
-# from PSO import fitness_func as fit
-from numpy.core.records import array
 from .commands import read_data
 from . import messages as msg
 import numpy as np
-from numpy.random import seed
-from numpy.random import randn
 
 
 class Particle:
@@ -75,7 +65,7 @@ class Swarm:
         x_particles(list): list to calculate the new particles  (internal use)
         best_index(int): Index of the best particle in the particle list
         vmax(list): List of maximum particle velocities.
-        velocidades(ndarray): Matrix of current particle velocities.
+        velocities(ndarray): Matrix of current particle velocities.
         gbest(float): Best overall value found by the swarm
         pbest(ndarray): Matrix of the best personal/local values of the particles.
         pg(ndarray): Matrix of the best global positions found by the swarm.
@@ -84,7 +74,7 @@ class Swarm:
         var_min(ndarray): Minimum values that a particle can take
     Methods:
         create(): Initializes all swarm particles, generating them randomly.
-        nuevas_particulas(self, particulas_ant, pi_best, pg, vel_anterior, iteration): Generate new particles based on previous particles, personal and global best values, previous velocities and current iteration. At the end it returns a tuple of two elements, the first one is a list with the new calculated particles and the second one is a ndarray with the new calculated velocities.
+        calculate_new_particles(self, previous_particles, pi_best, pg, vel_anterior, iteration): Generate new particles based on previous particles, personal and global best values, previous velocities and current iteration. At the end it returns a tuple of two elements, the first one is a list with the new calculated particles and the second one is a ndarray with the new calculated velocities.
         drilling_relation(self, dimension, height): Calculate a drilling ratio. ((height / 2) * 1 / dimension)
         get_particle_best_fit(self, pi): Obtains the best particle fit among all particles.
     """
@@ -95,7 +85,7 @@ class Swarm:
     best_index = 0  # best integer describing the index corresponding the best particle in
     # particles array
     vmax = []
-    velocidades = []
+    velocities = []
     gbest = 0  # global  best
     pbest = []
     pg = []
@@ -119,7 +109,7 @@ class Swarm:
         self.var_max = np.array(var_max)
         self.var_min = np.array(var_min)
         self.particles = []
-        self.velocidades = np.zeros([read_data()['values']['particles'], read_data()['values']['n_var']])
+        self.velocities = np.zeros([read_data()['values']['particles'], read_data()['values']['n_var']])
         self.pbest = np.zeros(read_data()['values']['particles'])
         self.pg = np.zeros(read_data()['values']['n_var'])
 
@@ -143,14 +133,14 @@ class Swarm:
             #  if particle.values_array[2] < particle.values_array[1]:
 
             #      random = np.random.random_sample()
-            #      máximo = particle.values_array[1]-0.1
-            #      particle.values_array[2] = random*(máximo-self.var_min[2]) + self.var_min[2]
+            #      maximum = particle.values_array[1]-0.1
+            #      particle.values_array[2] = random*(maximum-self.var_min[2]) + self.var_min[2]
 
-    def nuevas_particulas(self, particulas_ant: list, pi_best: list, pg: np.ndarray, vel_anterior: np.ndarray, iteration: int):
+    def calculate_new_particles(self, previous_particles: list, pi_best: list, pg: np.ndarray, vel_anterior: np.ndarray, iteration: int):
         """Generate new particles based on previous particles, personal and global best values, previous velocities and current iteration. At the end it returns a tuple of two elements, the first one is a list with the new calculated particles and the second one is a ndarray with the new calculated velocities.
 
         Args:
-            particulas_ant (list[Particle]): List of previous particles
+            previous_particles (list[Particle]): List of previous particles
             pi_best (list[Particle]): Better personal/local values
             pg (ndarray): Better global values
             vel_anterior (ndarray): previous speeds
@@ -161,40 +151,38 @@ class Swarm:
         """
         [
             item.fill_zeros_array(read_data()['values']['n_var']) for item in self.x_particles
-        ]  # llenar de ceros las partículas x
+        ]  # fill the x-particles with zeros
 
         vel = np.zeros([read_data()['values']['particles'],
-                        read_data()['values']['n_var']])  # llenar de ceros la variable velocidad
+                        read_data()['values']['n_var']])  # fill the velocity variable with zeros
 
-        # Cambio dinámico de la inercia
+        # Dynamic change of inertia
         phi = 0.85 * self.phiv**(iteration - 0.15)  # 0.8 y 1
-        phi1 = 2.0  # valores que se pueden revisar. Seguir el valor el mejor fit propio
-        phi2 = 2.1  # esto va valores componen self-knowledge.  seguir el mejor fit global
-        damping = 0.7  # este damping se utiliza cando las partículas tocan los limites máximos y mínimos.
+        phi1 = 2.0  # values that can be reviewed. Follow the value of your own best fit
+        phi2 = 2.1  # this goes values make up self-knowledge. follow the best global fit
+        damping = 0.7  # This damping is used when the particles touch the maximum and minimum limits.
 
         for i in range(read_data()['values']['particles']):
 
-            rand = np.random.random()  # valores entre 0 y 1
-            particula_anterior = particulas_ant[i]
+            rand = np.random.random()  # values between 0 and 1
+            previous_particle = previous_particles[i]
 
-            for idx, dimension in enumerate(particula_anterior.values_array):
+            for idx, dimension in enumerate(previous_particle.values_array):
                 """
-                Calcula la velocidad de la partícula i, dada su pi, pg y su velocidad
-                 y posición anterior
+                Calculate the velocity of particle i, given its pi, pg, and its previous velocity and position.
 
-                 pi => una partícula especifica
-                pbest=> su fitness value
+                pi => specific particle
+                pbest=> its fitness value
 
-                 pg => cualquier partícula con la mejor solución
+                 pg => any particle with the best solution
                  gbest=> global bets
 
-                 vi => velocidad anterior
-                """
-                """lo importante es la relación entre phi1 y phi2 , si es grande la velocidad de convergencia es alta
-                si la relación es pequeña, la velocidad es baja"""
+                 vi => previous speed
 
-                # # # inercia +  atracción a la mejor posición de la partícula i +  atracción a la mejor posición global
-                # # #
+                 the important thing is the ratio between phi1 and phi2 , if it is large, the convergence speed is high, if the ratio is small, the speed is low.
+                
+                inertia + attraction to best position of particle i + attraction to best global position
+                """
 
                 vel[i][idx] = phi * (vel_anterior[i][idx]) + phi1 * rand * ((pi_best[i].values_array)[idx] - dimension) + \
                      phi2 * rand * (pg[idx] - dimension)
@@ -205,9 +193,9 @@ class Swarm:
                     vel[i][idx] = self.vmax[idx] * signo
 
                 # Calculating new particles
-                self.x_particles[i].values_array[idx] = (particulas_ant[i].values_array[idx] + vel[i][idx]).round(
+                self.x_particles[i].values_array[idx] = (previous_particles[i].values_array[idx] + vel[i][idx]).round(
                     decimals=3, out=None
-                )  # #  xi(t-1)+vi(
+                )  # #  xi(t-1)+vi(t)
                 """In this part we apply a bounce technique in the wall defined
                 by the limits of max and min values for dimensions"""
                 if self.x_particles[i].values_array[idx] > self.var_max[idx]:
@@ -227,7 +215,7 @@ class Swarm:
                     )  # #  xi(t-1)+vi(t)
 
                 else:
-                    self.x_particles[i].values_array[idx] = (particulas_ant[i].values_array[idx] + vel[i][idx]).round(
+                    self.x_particles[i].values_array[idx] = (previous_particles[i].values_array[idx] + vel[i][idx]).round(
                         decimals=3, out=None
                     )  # #  xi(t-1)+vi(
 
@@ -235,7 +223,7 @@ class Swarm:
                 # if idx==global_.A_dimension_index+1:
                 #   self.x_particles[i].values_array[idx] = (self.x_particles[i].values_array[idx-1])*0.5
 
-            #  PENDIENTE -> SOLO PARA HÍBRIDOS
+            #  PENDING -> ONLY FOR HYBRIDS
             #  if i>0:
             #      relation = self.drilling_relation( self.x_particles[i].values_array, self.x_particles[i].values_array[global_.A_dimension_index])
             #      print(relation)
@@ -264,9 +252,9 @@ class Swarm:
         Returns:
             int: Best particle index.
         """
-        index_pg = np.argmin(self.pbest)  # toma el indice del particle best entre todas las particulas
+        index_pg = np.argmin(self.pbest)  # Take the index of the best particle in the swarm.
         self.best_index = index_pg
         print(msg.GET_BEST_PARTICLE_PG + str(pi[index_pg].values_array))
-        self.pg = pi[index_pg].values_array  # seleccionar la mejor posición-partícula del array de particulas
+        self.pg = pi[index_pg].values_array  # select the best particle-position of the particle array
         self.gbest = np.min(self.pbest)  # best global fitness
         return index_pg
