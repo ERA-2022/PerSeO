@@ -121,11 +121,11 @@ def set_Swarm():
     return swarm
 
 
-def run_iterations(iteraciones: int, swarm: pso.Swarm, db_manager: db.DBManager, fun, addOp: dict):
+def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, fun, addOp: dict):
     """Execution of optimization process using PSO taking into account iterations, initialized swarm, database, cost function and additional options
 
     Args:
-        iteraciones (int): Total number of iterations to be executed by the PSO
+        iterations (int): Total number of iterations to be executed by the PSO
         swarm (PerSeO.pso.Swarm): initialized swarm
         db_manager (PerSeO.db.DBManager): Instance of DBManager
         fun (function(dataReports: dict)): fitness/cost function to be used by the PSO, it must receive as a parameter a dictionary with the names of the reports generated in Ansys HFSS, where the access key will be the name of the report and the associated value will be the data obtained.
@@ -134,41 +134,38 @@ def run_iterations(iteraciones: int, swarm: pso.Swarm, db_manager: db.DBManager,
 
     pi_best = swarm.particles.copy()  # array initial particles
 
-    for i in range(iteraciones):
-        print(msg.NUM_ITERATIONS + str(iteraciones))
+    for i in range(iterations):
+        print(msg.NUM_ITERATIONS + str(iterations))
         print(msg.CURRENT_ITERATION + str(i))
 
         logging.info(msg.ITERATION + str(i))
         logging.info(msg.CALC_NEW_PARTICLES)
 
-        ### particulas anterior es una copia del objeto arreglo de Particulas
-        ### que es propiedad del objeto Swarm
-        particulas_anterior = []
-        particulas_anterior = swarm.particles.copy()  # Array de particulas
+        ### previous_particles is a copy of the Particle array belonging to the swarm instance
+        previous_particles = []
+        previous_particles = swarm.particles.copy()
         logging.info(msg.CALC_VEL_AND_POS)
 
-        ### el objeto swarm se ocupa de crear las particulas nuevas
-        ### que realmente son actualizaciones de las particulas anteriores
-        #array Particulas que se van actualizando
-        #array Particulas iniciales
-        #pg -> mejor posocion encontrada para cualquier particula
-        #arreglo de velocidades
-        x, v = swarm.calculate_new_particles(particulas_anterior, pi_best, swarm.pg, swarm.velocities, i)
-        ### se actualizan las particulas originales con las nuevas particulas actualizadas
+        ### the swarm object is in charge of creating the new particles, which are actually updates of the previous particles
+        #x -> particle arrays that are being updated
+        #previous_particles -> array of initial/current particles
+        #pg -> best position found for any particle
+        #v -> velocity array
+        x, v = swarm.calculate_new_particles(previous_particles, pi_best, swarm.pg, swarm.velocities, i)
+        ### the original particles are updated with the new updated particles
 
         for index_, particle in enumerate(x):
 
             swarm.particles[index_].values_array = particle.values_array
-            #swarm.particles  = x.copy() # aqui se está copiando un objeto
+            #swarm.particles  = x.copy() # an object is being copied here
 
-        swarm.velocities = np.copy(v)  # aquí un arreglo de vectores
+        swarm.velocities = np.copy(v)  # swarm velocities are updated
         logging.info(msg.SIM_NEW_PARTICLE + "\n")
 
-        #Array valores se ocupa de recibir los valores de fitness de cada particula en la
-        #actual iteración
-        valores = np.zeros(read_data()['values']['particles'])
+        #array of values that is responsible for receiving the values of the fitness/cost function of each particle in the current iteration.
+        values = np.zeros(read_data()['values']['particles'])
 
-        ### se itera sobre cada particula y se simula
+        ### iterate over each swarm particle and simulate the model in Ansys HFSS if necessary.
         # [print(i.id_) for i in swarm.particles]
 
         for index in range(len(swarm.particles)):
@@ -243,7 +240,7 @@ def run_iterations(iteraciones: int, swarm: pso.Swarm, db_manager: db.DBManager,
         db_manager.load_df()
         db_manager.fill_df(data_to_store)
 
-    ###Cierre del ciclo
+    ###closing of the cycle
     print(msg.GLOBAL_MIN_VAL + str(swarm.gbest))
     logging.info(msg.GLOBAL_MIN_VAL + str(swarm.gbest))
 
