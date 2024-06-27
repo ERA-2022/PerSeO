@@ -89,7 +89,6 @@ def run_simulation_hfss(ansys_path="", args='-runscriptandexit', file_path=""):
             counterError += 1
         else:
             logging.info(msg.SIM_PARTICLE_FINISHED + msg.NO_ERR)
-    #print("Attempts: "+str(counterError))
     return state
 
 
@@ -190,7 +189,6 @@ def read_simulation_results(i: int, j: int, graph: bool):
                         files_location + graphic_name + ".csv", skip_header=1, delimiter=','
                     )
 
-    # matplotlib.use("Agg")
     if graph:
         for graphic, data in dataReports.items():
             specific_graphic_path = general_graphic_path + graphic + "_" + str(i) + "_" + str(j)
