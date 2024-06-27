@@ -11,7 +11,7 @@ def addVariable(proj, name, value):
     """Adds a variable to the Ansys HFSS design, it is suggested that the value be accompanied by the units of measurement.
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): name assigned to the variable
         value (str): value that the variable will take, e.g. 5mm
     """
@@ -29,7 +29,7 @@ def changeVariable(proj, name, value):
     """Modify a variable to the Ansys HFSS design, it is suggested that the value be accompanied by the units of measurement.
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): name assigned to the variable
         value (str): value that the variable will take, e.g. 5mm
     """
@@ -47,7 +47,7 @@ def addArray(proj, name, value):
     """Adds a variable type array to the Ansys HFSS design, it is suggested that the value be accompanied by the units of measurement.
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): name assigned to the array
         value (str): value that the variable will take, e.g. [5, 2, 3, 1.8]mm
     """
@@ -65,7 +65,7 @@ def changeArray(proj, name, value):
     """Modify a variable type array to the Ansys HFSS design, it is suggested that the value be accompanied by the units of measurement.
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): name assigned to the array
         value (str): value that the variable will take, e.g. [5, 2, 3, 1.8]mm
     """
@@ -79,12 +79,11 @@ def changeArray(proj, name, value):
     ])
 
 
-#UNDERNEATH THE COMMANDS TO GENERATE THE S PARAMETERS ARE PRESENTED.
 def createsSmn(proj, name, simID, m, n):
     """Creates, generates and exports Smn report in Ansys HFSS
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): complement of the file name, usually the iteration and particle. e.g _0_0
         simID (str): simulation id
         m (str | int): port m
@@ -109,7 +108,7 @@ def createsZmn(proj, name, simID, m, n):
     """Creates, generates and exports Zmn report in Ansys HFSS
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): complement of the file name, usually the iteration and particle. e.g _0_0
         simID (str): simulation id
         m (str | int): port m
@@ -134,7 +133,7 @@ def createsAmpImb(proj, name, simID):
     """Creates, generates and exports AmpImb report in Ansys HFSS
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): complement of the file name, usually the iteration and particle. e.g _0_0
         simID (str): simulation id
     """
@@ -159,7 +158,7 @@ def createsPhaseImb(proj, name, simID):
     """Creates, generates and exports PhaseImb report in Ansys HFSS
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): complement of the file name, usually the iteration and particle. e.g _0_0
         simID (str): simulation id
     """
@@ -178,12 +177,11 @@ def createsPhaseImb(proj, name, simID):
     )
 
 
-#UNDERNEATH THE COMMANDS TO GENERATE THE VSWR, GAIN, BW AND DATA TABLE PARAMETERS.
 def createsVSWR(proj, name, simID, port):
     """Creates, generates and exports VSWR report in Ansys HFSS
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): complement of the file name, usually the iteration and particle. e.g _0_0
         simID (str): simulation id
         port (str | int): port to be analyzed
@@ -196,16 +194,16 @@ def createsVSWR(proj, name, simID, port):
         ["Freq:=", ["All"], "frec:=", ["Nominal"], "t:=", ["Nominal"]],
         ["X Component:=", "Freq", "Y Component:=", ["VSWR(" + port + ")"]], []
     )
-    direccion = read_data(
+    save_path = read_data(
     )['paths']['results'] + str(simID) + "/files/" + r"datosVSWR(" + str(port) + ")" + str(name) + ".csv"
-    oModule.ExportToFile("VSWR(" + str(port) + ")", direccion)
+    oModule.ExportToFile("VSWR(" + str(port) + ")", save_path)
 
 
 def createsGain(proj, name, simID, angle):
     """Creates, generates and exports gain report in Ansys HFSS
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): complement of the file name, usually the iteration and particle. e.g _0_0
         simID (str): simulation id
         angle (str | int | float): angle to be analyzed
@@ -218,16 +216,16 @@ def createsGain(proj, name, simID, angle):
         ["X Component:=", "Theta", "Y Component:=", ["GainTotal"]], []
     )
 
-    direccion = read_data(
+    save_path = read_data(
     )['paths']['results'] + str(simID) + "/files/" + r"datosGananciaPhi" + str(angle) + str(name) + ".csv"
-    oModule.ExportToFile("Gain Phi " + str(angle), direccion)
+    oModule.ExportToFile("Gain Phi " + str(angle), save_path)
 
 
 def createsBW(proj, name, simID):
     """Creates, generates and exports BW report in Ansys HFSS
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): complement of the file name, usually the iteration and particle. e.g _0_0
         simID (str): simulation id
     """
@@ -235,15 +233,15 @@ def createsBW(proj, name, simID):
     oModule = oDesign.GetModule("ReportSetup")
     oModule.AddTraceCharacteristics("S11", "XWidthAtYVal", ["-12"], ["Full"])
     oModule.AddTraceCharacteristics("S11", "XWidthAtYVal", ["-13"], ["Full"])
-    direccion = read_data()['paths']['results'] + str(simID) + "/files/" + r"datosBW" + str(name) + ".csv"
-    oModule.ExportTableToFile("S11", direccion, "Legend")
+    save_path = read_data()['paths']['results'] + str(simID) + "/files/" + r"datosBW" + str(name) + ".csv"
+    oModule.ExportTableToFile("S11", save_path, "Legend")
 
 
 def createsDataTable(proj, name, simID):
     """Creates, generates and exports a data table report in Ansys HFSS
 
     Args:
-        proj (Ansys project object ): objeto que representa el proyecto de Ansys HFSS una vez abierto
+        proj (Ansys project object ): object representing the Ansys HFSS project once opened
         name (str): complement of the file name, usually the iteration and particle. e.g _0_0
         simID (str): simulation id
     """
@@ -257,5 +255,5 @@ def createsDataTable(proj, name, simID):
             ["All"],
         ], ["Y Component:=", ["variables"]], []
     )
-    direccion = read_data()['paths']['results'] + str(simID) + "/files/" + r"datosTabla" + str(name) + ".csv"
-    oModule.ExportToFile("Variables Table 1", direccion)
+    save_path = read_data()['paths']['results'] + str(simID) + "/files/" + r"datosTabla" + str(name) + ".csv"
+    oModule.ExportToFile("Variables Table 1", save_path)
