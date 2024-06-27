@@ -19,18 +19,16 @@ def ops_main_menu():
     """
     op = ""
     clear_screen()
-    while (op != '1' and op != '2' and op != '3' and op != '4'):  # and op != '5' and op != '6'):
+    while (op != '1' and op != '2' and op != '3' and op != '4'):
         print("\n-------->PSO APP<---------")
         print(f"-----\\{msg.MAIN_MENU}")
         print(f"1> {msg.OPTIMIZE}")
         print(f"2> {msg.FFT}")
         print(f"3> {msg.GRAPHICS_TOOLS}")
-        # print("4> Run script")
-        # print("5> Set up")
         print(f"4> {msg.EXIT}")
         op = input(msg.ENTER_AN_OPTION)
 
-        if op != '1' and op != '2' and op != '3' and op != '4':  # and op != '5' and op != '6':
+        if op != '1' and op != '2' and op != '3' and op != '4':
             wait_to_read(msg.INVALID_OPTION)
     return int(op)
 
@@ -48,7 +46,6 @@ def ops_set_up_menu():
         print(f"1> {msg.MOD_PATHS}")
         print(f"2> {msg.SHOW_VALUES}")
         print(f"3> {msg.BACK}")
-        #print(f"2> {msg.MOD_VALUES}")
         op = input(msg.ENTER_AN_OPTION)
 
         if op != '1' and op != '2' and op != '3':
@@ -160,12 +157,5 @@ def main_menu(fitness):
             time.sleep(2)
             clear_screen()
             stop = True
-        # elif op == 5:
-        #     set_up_menu()
-        # elif op == 6:
-        #     print(f"\n{msg.FINAL_MSG}")
-        #     time.sleep(2)
-        #     clear_screen()
-        #     stop = True
         else:
             wait_to_read(msg.ANOMALY_ERR)
