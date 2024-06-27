@@ -3,13 +3,11 @@
 Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
 Year: 2022
 """
-#import sys
-#from scipy.sparse import data
-import logging
-import numpy as np
-import json
-from datetime import datetime
 import os
+import logging
+import json
+import numpy as np
+from datetime import datetime
 
 from . import messages as msg
 from . import commands
@@ -49,8 +47,9 @@ def main(fun):
     db_manager = db.DBManager(read_data()['info']['ID'])
     db_manager.load_df()
 
+
     logging.info(msg.STARTED)
-    swarm = set_Swarm()  # initialize swarm
+    swarm = set_Swarm()
 
     for index in range(len(swarm.particles)):
         particle = swarm.particles[index]
@@ -73,7 +72,7 @@ def main(fun):
     best_index = swarm.get_particle_best_fit(swarm.particles)
 
     logging.info(msg.PBEST + str(swarm.pbest))
-    logging.info(msg.GBEST + str(swarm.gbest))  # swarm.gbest comes from get_particle_best_fit
+    logging.info(msg.GBEST + str(swarm.gbest))
     logging.info(msg.PGVALUE + str(swarm.pg))
     logging.info(msg.BEST_PARTICLE_INDEX + str(best_index) + '\n')
 
@@ -97,10 +96,10 @@ def main(fun):
     db_manager.load_df()
     db_manager.fill_df(data_to_store)
 
-    ### Iterations
+    
     logging.info(msg.START_ITERATIONS)
     run_iterations(read_data()['values']['iterations'], swarm, db_manager, fun, addOp)
-    ### Finished process
+    
     logging.info(msg.FINISHED)
 
 
@@ -132,7 +131,7 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
         addOp (dict): dictionary with two keywords, the first, type, will have a boolean value associated with it which indicates whether to simulate the particles in Ansys HFSS, the second, graph, will also have a boolean value associated with it which indicates whether to graph the reports. example: {"type": True, "graph": false}
     """
 
-    pi_best = swarm.particles.copy()  # array initial particles
+    pi_best = swarm.particles.copy()  # list of initial particles
 
     for i in range(iterations):
         print(msg.NUM_ITERATIONS + str(iterations))
@@ -141,33 +140,26 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
         logging.info(msg.ITERATION + str(i))
         logging.info(msg.CALC_NEW_PARTICLES)
 
-        ### previous_particles is a copy of the Particle array belonging to the swarm instance
+        # previous_particles is a copy of the Particle array belonging to the swarm instance
         previous_particles = []
         previous_particles = swarm.particles.copy()
         logging.info(msg.CALC_VEL_AND_POS)
 
-        ### the swarm object is in charge of creating the new particles, which are actually updates of the previous particles
-        #x -> particle arrays that are being updated
-        #previous_particles -> array of initial/current particles
-        #pg -> best position found for any particle
-        #v -> velocity array
+        # the swarm object is in charge of creating the new particles, which are actually updates of the previous particles
+        # x -> particle arrays that are being updated
+        # previous_particles -> array of initial/current particles
+        # pg -> best position found for any particle
+        # v -> velocity array
         x, v = swarm.calculate_new_particles(previous_particles, pi_best, swarm.pg, swarm.velocities, i)
-        ### the original particles are updated with the new updated particles
+        # the original particles are updated with the new updated particles
 
         for index_, particle in enumerate(x):
-
             swarm.particles[index_].values_array = particle.values_array
-            #swarm.particles  = x.copy() # an object is being copied here
 
         swarm.velocities = np.copy(v)  # swarm velocities are updated
         logging.info(msg.SIM_NEW_PARTICLE + "\n")
 
-        #array of values that is responsible for receiving the values of the fitness/cost function of each particle in the current iteration.
-        values = np.zeros(read_data()['values']['particles'])
-
-        ### iterate over each swarm particle and simulate the model in Ansys HFSS if necessary.
-        # [print(i.id_) for i in swarm.particles]
-
+        # iterate over each swarm particle and simulate the model in Ansys HFSS if necessary.
         for index in range(len(swarm.particles)):
             particle = swarm.particles[index]
             start_time = commands.start_timing()
@@ -191,23 +183,22 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
 
             #get simulation results
             sim_results = simulate.read_simulation_results(i + 1, particle.id_, addOp["graph"])
+            
+            #Calculate fitness values for every particle in current iteration
             fit = fun(sim_results)
 
             logging.info(msg.FITNESS_VALS + str(fit))
             logging.info(msg.ITERATION + str(i + 1) + '\n')
 
-            #Calculate fitness values for every particle in current iteration
             #if current particle is the best in current iteration
             #sort pbest
             if fit < swarm.pbest[index]:
                 swarm.pbest[index] = fit
                 pi_best[index] = swarm.particles[index]  # swarm particles is updated before with new particle
 
-        ## After each iteration we end up with pbest, pi
-        #these values come from the iteration 0
+        # After each iteration we end up with pbest, pi, these values come from the iteration 0
         if np.min(swarm.pbest) < swarm.gbest:
-
-            swarm.gbest = np.min(swarm.pbest)  # swarm.gbest comes from get_particle_best_fit
+            swarm.gbest = np.min(swarm.pbest)
             swarm.pg = pi_best[np.argmin(swarm.pbest)].values_array
 
         best_index = np.argmin(swarm.pbest)
@@ -240,7 +231,7 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
         db_manager.load_df()
         db_manager.fill_df(data_to_store)
 
-    ###closing of the cycle
+    # Closing of the iterative cycle
     print(msg.GLOBAL_MIN_VAL + str(swarm.gbest))
     logging.info(msg.GLOBAL_MIN_VAL + str(swarm.gbest))
 
@@ -295,8 +286,9 @@ def only_fit(fun):
         db_manager = db.DBManager(read_data()['info']['ID'])
         db_manager.load_df()
 
+
         logging.info(msg.STARTED)
-        swarm = set_Swarm()  # initialize swarm
+        swarm = set_Swarm()
 
         for index in range(len(swarm.particles)):
             particle = swarm.particles[index]
@@ -315,7 +307,7 @@ def only_fit(fun):
         best_index = swarm.get_particle_best_fit(swarm.particles)
 
         logging.info(msg.PBEST + str(swarm.pbest))
-        logging.info(msg.GBEST + str(swarm.gbest))  # swarm.gbest comes from get_particle_best_fit
+        logging.info(msg.GBEST + str(swarm.gbest))
         logging.info(msg.PGVALUE + str(swarm.pg))
         logging.info(msg.BEST_PARTICLE_INDEX + str(best_index) + '\n')
 
@@ -339,8 +331,8 @@ def only_fit(fun):
         db_manager.load_df()
         db_manager.fill_df(data_to_store)
 
-        ### Iterations
+
         logging.info(msg.START_ITERATIONS)
         run_iterations(read_data()['values']['iterations'], swarm, db_manager, fun, addOp)
-        ### Finished process
+
         logging.info(msg.FINISHED)
