@@ -1,7 +1,11 @@
 #  -*- coding: utf-8 -*-
 """
-Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-Year: 2022
+Implements the Particle and Swarm classes which have their respective methods to generate the particles of a swarm randomly, update the particles, among others.
+
+Classes:
+    Particle
+
+    Swarm
 """
 from .commands import read_data
 from . import messages as msg

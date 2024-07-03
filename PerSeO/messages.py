@@ -1,3 +1,7 @@
+#  -*- coding: utf-8 -*-
+"""
+This module contains the default messages according to the actions that are executed during optimization.
+"""
 #------> LOG FILE TEXT
 STARTED = "Start"
 FINISHED = "End\n\n\n"

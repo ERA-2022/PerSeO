@@ -1,7 +1,31 @@
 # -*- coding: utf-8 -*-
 """
-Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-Year: 2022
+This module is designed to interact with Ansys HFSS software. Among its functions are the modification of arrays and variables in an Ansys HFSS design and the generation of different reports such as Smn, Zmn, VSWR among others.
+
+Methods:
+    addVariable(proj, name, value)
+    
+    changeVariable(proj, name, value)
+    
+    addArray(proj, name, value)
+    
+    changeArray(proj, name, value)
+    
+    createsSmn(proj, name, simID, m, n)
+    
+    createsZmn(proj, name, simID, m, n)
+    
+    createsAmpImb(proj, name, simID)
+    
+    createsPhaseImb(proj, name, simID)
+    
+    createsVSWR(proj, name, simID, port)
+    
+    createsGain(proj, name, simID, angle)
+    
+    createsBW(proj, name, simID)
+    
+    createsDataTable(proj, name, simID)
 """
 
 from .commands import read_data

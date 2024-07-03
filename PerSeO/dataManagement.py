@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-Year: 2022
+This module defines a Data Base Manager (DBManager) class that manages the operations of reading, writing and updating data by saving them in a CSV file for storing the results of the optimizations made.
+
+Classes:
+    DBManager
 """
 
 import os.path as path

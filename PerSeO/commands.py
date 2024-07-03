@@ -1,7 +1,35 @@
 # -*- coding: utf-8 -*-
 """
-Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-Year: 2022
+This module contains functions that facilitate the creation, reading, updating and management of configuration files, generation of identifiers for optimizations, creation of directories necessary for the storage of the different generated repositories, among others.
+
+Methods:
+    read_data()
+    
+    update_data(category="", key="", value="")
+    
+    create_data_file(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units,
+        max, min, nominals, iterations, particles,
+        branches, reports, category, sub_category, description)
+    
+    clear_screen()
+    
+    wait_to_read(msj="Error!", clr=0)
+    
+    make_directory(name, path)
+    
+    Y_N_question(msj)
+    
+    start_timing()
+    
+    get_elapsed_time(start_time="")
+    
+    get_instructions_to_reports(tag, report, value)
+    
+    get_graphic_name(report, value, i, j)
+    
+    init_system(ansys_exe, ansys_save_def, project_name, design_name, variable_name, units,
+        max, min, nominals, iterations, particles,
+        branches, reports, category, sub_category, description)
 """
 import os
 from sys import platform

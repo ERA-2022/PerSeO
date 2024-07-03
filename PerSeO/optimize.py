@@ -1,7 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-Year: 2022
+Contains the core implementation of the PSO algorithm, managing the optimization process and iterating through the possible solutions. This module is the core functionality of PerSeO.
+
+Methods:
+    main(fun)
+
+    set_Swarm()
+
+    run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, fun, addOp: dict)
+
+    prepare_simulation_file(particle, id)
+
+    only_fit(fun)
 """
 import os
 import logging

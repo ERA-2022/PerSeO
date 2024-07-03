@@ -1,7 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-Year: 2022
+Coordinates the execution of simulations within HFSS and collects results for further analysis.
+
+Methods:
+    create_sim_file(particle: np.ndarray, i: int, j: int)
+
+    run_simulation_hfss(ansys_path="", args='-runscriptandexit', file_path="")
+
+    read_simulation_results(i: int, j: int, graph: bool)
+
+    get_simulation_params()
+
+    copy_rename(old_file_name: str, new_file_name: str)
+
+    init_model()
 """
 import os
 import subprocess

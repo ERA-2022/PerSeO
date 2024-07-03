@@ -1,7 +1,19 @@
 # -*- coding: utf-8 -*-
 """
-Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-Year: 2022
+This module contains functionalities to present and manage the interface of the main menu and the graphic tools menu and, if necessary, to start the optimization process.
+
+Methods:
+    ops_main_menu()
+
+    ops_set_up_menu()
+
+    ops_graphics_tools()
+
+    graphic_tools_menu()
+
+    set_up_menu()
+
+    main_menu(fitness)
 """
 import time
 from . import messages as msg

@@ -1,6 +1,19 @@
+#  -*- coding: utf-8 -*-
 """
-Authors: German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
-Year: 2022
+This module contains several functions that manage the creation of graphs from the resulting simulation data in Ansys HFSS presented as CSV files. Functions include graphing a report, a complete iteration or a complete simulation among others.
+
+Methods:
+    size_of_step(init_freq: int | float, final_freq: int | float, num_steps: int)
+
+    draw_one_report(path="", report_n="", data=[], points=0, units="")
+
+    get_data_for_one_report()
+
+    draw_all_iteration()
+
+    draw_all_optimization()
+
+    draw_a_comparison()
 """
 import os
 import numpy as np
