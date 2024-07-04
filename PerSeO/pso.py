@@ -242,7 +242,7 @@ class Swarm:
         """
         index_pg = np.argmin(self.pbest)  # Take the index of the best particle in the swarm.
         self.best_index = index_pg
-        print(msg.GET_BEST_PARTICLE_PG + str(pi[index_pg].values_array))
+        print(msg.GET_BEST_PARTICLE_PG + str(pi[index_pg].values_array) + '\n')
         self.pg = pi[index_pg].values_array  # select the best particle-position of the particle array
         self.gbest = np.min(self.pbest)  # best global fitness
         return index_pg

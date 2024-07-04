@@ -59,21 +59,25 @@ def main(fun):
 
 
     logging.info(msg.STARTED)
+    print(msg.SIM_ID + read_data()['info']['ID'])
     swarm = set_Swarm()
-
     for index in range(len(swarm.particles)):
         particle = swarm.particles[index]
-        print(msg.SIM_ID + read_data()['info']['ID'])
-        logging.info(msg.INITIAL_PARTICLE + str(particle.id_) + str(particle.values_array))
+        print(f"Particle: {particle.id_}")
+        logging.info(msg.INITIAL_PARTICLE + str(particle.id_) + ":" + str(particle.values_array))
 
         simulate.create_sim_file(particle.values_array, 0, particle.id_)
         logging.info(msg.SIM_FILE_OK)
         logging.info(msg.SIM_PARTICLE_START + str(particle.id_))
         simulate.run_simulation_hfss()
         sim_results = simulate.read_simulation_results(0, particle.id_, addOp['graph'])
+        
         fit = fun(sim_results)
+        print(f"Fitness function value: {fit}")
+        print("-----------------------------------------------")
+
         swarm.pbest[particle.id_] = fit
-        logging.info(msg.FITNESS_VALS + str(fit))
+        logging.info(msg.FITNESS_VALS + str(fit) + '\n')
 
     elapsed = commands.get_elapsed_time(start_time)
 
@@ -126,7 +130,7 @@ def set_Swarm():
         read_data()['values']['min']
     )
     swarm.create()
-    logging.info(msg.PARTICLES_CREATED)
+    logging.info(msg.PARTICLES_CREATED + '\n')
     return swarm
 
 
@@ -144,9 +148,11 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
     pi_best = swarm.particles.copy()  # list of initial particles
 
     for i in range(iterations):
+        print(msg.SIM_ID + read_data()['info']['ID'])
         print(msg.NUM_ITERATIONS + str(iterations))
         print(msg.CURRENT_ITERATION + str(i))
 
+        logging.info(msg.SIM_ID + str(read_data()['info']['ID']))
         logging.info(msg.ITERATION + str(i))
         logging.info(msg.CALC_NEW_PARTICLES)
 
@@ -174,6 +180,7 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
             particle = swarm.particles[index]
             start_time = commands.start_timing()
 
+            print(f"Particle: {particle.id_}")
             logging.info(msg.PARTICLE + str(particle.id_) + ':' + str(particle.values_array))
 
             #Prepare simulation intermediate file
@@ -196,6 +203,8 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
             
             #Calculate fitness values for every particle in current iteration
             fit = fun(sim_results)
+            print(f"Fitness function value: {fit}")
+            print("-----------------------------------------------")
 
             logging.info(msg.FITNESS_VALS + str(fit))
             logging.info(msg.ITERATION + str(i + 1) + '\n')
@@ -219,7 +228,7 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
 
         elapsed = commands.get_elapsed_time(start_time)
 
-        logging.info(msg.TIME_ELAPSED + elapsed)
+        logging.info(msg.TIME_ELAPSED + elapsed + '\n')
 
         info = read_data()['info']
 
@@ -298,17 +307,21 @@ def only_fit(fun):
 
 
         logging.info(msg.STARTED)
+        print(msg.SIM_ID + read_data()['info']['ID'])
         swarm = set_Swarm()
-
         for index in range(len(swarm.particles)):
             particle = swarm.particles[index]
-            print(msg.SIM_ID + read_data()['info']['ID'])
-            logging.info(msg.INITIAL_PARTICLE + str(particle.id_) + str(particle.values_array))
+            print(f"Particle: {particle.id_}")
+            logging.info(msg.INITIAL_PARTICLE + str(particle.id_) + ":" + str(particle.values_array))
 
             sim_results = simulate.read_simulation_results(0, particle.id_, addOp["graph"])
+            
             fit = fun(sim_results)
+            print(f"Fitness function value: {fit}")
+            print("-----------------------------------------------")
+
             swarm.pbest[particle.id_] = fit
-            logging.info(msg.FITNESS_VALS + str(fit))
+            logging.info(msg.FITNESS_VALS + str(fit) + '\n')
 
         elapsed = commands.get_elapsed_time(start_time)
 
