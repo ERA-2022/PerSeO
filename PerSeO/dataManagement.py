@@ -80,8 +80,7 @@ class DBManager:
         Args:
             data_struct (dict): The data structure containing the new data to be added, it is recommended that this structure contain the following keys and that all its values are text strings: sim_id, created_at, elapsed_time, sim_type, category, sub_category, sim_setup, pbest, gbest, best_particle_id, best_particle, iteration
         """
-        output = pd.DataFrame()
-        output = output.append(data_struct, ignore_index=True)
+        output = pd.DataFrame([data_struct])
 
         df = pd.concat([self.df, output])
 
