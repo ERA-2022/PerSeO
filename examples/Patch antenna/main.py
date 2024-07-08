@@ -43,10 +43,6 @@ def function_fitness(dataReports):
         # CALCULATE THE FIT VALUE
         fit_value = ((2.6 - work_freq) / 2.6)**2
 
-    # SHOW RELEVANT INFO TO USER
-    print(f"Fitness function value: {fit_value}")
-    print("-----------------------------------------------")
-
     # RETURN CALCULATED VALUE
     return fit_value
 
