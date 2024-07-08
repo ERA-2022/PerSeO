@@ -150,10 +150,10 @@ def run_iterations(iterations: int, swarm: pso.Swarm, db_manager: db.DBManager, 
     for i in range(iterations):
         print(msg.SIM_ID + read_data()['info']['ID'])
         print(msg.NUM_ITERATIONS + str(iterations))
-        print(msg.CURRENT_ITERATION + str(i))
+        print(msg.CURRENT_ITERATION + str(i + 1))
 
         logging.info(msg.SIM_ID + str(read_data()['info']['ID']))
-        logging.info(msg.ITERATION + str(i))
+        logging.info(msg.ITERATION + str(i + 1))
         logging.info(msg.CALC_NEW_PARTICLES)
 
         # previous_particles is a copy of the Particle array belonging to the swarm instance
