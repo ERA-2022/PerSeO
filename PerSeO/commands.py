@@ -107,6 +107,9 @@ def create_data_file(
         sub_category (str): containing the sub-category you want to give to the model or optimization
         description (str): containing the description of the model, the setting function, additional information
     """
+    if ansys_save_def[-1] != '/':
+        ansys_save_def += '/'
+
     data_structure = {
         "paths": {
             "main": os.getcwd().replace('\\', '/') + '/',
