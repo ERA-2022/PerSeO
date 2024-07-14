@@ -50,4 +50,4 @@ def function_fitness(dataReports):
 commands.init_system(
     ansys_path, save_path, pro, des, var, u, val_max, val_min, val_nom, i, p, b, rep, cat, sub_cat, desc
 )
-interface.main_menu(function_fitness)  # FIRST INITIALIZE THE SYSTEM AND LATER RUN THE MAIN MENU
+# interface.main_menu(function_fitness)  # FIRST INITIALIZE THE SYSTEM AND LATER RUN THE MAIN MENU
