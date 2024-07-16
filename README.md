@@ -5,23 +5,26 @@ This package is crafted to provide a tool that aids the optimization process for
 Our optimization algorithms are corroborated by HFSS simulations, thereby offering a dependable tool to assess the performance of each proposed geometry and to extract data from each optimization batch.
 
 ## **What's included**
-1. ### **Version: v0.91**
+1. ### **Version: v1.0.0**
 -   Import and usage functionality
 -   Implementation of the PSO optimization algorithm
 -   A log file providing comprehensive tracking of the optimization process
 -   Data collection in CSV format
 -   Configurations passable via JSON files or directly from the code
 -   Simulation control via unique IDs
--   Includes two examples demonstrating PSO usage in Hybrids and Antennas
-
+-   Includes one examples demonstrating PSO usage in Antennas
+-   Documentation of all methods and classes of the package
+-   Package installation using [PyPI](https://pypi.org/)
 
 2. ### **Prerequisites**
-    _These are necessary setup procedures before executing the script._
+    _These are configuration procedures required before using the package or the files found in this repository._
 * [Python version 3.10.4](https://www.python.org/downloads/release/python-3104/) must be installed. Compatibility with other Python versions cannot be guaranteed.
-*   [Requirements file](requirements.txt) - All necessary dependencies can be found and installed from the requirements.txt file.
+*   Package installation - you must install the PerSeO package, which contains all the files and data for its use. to install the package, use the command ```pip install perseo``` in your terminal.
     > **Note**
-    > To install all requirements, use the command _pip install -r requirements.txt_ in your terminal.
-    
+    > if you are going to use the files found directly in this repository, you must not install the package, instead, you must install all the dependencies found in the [requirements.txt](requirements.txt) file. To do this use the _pip install -r requirements.txt_ command in your terminal
+
+*   Package installation in IronPython (**required only if you installed the package in the last step**) - Ansys HFSS uses IronPython to use the scripting option, for this reason, it is also necessary to add the perseo package to the IronPython packages. The folder containing the packages is located where Ansys was installed, inside the ./common/IronPython/lib/ folder. Locate this group of folders inside the path where Ansys was installed and then use the command ```pip install perseo -t "YOUR_PATH_TO_ANSYS_IRONPYTHON_PACKAGES/"``` in your terminal.
+
 *   *Design_name.py* or *Design_name.aedt* - Add a file containing the geometric model for HFSS (Python file) to the model's folder located in the root folder. If the model is a .aedt file, add this file to the Ansoft folder located in the Documents folder (the default folder that creates HFSS) in both cases (.py or .aedt files), the file's name  must be equal to the project name.
 
     The following example shows part of a Python file containing the geometry of a blade dipole antenna. The file name (.py or .aedt) should correspond to the line that defines the project name.
@@ -44,8 +47,7 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
 
 *   __First step:__ Add the following imports to your main script:
     ```
-    from PSO_core import commands
-    from PSO_functions import Interfaz
+    from PerSeO import commands, interface
     ```
 *   __Second step:__ Define the following parameters for the optimization process. It is recommended to save these parameters as individual variables:
     * Path to executable of ANSYS
@@ -81,14 +83,14 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
     i = 2
     p = 2
     b = 0
-    desc = "100%BW with ideal BW to 80MHz, denominator (or cut-off frecuency) in 40MHz working in the frecuency band of 40MHz to 120MHz"
+    desc = "100%BW with ideal BW to 80MHz, denominator (or cut-off frequency) in 40MHz working in the frequency band of 40MHz to 120MHz"
 
     reports = {
         "SMN":[(1,1)],
         "gain":[0,90],
         "vswr":[1],
         "zmn":[(1,1)],
-        "aditional_data":{
+        "additional_data":{
             "fmin":40,
             "points":81,
             "units":"MHz"
@@ -116,11 +118,11 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
             else:
                 new_area = True
 
-        print(f"\nNumero de areas: {len(areas_f)} || Mat.freq y Mat.db con mismo tamaño: {len(areas_f) == len(areas_d)}\n")
+        print(f"\nNumber of areas: {len(areas_f)} || Mat.freq and Mat.db with same size: {len(areas_f) == len(areas_d)}\n")
         
-        coeficiente = 0
+        coefficient = 0
         if len(areas_f)==0:
-            coeficiente = 20
+            coefficient = 20
         else:
             bw = 0
             freq = 0
@@ -135,14 +137,11 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
                 print("INFO PREVIEW")
                 print(f"BW: {bw}Mhz")
                 print(f"Freq: {freq}Mhz")
-                coeficiente =  ((80-bw)/80)**2  
+                coefficient =  ((80-bw)/80)**2  
                 
             else:
-                coeficiente = 20      
-        
-        print(f"Valor función de merito: {coeficiente}")
-        print("---------------------------------------------------\n\n")
-        return coeficiente
+                coefficient = 20      
+        return coefficient
     ```
 
     Similar to the previous point, this function will be used later on.
@@ -163,7 +162,7 @@ The order of arguments in the init_system method is as follows:
     |     6    |      units     |    str    | A string that contains the units of dimensions (in the distance) of the design |
     |     7    |       max      |    lst    | A list with maximum values that can take the PSO for the particles. These values must be numbers |
     |     8    |       min      |    lst    | A list with minimum values that can take the PSO for the particles. These values must be numbers |
-    |     9    |     nomilas    |    lst    | A list with default values that can take the PSO for the particles. These values must be numbers |
+    |     9    |     nominals    |    lst    | A list with default values that can take the PSO for the particles. These values must be numbers |
     |    10    |   iterations   |    int    | An integer that defines how many iterations will execute the code |
     |    11    |    particles   |    int    | An integer that defines how many particles will be created |
     |    12    |    branches    |    int    | An integer that defines how many branches have the hybrid |
@@ -177,10 +176,10 @@ The order of arguments in the init_system method is as follows:
     commands.init_system(exe, save, pname, dname,vname, u, ma, mi, nom, i, p, b, reports, category, sub_category, desc)
     ```
 
-* __Fifth step:__ You must use the main_menu(...), this method comes on from Interfaz of the second importation, and you must add the fitness function as an argument of main_menu(...) as shown in the following example:      
+* __Fifth step:__ You must use the main_menu(...), this method comes on from interface of the second importation, and you must add the fitness function as an argument of main_menu(...) as shown in the following example:      
 
     ```
-    Interfaz.main_menu(fit)
+    interface.main_menu(fit)
     ```
 
 ## **How to use**
@@ -197,14 +196,14 @@ Upon interacting with the PSO optimizer's user interface, you will be presented 
 ```
 -------->PSO APP<---------
 -----\MENU
-1> Optimizate
+1> Optimize
 2> Fitness function test
 3> Graphics tools
 4> Exit
 Enter an option:
 ```
 
-### Optimizate
+### Optimize
 The first operation checks for the existence of a model utilizing Ansys or Python files. In the event the software cannot execute these files, it will continuously attempt to do so. If this attempt is not successful, the software will alert you to the error and revert to the main menu.
 
 After the model's verification, the software will inquire if you wish to graphically represent the reports. To respond, enter 'Y' for yes or 'N' for no in the console and press Enter. The optimization process will commence by generating particles (new random dimensions) and simulating these designs in ANSYS. Subsequently, the previously requested reports will be exported, and graphics will be produced if necessary (stored in ../ID/figures/). The software will then evaluate the fitness function and generate new particle dimensions using the data reports. This process will iterate for all particles until completion.
@@ -225,7 +224,7 @@ This option provides a menu that allows the creation of graphs from simulated re
 1> Draw one report
 2> Draw one complete iteration
 3> Draw one complete execution
-4> Draw one report comparitions
+4> Draw one report comparisons
 5> Back
 Enter an option:
 ```
@@ -236,7 +235,7 @@ This feature will prompt the user for an ID associated with a prior simulation. 
 1> Draw one report
 2> Draw one complete iteration
 3> Draw one complete execution
-4> Draw one report comparitions
+4> Draw one report comparisons
 5> Back
 Enter option: 1
 Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
@@ -256,7 +255,7 @@ Similar to the previous option, this feature will ask for an ID from a previous 
 1> Draw one report
 2> Draw one complete iteration
 3> Draw one complete execution
-4> Draw one report comparitions
+4> Draw one report comparisons
 5> Back
 Enter option: 2
 Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
@@ -285,7 +284,7 @@ Similar to the previous options, this feature will ask for an ID from a previous
 1> Draw one report
 2> Draw one complete iteration
 3> Draw one complete execution  
-4> Draw one report comparitions
+4> Draw one report comparisons
 5> Back
 Enter option: 3
 Enter a previously simulate ID: b2466c28-8fe8-4b71-af6c-fd435b6e5418
@@ -337,7 +336,7 @@ To initiate the process, the system will prompt you to input the absolute path o
 1> Draw one report
 2> Draw one complete iteration
 3> Draw one complete execution
-4> Draw one report comparitions
+4> Draw one report comparisons
 5> Back
 Enter option: 4
 Enter the path file 1: C:\Users\ESTACION\Documents\GitHub\PSO_for_hybrids_and_antennas\results\b2466c28-8fe8-4b71-af6c-fd435b6e5418\files\datosS11_0_1.csv
@@ -368,10 +367,13 @@ Enter the label of the  data to file 2: Final particle
 The process has ended. Verify that the drawn graphic is in the entered path or the default path.
 Press intro to continue...
 ```
-<!-- ### Set up -->
+
 ### Exit
 This function is designed to terminate the currently running script.
 
+----
 __*Developed by:*__ German Chaparro, Jorge Cardenas,Oscar Restrepo, Sergio Mora, Jhon Vera, and Jaime Angel
+
+__*Contributors:*__ Daniela Paez Díaz
 
 __*Year:*__ 2022
