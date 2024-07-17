@@ -44,7 +44,7 @@ def create_sim_file(particle: np.ndarray, i: int, j: int):
     pathProject = '"' + read_data()["paths"]["ansys_save_def"] + read_data()["values"]["project_name"] + '.aedt"'
 
     f.write("# -*- coding: utf-8 -*-\n")
-    f.write("import PerSeO.ansys_functions as fn\n")
+    f.write("import perseo_optimizer.ansys_functions as fn\n")
 
     f.write("\n")
     f.write("import ScriptEnv\n")

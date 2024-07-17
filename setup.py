@@ -21,7 +21,7 @@ requirements = [
 ]
 
 setup(
-    name="PerSeO",
+    name="perseo-optimizer",
     version="1.0.0",
     packages=find_packages(),
     install_requires=requirements,

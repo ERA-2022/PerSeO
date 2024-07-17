@@ -6,7 +6,7 @@
 - An script with an example of use to PerSeO package with a fitness function to make work the antenna to 2.6*GHz* adapted minimum to -10dB
 
 ## How to use
-1. You must have the perseo package installed, if not in your terminal use the command ```pip install perseo``` (it is recommended to have created a virtual environment),for more information, refer to the user manual or the [README.md](../../README.md) file in the PerSeO repository.
+1. You must have the perseo_optimizer package installed, if not in your terminal use the command ```pip install perseo-optimizer``` (it is recommended to have created a virtual environment),for more information, refer to the user manual or the [README.md](../../README.md) file in the [PerSeO repository](https://github.com/ERA-2022/PerSeO).
 2. You must copy the [main.py](main.py) and paste to the root of your project and run the initialize of system.
 3. Later you must copy the [PATCH_ANTENNA.py](PATCH_ANTENNA.py) and paste to models folder located in the root of your project.
 4. In *PATCH_ANTENNA.py* file you must change the path that appears in the project rename like show as follow:

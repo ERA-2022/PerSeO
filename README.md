@@ -14,16 +14,16 @@ Our optimization algorithms are corroborated by HFSS simulations, thereby offeri
 -   Simulation control via unique IDs
 -   Includes one examples demonstrating PSO usage in Antennas
 -   Documentation of all methods and classes of the package
--   Package installation using [PyPI](https://pypi.org/)
+-   Package installation using [PyPI](https://pypi.org/project/perseo-optimizer/)
 
 2. ### **Prerequisites**
     _These are configuration procedures required before using the package or the files found in this repository._
 * [Python version 3.10.4](https://www.python.org/downloads/release/python-3104/) must be installed. Compatibility with other Python versions cannot be guaranteed.
-*   Package installation - you must install the PerSeO package, which contains all the files and data for its use. to install the package, use the command ```pip install perseo``` in your terminal.
+*   Package installation - you must install the perseo_optimizer package, which contains all the files and data for its use. to install the package, use the command ```pip install perseo-optimizer``` in your terminal.
     > **Note**
     > if you are going to use the files found directly in this repository, you must not install the package, instead, you must install all the dependencies found in the [requirements.txt](requirements.txt) file. To do this use the _pip install -r requirements.txt_ command in your terminal
 
-*   Package installation in IronPython (**required only if you installed the package in the last step**) - Ansys HFSS uses IronPython to use the scripting option, for this reason, it is also necessary to add the perseo package to the IronPython packages. The folder containing the packages is located where Ansys was installed, inside the ./common/IronPython/lib/ folder. Locate this group of folders inside the path where Ansys was installed and then use the command ```pip install perseo -t "YOUR_PATH_TO_ANSYS_IRONPYTHON_PACKAGES/"``` in your terminal.
+*   Package installation in IronPython (**required only if you installed the package in the last step**) - Ansys HFSS uses IronPython to use the scripting option, for this reason, it is also necessary to add the perseo_optimizer package to the IronPython packages. The folder containing the packages is located where Ansys was installed, inside the ./common/IronPython/lib/ folder. Locate this group of folders inside the path where Ansys was installed and then use the command ```pip install perseo-optimizer -t "YOUR_PATH_TO_ANSYS_IRONPYTHON_PACKAGES/"``` in your terminal.
 
 *   *Design_name.py* or *Design_name.aedt* - Add a file containing the geometric model for HFSS (Python file) to the model's folder located in the root folder. If the model is a .aedt file, add this file to the Ansoft folder located in the Documents folder (the default folder that creates HFSS) in both cases (.py or .aedt files), the file's name  must be equal to the project name.
 
@@ -47,7 +47,7 @@ oDesign.RenameDesignInstance("HFSSDesign1", "DESIGN")
 
 *   __First step:__ Add the following imports to your main script:
     ```
-    from PerSeO import commands, interface
+    from perseo_optimizer import commands, interface
     ```
 *   __Second step:__ Define the following parameters for the optimization process. It is recommended to save these parameters as individual variables:
     * Path to executable of ANSYS
@@ -356,7 +356,7 @@ Enter the save path:
 ```
 Following this, the system will request labels for the x and y-axes, the graphic's title (which will also serve as the saved file name - this cannot include periods), and the data label for each file to be displayed on the graphic. When the process concludes, you will be notified with a message.
 ```
-Note: if you press intro without add nothign path, this will save in ../results/comparison graphics/ by default
+Note: if you press intro without add nothing path, this will save in ../results/comparison graphics/ by default
 Enter the save path: C:\Users\Astrolab\Documents\Jaime\Comparaciones
 Enter the axis x label: Frequency (MHz)
 Enter the axis y label: dB

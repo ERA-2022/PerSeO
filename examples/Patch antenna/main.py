@@ -1,4 +1,4 @@
-from PerSeO import commands, interface
+from perseo_optimizer import commands, interface
 
 ansys_path = r"C:\Program Files\AnsysEM\AnsysEM19.0\Win64\ansysedt.exe"  # Please change this path for your Ansys path
 save_path = r'C:\Users\INVESTIGACIÓN\Documents\Ansoft/'  # Please change this path for your default Ansys save path
