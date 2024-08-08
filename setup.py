@@ -22,7 +22,7 @@ requirements = [
 
 setup(
     name="perseo-optimizer",
-    version="1.0.1",
+    version="1.0.2",
     packages=find_packages(),
     install_requires=requirements,
     author="German Chaparro, Jorge Cardenas, Oscar Restrepo, Sergio Mora, Jhon Vera and Jaime Angel",
