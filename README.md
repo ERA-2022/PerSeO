@@ -69,8 +69,6 @@ Our optimization algorithms are corroborated by HFSS simulations, thereby offeri
         * Number of branches  <!-- Possibly removed -->
         * Description of simulation and relevant information
         * Reports what you need for the fitness function
-    
-    |    
 
     *   __Third step:__ Define your fitness function; it must take in one parameter (a dictionary of required reports) and return the value of the fitness function. Refer to the example below:
         ```
